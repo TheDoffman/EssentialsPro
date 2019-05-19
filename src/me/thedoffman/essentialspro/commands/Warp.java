@@ -23,7 +23,7 @@ public class Warp implements CommandExecutor {
         plugin.prefix = plugin.prefix.replaceAll("&", "\u00A7");
         Player p = (Player)sender;
         if (cmd.getName().equalsIgnoreCase("warp")) {
-            if (!sender.hasPermission("ep.warp." + args[0]) && !sender.hasPermission("ep.warp.*")) {
+            if (!sender.hasPermission("ep.warp")) {
                 sender.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
                 return true;
             }

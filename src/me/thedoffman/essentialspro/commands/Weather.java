@@ -28,11 +28,11 @@ implements CommandExecutor {
                 player.sendMessage(plugin.prefix + ChatColor.RED + "usage: /weather [clear:rain]");
             } else if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("clear")) {
-                    Bukkit.getWorld("world").setStorm(false);
-                    player.sendMessage(plugin.prefix + ChatColor.GRAY + "Weather set to" + ChatColor.DARK_GREEN + " Clear");
+                    player.getWorld().setStorm(false);
+                    player.sendMessage(plugin.prefix + ChatColor.GRAY + "Weather set to" + ChatColor.DARK_GREEN + " Clear" + ChatColor.GRAY + " in " + ChatColor.DARK_GREEN + player.getWorld().getName());
                 } else if (args[0].equalsIgnoreCase("rain")) {
-                    Bukkit.getWorld("world").setStorm(true);
-                    player.sendMessage(plugin.prefix + ChatColor.GRAY + "Time set to" + ChatColor.DARK_GREEN + " Rain");
+                    player.getWorld().setStorm(true);
+                    player.sendMessage(plugin.prefix + ChatColor.GRAY + "Time set to" + ChatColor.DARK_GREEN + " Rain"+ ChatColor.GRAY + " in " + ChatColor.DARK_GREEN + player.getWorld().getName());
                 } else {
                     player.sendMessage(plugin.prefix + ChatColor.RED + "usage: /weather [clear:rain]");
                     return true;
