@@ -24,7 +24,7 @@ public class Heal implements CommandExecutor {
                 return true;
             }
              if (args.length == 0 && (sender instanceof Player)) {
-                 sender.sendMessage(plugin.prefix + ChatColor.RED + "Error: Only players can set a gamemode!");
+                 sender.sendMessage(plugin.prefix + ChatColor.RED + "Error: Please enter a name!");
                  return true;
             }
         }

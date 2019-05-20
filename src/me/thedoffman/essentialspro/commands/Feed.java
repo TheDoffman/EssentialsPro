@@ -24,8 +24,8 @@ public class Feed implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
                 return true;
             }
-            if (args.length == 0 && !(sender instanceof Player)) {
-                p.sendMessage(plugin.prefix + ChatColor.RED + "Use: /feed <Name>");
+            if (args.length == 0 && (sender instanceof Player)) {
+                p.sendMessage(plugin.prefix + ChatColor.RED + "Error: Please enter a name!");
                 return true;
             }
         }
