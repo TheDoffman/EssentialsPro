@@ -1,33 +1,21 @@
 # All Messages sent in the plugin can be changed here.
 Messages:
-# This is the message people see before joining your server.
    MOTD: "&9This server is using &aEssentialsPro&9 \n&9Made by &aTheDoffman" 
-# Messages that people see when someone joins and leaves the server.
    Join: "&9Welcome, %player%! This server is using &aEssentialsPro&9!"
    JoinIG: "&a+ %player%"
    LeaveIG: "&a- %player%"
-# Message people see when they try a command they don't have access too.
    Access: "&4Error: You are not permitted to do this!"  
-# Message when you forget to type a players name.
    EPlayer: "&4Error: Please specify a player!"  
-# Players isn't online or you typed their name wrong.
    NPlayer: "&4Error: Could not find player %player%"  
-# What the banned players see.
    Ban: "&4You have been banned!"  
-# What players see ingame.
    IBan: "&e%target% &2has been banned!"
    Kick: "&4 You have been kicked"
    MKick: "&2Player %target% has been kicked!"   
-# Command use from Console Error.
    ConsoleE: "&4Error: Command use only in game."
    SpawnSet: "&2Spawn Set!"
    NoSpawn: "&4 Spawn has not been set yet!"
    WelcomeSpawn: "&2Welcome to the Spawn!"
-# Messages for Ban Command.
-   Ban: ""
-# Messages for Heal Command.
    HealS: "&9You have healed &a%targetplayer%&9."
    HealT: "&9You have been healed by &a%senderplayer%&9."
-# Clear Inventory
    CIS: "&9You have cleared &a%targetplayer%'s&9 inventory."
    CIT: "&9You're inventory has been cleared by &a%senderplayer%&9."

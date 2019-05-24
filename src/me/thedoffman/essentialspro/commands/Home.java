@@ -28,6 +28,10 @@ implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
                 return true;
             }
+            if (!(sender instanceof Player)) {
+                sender.sendMessage(plugin.prefix + ChatColor.RED + "Error: Only players can go home!");
+                return true;
+            }
             if (args.length == 0) {
                 p.sendMessage(plugin.prefix + ChatColor.RED + "Use: /home <Name>");
                 return true;
@@ -72,7 +76,7 @@ implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
                 return true;
             }
-            if (sender instanceof Player) {
+            if (!(sender instanceof Player)) {
                 sender.sendMessage(plugin.prefix + ChatColor.RED + "Error: Only players can delete a home!");
                 return true;
             }
@@ -86,7 +90,7 @@ implements CommandExecutor {
             }
             plugin.getplayers().set((p.getName()) + ".homes." + args[0], null);
             plugin.saveYamls();
-            sender.sendMessage(plugin.prefix + ChatColor.GREEN + "Removed home " + args[0] + "!");
+            sender.sendMessage(plugin.prefix + ChatColor.BLUE + "Removed home " + ChatColor.GREEN +  args[0] + ChatColor.BLUE +  "!");
             return true;
         }
         return false;
