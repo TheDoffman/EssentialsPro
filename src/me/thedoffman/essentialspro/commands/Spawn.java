@@ -20,7 +20,7 @@ implements CommandExecutor {
         plugin.prefix = plugin.prefix.replaceAll("&", "\u00A7");
         if (cmd.getName().equalsIgnoreCase("spawn")) {
         	if (!(sender instanceof Player)) {
-                 sender.sendMessage(plugin.prefix + ChatColor.RED + "Error: Only players can go to spawn!");
+                sender.sendMessage(plugin.prefix + ChatColor.RED + "The console cannot use /spawn");
                  return true;
              }
             if (!(sender instanceof Player)) {

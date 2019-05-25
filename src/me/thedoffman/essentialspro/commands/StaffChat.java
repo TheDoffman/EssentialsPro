@@ -34,7 +34,7 @@ implements CommandExecutor {
                     String message = Joiner.on((String)" ").join((Object[])args);
                     for (Player Player2 : Bukkit.getOnlinePlayers()) {
                         if (Player2.hasPermission("ep.staffchat")) continue;
-                        Player2.sendMessage(ChatColor.GREEN + "[StaffChat] " + ChatColor.WHITE + " <" + ChatColor.BLUE + Player2.getName() + ChatColor.WHITE + "> " + ChatColor.GRAY + message);
+                        Player2.sendMessage(ChatColor.GREEN + "[StaffChat] " + ChatColor.WHITE + " <" + Player2.getName() + ChatColor.WHITE + "> " + ChatColor.GRAY + message);
                     }
                 }
             } else {

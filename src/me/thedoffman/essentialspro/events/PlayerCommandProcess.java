@@ -16,14 +16,19 @@ public class PlayerCommandProcess implements Listener {
     
  @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent e) {
+     String msg = e.getMessage().toLowerCase();
             if (e.getPlayer().isOp()) {
                     return;
             }
            
-            if (e.getMessage().startsWith("/?") || e.getMessage().startsWith("/pl") || e.getMessage().startsWith("/plugins") || e.getMessage().startsWith("/me") || e.getMessage().startsWith("/help")) {
+            if (msg.startsWith("/?") || e.getMessage().startsWith("/pl") || e.getMessage().startsWith("/plugins") || e.getMessage().startsWith("/me") || e.getMessage().startsWith("/help")) {
                 e.setCancelled(true);
-                    e.getPlayer().sendMessage(ChatColor.RED + "Error: You may not run this command.");
+                e.getPlayer().sendMessage(ChatColor.RED + "This command is for the console only!");
             }
+            if (msg.startsWith("/op")) {
+                e.setCancelled(true);
+                e.getPlayer().sendMessage(ChatColor.RED + "This command is for the console only!");
+        }
     }
- }
+}
 

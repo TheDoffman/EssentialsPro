@@ -22,16 +22,16 @@ implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         plugin.prefix = plugin.prefix.replaceAll("&", "\u00A7");
-        Player p = (Player)sender;
         if (cmd.getName().equalsIgnoreCase("home")) {
             if (!sender.hasPermission("ep.home")) {
                 sender.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
                 return true;
             }
             if (!(sender instanceof Player)) {
-                sender.sendMessage(plugin.prefix + ChatColor.RED + "Error: Only players can go home!");
+                sender.sendMessage(plugin.prefix + ChatColor.RED + "The console cannot use /home");
                 return true;
             }
+            Player p = (Player)sender;
             if (args.length == 0) {
                 p.sendMessage(plugin.prefix + ChatColor.RED + "Use: /home <Name>");
                 return true;
@@ -47,7 +47,7 @@ implements CommandExecutor {
             float yaw = plugin.getplayers().getInt(p.getName() + ".homes." + args[0] + ".yaw");
             float pitch = plugin.getplayers().getInt(p.getName() + ".homes." + args[0] + ".pitch");
             p.teleport(new Location(w, x, y, z, yaw, pitch));
-            p.sendMessage(plugin.prefix + ChatColor.BLUE + "Welcome to " + ChatColor.GREEN + args[0] + ChatColor.BLUE + "!");
+            p.sendMessage(plugin.prefix + "Welcome to " + ChatColor.GREEN + args[0] + ChatColor.WHITE + "!");
         }
         if (cmd.getName().equalsIgnoreCase("sethome")) {
             if (!sender.hasPermission("ep.sethome")) {
@@ -55,9 +55,10 @@ implements CommandExecutor {
                 return true;
             }
             if (!(sender instanceof Player)) {
-                sender.sendMessage(plugin.prefix + ChatColor.RED + "Error: Only players can set a home!");
+                sender.sendMessage(ChatColor.RED + "The console cannot use /sethome");
                 return true;
             }
+            Player p = (Player)sender;
             if (args.length == 0) {
                 p.sendMessage(plugin.prefix + ChatColor.RED + "Use: /sethome <Name>");
                 return true;
@@ -69,15 +70,16 @@ implements CommandExecutor {
             plugin.getplayers().set((p.getName()) + ".homes." + args[0] + ".yaw", p.getLocation().getYaw());
             plugin.getplayers().set((p.getName()) + ".homes." + args[0] + ".pitch", p.getLocation().getPitch());
             plugin.saveYamls();
-            p.sendMessage(plugin.prefix + ChatColor.BLUE + "Home " + ChatColor.GREEN + args[0] + ChatColor.BLUE + " set!");
+            p.sendMessage(plugin.prefix + "Home " + ChatColor.GREEN + args[0] + ChatColor.WHITE + " set!");
         }
+        Player p = (Player)sender;
         if (cmd.getName().equalsIgnoreCase("delhome")) {
             if (!sender.hasPermission("ep.deletehome")) {
                 sender.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
                 return true;
             }
             if (!(sender instanceof Player)) {
-                sender.sendMessage(plugin.prefix + ChatColor.RED + "Error: Only players can delete a home!");
+                sender.sendMessage(ChatColor.RED + "The console cannot use /delhome");
                 return true;
             }
             if (args.length == 0) {
@@ -90,7 +92,7 @@ implements CommandExecutor {
             }
             plugin.getplayers().set((p.getName()) + ".homes." + args[0], null);
             plugin.saveYamls();
-            sender.sendMessage(plugin.prefix + ChatColor.BLUE + "Removed home " + ChatColor.GREEN +  args[0] + ChatColor.BLUE +  "!");
+            sender.sendMessage(plugin.prefix + "Removed home " + ChatColor.GREEN +  args[0] + ChatColor.WHITE +  "!");
             return true;
         }
         return false;

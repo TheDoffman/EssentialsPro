@@ -30,7 +30,7 @@ public class ClearChat implements CommandExecutor {
             	}
                
                 Bukkit.broadcastMessage(ChatColor.GREEN + "|-------------------+====+-------------------|");
-                Bukkit.broadcastMessage(ChatColor.BLUE + " The chat has been cleared by " + ChatColor.DARK_GREEN + sender.getName());
+                Bukkit.broadcastMessage(" The chat has been cleared by " + ChatColor.GREEN + sender.getName());
                 Bukkit.broadcastMessage(ChatColor.GREEN + "|-------------------+====+-------------------|");
                
                 return true;

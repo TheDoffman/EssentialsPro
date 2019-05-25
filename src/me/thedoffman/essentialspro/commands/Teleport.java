@@ -43,7 +43,7 @@ implements CommandExecutor {
                 p.teleport(target.getLocation());
                 return true;
             }
-            sender.sendMessage(plugin.prefix + ChatColor.RED + "Error: Command use only in game.");
+            sender.sendMessage(plugin.prefix + ChatColor.RED + "The console cannot use /teleport");
             return true;
         } 
         

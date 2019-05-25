@@ -40,8 +40,8 @@ public class Heal implements CommandExecutor {
             }
         }
         target.setHealth(target.getMaxHealth());
-        sender.sendMessage(plugin.prefix + ChatColor.GREEN + " You have healed " + target.getName());
-        target.sendMessage(plugin.prefix + ChatColor.GREEN + " You have been healed by" + sender.getName());
+        sender.sendMessage(plugin.prefix  + " You have healed " + ChatColor.GREEN + target.getName());
+        target.sendMessage(plugin.prefix + " You have been healed by" + ChatColor.GREEN + sender.getName());
         return true;
     }
 }

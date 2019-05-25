@@ -19,22 +19,21 @@ implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-    	Player player = (Player) sender;
         plugin.prefix = plugin.prefix.replaceAll("&", "\u00A7");
         if (cmd.getName().equalsIgnoreCase("setspawn")) {
-            if (!player.hasPermission("ep.setspawn")) {
+            if (!sender.hasPermission("ep.setspawn")) {
                 sender.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
                 return true;
             }
             if (!(sender instanceof Player)) {
-                sender.sendMessage(plugin.prefix + ChatColor.RED + "Error: Only players can set spawn!");
+                sender.sendMessage(plugin.prefix + ChatColor.RED + "The console cannot use /setspawn");
                 return true;
             }
         }
         if (sender instanceof Player) {
+        	Player p = (Player) sender;
             String Spawn = plugin.getlang().getString("Messages.SpawnSet");
             Spawn = Spawn.replaceAll("&", "\u00A7");
-            Player p = (Player)sender;
             World world = p.getWorld();
             Location loc = p.getLocation();
             world.setSpawnLocation(loc);

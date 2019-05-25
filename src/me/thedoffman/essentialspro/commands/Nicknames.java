@@ -25,15 +25,15 @@ public class Nicknames implements CommandExecutor, Listener {
             sender.sendMessage(ChatColor.BLUE + "/Nickname [Nickname] <Player>");
          }
           if (args.length == 1) {
-            if ((sender instanceof Player)) {
-              sender.sendMessage(ChatColor.BLUE + "Only Players Can Use This Command!");
+            if (!(sender instanceof Player)) {
+                sender.sendMessage(plugin.prefix + ChatColor.RED + "The console cannot use /nickname");
               return true;
            }
 
             Player p = (Player)sender;
             String nick = args[0];
             if (p.hasPermission("ep.nick.use")) {
-              p.sendMessage(ChatColor.BLUE + "You Don't Have Permission To Use /Nickname!");
+              p.sendMessage(ChatColor.RED + "You Don't Have Permission To Use /Nickname!");
               return true;
            }
             if (nick.contains("&")) {
@@ -41,35 +41,35 @@ public class Nicknames implements CommandExecutor, Listener {
                 ChatColor.translateAlternateColorCodes('&', nick);
                 p.setDisplayName(nick);
                 plugin.getplayers().set(p.getName(), nick);
-                p.sendMessage(ChatColor.BLUE + "Your Nickname Has Been Changed To '" + nick + "'.");
+                p.sendMessage(plugin.prefix + "Your Nickname Has Been Changed To '" + nick + ChatColor.WHITE + "'.");
                 return true;
              }
 
-              p.sendMessage(ChatColor.BLUE + "You Don't Have Permission To Use Colours In Your Nickname!");
+              p.sendMessage(ChatColor.RED + "You Don't Have Permission To Use Colours In Your Nickname!");
               return true;
            }
 
             p.setDisplayName(nick);
             plugin.getplayers().set(p.getName(), nick);
             plugin.saveYamls();
-            p.sendMessage(ChatColor.BLUE + "Your Nickname Has Been Changed To '" + nick + "'.");
+            p.sendMessage(plugin.prefix + "Your Nickname Has Been Changed To '" + nick + "'.");
             return true;
          }
 
           if (args.length == 2) {
             if (Bukkit.getPlayer(args[1]) == null) {
-              sender.sendMessage(ChatColor.BLUE + args[1] + " Doesn't Exist!");
+              sender.sendMessage(ChatColor.RED + args[1] + " Doesn't Exist!");
               return true;
            }
 
 			Player target = Bukkit.getPlayer(args[1]);
             Player p = (Player)sender;
             if (!p.hasPermission("ep.nick.use")) {
-              p.sendMessage(ChatColor.BLUE + "You Don't Have Permission To Use /Nickname!");
+              p.sendMessage(ChatColor.RED + "You Don't Have Permission To Use /Nickname!");
               return true;
            }
             if (!p.hasPermission("ep.nick.others")) {
-              p.sendMessage(ChatColor.BLUE + "You Don't Have Permission To Change Others' Nicknames!");
+              p.sendMessage(ChatColor.RED + "You Don't Have Permission To Change Others' Nicknames!");
               return true;
            }
             String nick = args[0];
@@ -79,24 +79,24 @@ public class Nicknames implements CommandExecutor, Listener {
                 target.setDisplayName(nick);
                 plugin.getplayers().set(target.getName(), nick);
                 plugin.saveYamls();
-                target.sendMessage(ChatColor.BLUE + "Your Nickname Has Been Changed To '" + nick + "'.");
-                p.sendMessage(ChatColor.BLUE + "You Have Changed " + target.getName() + "'s Nickname To '" + nick + "'.");
+                target.sendMessage(plugin.prefix + "Your Nickname Has Been Changed To '" + nick + "'.");
+                p.sendMessage(plugin.prefix + "You Have Changed " + target.getName() + "'s Nickname To '" + nick + "'.");
                 return true;
              }
 
-              p.sendMessage(ChatColor.BLUE + "You Don't Have Permission To Use Colours In Nicknames!");
+              p.sendMessage(ChatColor.RED + "You Don't Have Permission To Use Colours In Nicknames!");
               return true;
            }
 
             target.setDisplayName(nick);
             plugin.getplayers().set(target.getName(), nick);
             plugin.saveYamls();
-            target.sendMessage(ChatColor.BLUE + "Your Nickname Has Been Changed To '" + nick + "'.");
-            p.sendMessage(ChatColor.BLUE + "You Have Changed " + target.getName() + "'s Nickname To '" + nick + "'.");
+            target.sendMessage(plugin.prefix + "Your Nickname Has Been Changed To '" + nick + "'.");
+            p.sendMessage(plugin.prefix + "You Have Changed " + target.getName() + "'s Nickname To '" + nick + "'.");
             return true;
          }
 
-            sender.sendMessage(ChatColor.BLUE + "/Nickname [Nickname] <Player>");
+            sender.sendMessage(ChatColor.RED + "/Nickname [Nickname] <Player>");
        }
 
         return true;

@@ -37,13 +37,13 @@ implements CommandExecutor {
                             message = message + args[1] + " ";
                             ++i;
                         }
-                        target.sendMessage(plugin.prefix + ChatColor.BLUE + sender.getName() + ChatColor.WHITE + " > " + ChatColor.BLUE + "YOU " + ChatColor.WHITE + ": " + ChatColor.GREEN + message);
+                        target.sendMessage(plugin.prefix + sender.getName() + ChatColor.WHITE + " > " + "YOU " + ChatColor.WHITE + ": " + ChatColor.GREEN + message);
                     } else {
                         sender.sendMessage(plugin.prefix + ChatColor.RED + "ERROR: This player is not connected on the server!");
                     }
                 }
             } else {
-                sender.sendMessage(plugin.prefix + "You're not a player");
+                sender.sendMessage(plugin.prefix + ChatColor.RED + "The console cannot use /fly");
             }
         }
         return true;

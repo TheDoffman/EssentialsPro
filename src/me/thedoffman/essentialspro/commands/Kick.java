@@ -45,7 +45,7 @@ implements CommandExecutor {
                     kicker = sender.getName();
                 }
                 target.kickPlayer(plugin.prefix + ChatColor.RED + "You have been kicked from the server!\nBy: " + kicker + "\nReason: " + x.toString().trim());
-                sender.sendMessage(plugin.prefix + ChatColor.GREEN + "Successfully kicked: " + target.getName());
+                sender.sendMessage(plugin.prefix + "Successfully kicked: " + ChatColor.GREEN + target.getName());
             }
         }
         return true;

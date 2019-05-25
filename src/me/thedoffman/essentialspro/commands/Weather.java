@@ -29,10 +29,10 @@ implements CommandExecutor {
             } else if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("clear")) {
                     player.getWorld().setStorm(false);
-                    player.sendMessage(plugin.prefix + ChatColor.GRAY + "Weather set to" + ChatColor.DARK_GREEN + " Clear" + ChatColor.GRAY + " in " + ChatColor.DARK_GREEN + player.getWorld().getName());
+                    player.sendMessage(plugin.prefix + ChatColor.GRAY + "Weather set to" + ChatColor.GREEN + " Clear" + ChatColor.GRAY + " in " + ChatColor.GREEN + player.getWorld().getName());
                 } else if (args[0].equalsIgnoreCase("rain")) {
                     player.getWorld().setStorm(true);
-                    player.sendMessage(plugin.prefix + ChatColor.GRAY + "Time set to" + ChatColor.DARK_GREEN + " Rain"+ ChatColor.GRAY + " in " + ChatColor.DARK_GREEN + player.getWorld().getName());
+                    player.sendMessage(plugin.prefix + ChatColor.GRAY + "Time set to" + ChatColor.GREEN + " Rain"+ ChatColor.GRAY + " in " + ChatColor.GREEN + player.getWorld().getName());
                 } else {
                     player.sendMessage(plugin.prefix + ChatColor.RED + "usage: /weather [clear:rain]");
                     return true;

@@ -45,8 +45,8 @@ public class Ban implements CommandExecutor {
                 this.plugin.saveYamls();
                 Bukkit.getOfflinePlayer(args[0]).isBanned();
                 target.kickPlayer(ChatColor.RED + "You have been banned from the server!\nBy: " + banner + "\nReason: " + x.toString());
-                Bukkit.broadcastMessage(plugin.prefix + ChatColor.GREEN + args[0] + ChatColor.BLUE + " was banned from the server!");
-                sender.sendMessage(plugin.prefix + ChatColor.BLUE + "Successfully banned: " + ChatColor.GREEN + target);
+                Bukkit.broadcastMessage(plugin.prefix + ChatColor.GREEN + args[0] + " was banned from the server!");
+                sender.sendMessage(plugin.prefix + "Successfully banned: " + ChatColor.GREEN + target);
                 return true;
             }
         }

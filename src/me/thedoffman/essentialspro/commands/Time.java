@@ -29,13 +29,13 @@ implements CommandExecutor {
             } else if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("day")) {
                     player.getWorld().setTime(0L);
-                    player.sendMessage(plugin.prefix + ChatColor.DARK_GREEN + "Time set to Day.");
+                    player.sendMessage(plugin.prefix + ChatColor.GREEN + "Time set to Day.");
                 } else if (args[0].equalsIgnoreCase("night")) {
                     player.getWorld().setTime(14000L);
-                    player.sendMessage(plugin.prefix + ChatColor.DARK_GREEN + "Time set to Night.");
+                    player.sendMessage(plugin.prefix + ChatColor.GREEN + "Time set to Night.");
                 } else if (args[0].equalsIgnoreCase("noon")) {
                     player.getWorld().setTime(6000L);
-                    player.sendMessage(plugin.prefix + ChatColor.DARK_GREEN + "Time set to Noon.");
+                    player.sendMessage(plugin.prefix + ChatColor.GREEN + "Time set to Noon.");
                 } else {
                     player.sendMessage(plugin.prefix + ChatColor.RED + "usage: /time [day:night]");
                     return true;

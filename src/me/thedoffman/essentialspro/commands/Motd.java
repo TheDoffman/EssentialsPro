@@ -60,7 +60,7 @@ Listener {
                 return true;
             }
             if (args.length == 0) {
-                sender.sendMessage(ChatColor.DARK_RED + "Error: Please type a new MOTD!");
+                sender.sendMessage(ChatColor.RED + "Error: Please type a new MOTD!");
                 return true;
             }
             StringBuilder str = new StringBuilder();

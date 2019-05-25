@@ -21,12 +21,16 @@ public class Warp implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         plugin.prefix = plugin.prefix.replaceAll("&", "\u00A7");
-        Player p = (Player)sender;
         if (cmd.getName().equalsIgnoreCase("warp")) {
             if (!sender.hasPermission("ep.warp")) {
                 sender.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
                 return true;
             }
+            if (!(sender instanceof Player)) {
+                sender.sendMessage(plugin.prefix + ChatColor.RED + "The console cannot use /warp");
+                return true;
+            }
+            Player p = (Player) sender;
             if (args.length == 0) {
                 p.sendMessage(plugin.prefix + ChatColor.RED + "Use: /warp <Name>");
                 return true;
@@ -49,6 +53,7 @@ public class Warp implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
                 return true;
             }
+            Player p = (Player) sender;
             if (args.length == 0) {
                 p.sendMessage(ChatColor.RED + "Please specify a name!");
                 return true;

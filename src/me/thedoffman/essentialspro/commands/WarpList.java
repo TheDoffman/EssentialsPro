@@ -24,7 +24,7 @@ implements CommandExecutor {
                 return true;
             }
             if (!(sender instanceof Player)) {
-                sender.sendMessage(plugin.prefix + ChatColor.RED + "Error: Only players can set a home!");
+                sender.sendMessage(plugin.prefix + ChatColor.RED + "The console cannot use /warplist");
                 return true;
             }
 

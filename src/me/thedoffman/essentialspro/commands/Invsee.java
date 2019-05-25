@@ -26,7 +26,7 @@ implements CommandExecutor {
                 return true;
             }
             if (!(sender instanceof Player)) {
-                sender.sendMessage(plugin.prefix + ChatColor.RED + "Error: Only players can see inventories!");
+                sender.sendMessage(plugin.prefix + ChatColor.RED + "The console cannot use /invsee");
                 return true;
             }
             Player p = (Player)sender;

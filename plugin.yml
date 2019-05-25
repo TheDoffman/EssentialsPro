@@ -1,7 +1,7 @@
 name: EssentialsPro
 author: TheDoffman
 main: me.thedoffman.essentialspro.main.Main
-version: 1.5.1
+version: 1.6
 description: Everything you need to run your server.
 
 commands:
@@ -93,7 +93,7 @@ commands:
     description: Prevents a player from seeing chat and talking.
     
   fly:
-    description: Enables flying for a player.
+    description: Enables flying for yourself.
     
   ci:
     description: Clears players inventory.

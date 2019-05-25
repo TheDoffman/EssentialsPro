@@ -15,32 +15,30 @@ public class Feed implements CommandExecutor {
         Bukkit.getPluginCommand("feed").setExecutor((CommandExecutor)this);
     }
 
-    @SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player target;
-        Player p = (Player)sender;
+        target = (Player) sender;
         if (cmd.getName().equalsIgnoreCase("feed")) {
             if (!sender.hasPermission("ep.feed")) {
                 sender.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
                 return true;
             }
-            if (args.length == 0 && (sender instanceof Player)) {
-                p.sendMessage(plugin.prefix + ChatColor.RED + "Error: Please enter a name!");
+            if (args.length == 0) {
+                target.sendMessage(plugin.prefix + ChatColor.RED + "Error: Please enter a name!");
                 return true;
             }
         }
         if (args.length == 0) {
-            target = (Player)sender;
         } else {
             target = Bukkit.getServer().getPlayer(args[0]);
             if (target == null) {
-                p.sendMessage(plugin.prefix + ChatColor.RED + "Error: Could not find player " + args[0] + "!");
+                sender.sendMessage(plugin.prefix + ChatColor.RED + "Error: Could not find player " + args[0] + "!");
                 return true;
             }
         }
         target.setFoodLevel(20);
-        p.sendMessage(plugin.prefix + ChatColor.GREEN + "You have been healed!");
-        target.sendMessage(plugin.prefix + ChatColor.GREEN + "You have been healed by " + p.getName() + "!");
+        target.sendMessage(plugin.prefix + "You're hunger has been repleneshed  by " + ChatColor.GREEN + target.getName() + ChatColor.WHITE + "!");
         return true;
     }
 }
