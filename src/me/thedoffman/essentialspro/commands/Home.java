@@ -55,7 +55,7 @@ implements CommandExecutor {
                 return true;
             }
             if (!(sender instanceof Player)) {
-                sender.sendMessage(ChatColor.RED + "The console cannot use /sethome");
+                sender.sendMessage(plugin.prefix + ChatColor.RED + "The console cannot use /sethome");
                 return true;
             }
             Player p = (Player)sender;
@@ -72,16 +72,16 @@ implements CommandExecutor {
             plugin.saveYamls();
             p.sendMessage(plugin.prefix + "Home " + ChatColor.GREEN + args[0] + ChatColor.WHITE + " set!");
         }
-        Player p = (Player)sender;
         if (cmd.getName().equalsIgnoreCase("delhome")) {
             if (!sender.hasPermission("ep.deletehome")) {
                 sender.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
                 return true;
             }
             if (!(sender instanceof Player)) {
-                sender.sendMessage(ChatColor.RED + "The console cannot use /delhome");
+                sender.sendMessage(plugin.prefix + ChatColor.RED + "The console cannot use /delhome");
                 return true;
             }
+            Player p = (Player)sender;
             if (args.length == 0) {
                 p.sendMessage(plugin.prefix + ChatColor.RED + "Use: /delhome <Name>");
                 return true;
