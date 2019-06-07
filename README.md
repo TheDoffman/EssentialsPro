@@ -1,6 +1,6 @@
 # EssentialsPro
 
-One Paragraph of project description goes here
+EssentialsPro is a light weight verison the the one plugin everyone knows called Essentials.
 
 ## Getting Started
 
