@@ -71,11 +71,16 @@ public class Main extends JavaPlugin implements Listener {
 	@Override
     public void onDisable() {
 		
+        getLogger().info("Shutting down EssentialsPro...");
+		
 		loadYamls();
     }
 
 	@Override
     public void onEnable() {
+		
+        getLogger().info("Starting up EssentialsPro...");
+        getLogger().info("Loaded EssentialsPro...");
 		
 // commands		
 		new Ban(this);
