@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 bin/
 build/
 .gradle/
@@ -6,6 +7,9 @@ build/
 .project
 .idea
 *.iml
+=======
+/bin/
+>>>>>>> parent of 29298b1... Create as gradle project
 =======
 /bin/
 >>>>>>> parent of 29298b1... Create as gradle project
