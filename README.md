@@ -19,7 +19,13 @@ Simply take the plugin from https://dev.bukkit.org/projects/essentialspro and pu
 
 ## Built With
 
-* [Maven](https://maven.apache.org/) - Dependency Management
+* [Gradle](https://gradle.org/) - Dependency Management
+
+To build EssentialsPro run:
+* `.\gradlew jar` in PowerShell on Windows
+* `./gradlew jar` in a terminal on *nix
+
+after building you can find the compiled jar in `./build/libs`
 
 ## Contributing
 
