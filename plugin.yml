@@ -105,10 +105,6 @@ commands:
     description: Hides you in plain sight.
     aliases: [v]
     
-  unvanish:
-    description: Unhides you in plain sight.
-    aliases: [uv]
-    
   home:
     description: Sends you home.
     aliases: [h]
@@ -244,6 +240,10 @@ permissions:
   ep.vanish:
     default: op
     description: Go invisable.
+  
+  ep.seevanish:
+    default: op
+    description: Allows you to see player that a vanish.
     
   ep.warp:
     default: op

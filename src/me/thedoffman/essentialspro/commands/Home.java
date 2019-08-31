@@ -10,8 +10,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Home
-implements CommandExecutor {
+public class Home implements CommandExecutor {
     private static Main plugin = Main.getPlugin(Main.class);
 
     public Home(Main plugin) {

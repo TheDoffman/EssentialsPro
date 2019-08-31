@@ -22,7 +22,7 @@ implements CommandExecutor {
         String CE = plugin.getlang().getString("Messages.ConsoleE");
         CE = CE.replaceAll("&", "\u00A7");
         if (cmd.getName().equalsIgnoreCase("staffchat")) {
-            if (sender.hasPermission("ep.staffchat")) {
+            if (!sender.hasPermission("ep.staffchat")) {
                 sender.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
                 return true;
             }

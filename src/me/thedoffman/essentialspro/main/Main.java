@@ -34,6 +34,7 @@ import me.thedoffman.essentialspro.commands.TP_Position;
 import me.thedoffman.essentialspro.commands.Teleport;
 import me.thedoffman.essentialspro.commands.Time;
 import me.thedoffman.essentialspro.commands.UnBan;
+import me.thedoffman.essentialspro.commands.Vanish;
 import me.thedoffman.essentialspro.commands.Warp;
 import me.thedoffman.essentialspro.commands.WarpList;
 import me.thedoffman.essentialspro.commands.Weather;
@@ -80,6 +81,7 @@ public class Main extends JavaPlugin implements Listener {
     public void onEnable() {
 		
         getLogger().info("Starting up EssentialsPro...");
+        getLogger().info("Constructing additional pylons!");
         getLogger().info("Loaded EssentialsPro...");
 		
 // commands		
@@ -109,6 +111,7 @@ public class Main extends JavaPlugin implements Listener {
 		new Home(this);
 		new PrivateMessage(this);
 		new ClearChat(this);
+		new Vanish(this);
 		
 // Events		
         new JoinEvent(this);
