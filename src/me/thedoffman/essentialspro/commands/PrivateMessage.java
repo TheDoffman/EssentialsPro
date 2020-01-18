@@ -28,7 +28,6 @@ implements CommandExecutor {
                 if (args.length == 0) {
                     p.sendMessage(plugin.prefix + ChatColor.RED + "Syntax: /pm <To> <Message>");
                 } else {
-                    @SuppressWarnings("deprecation")
 					Player target = Bukkit.getPlayer(args[0]);
                     if (target != null) {
                         String message = "";

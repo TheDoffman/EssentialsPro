@@ -1,7 +1,7 @@
 name: EssentialsPro
 author: TheDoffman
 main: me.thedoffman.essentialspro.main.Main
-version: 1.6
+version: 1.6.1
 description: Everything you need to run your server.
 
 commands:
@@ -101,9 +101,6 @@ commands:
   invsee:
     description: Look into a players inventory.
 
-  vanish:
-    description: Hides you in plain sight.
-    aliases: [v]
     
   home:
     description: Sends you home.
@@ -124,7 +121,12 @@ commands:
     description: Private message a player.
     
 permissions:
+    
+  ep.essentialspro:
+    default: op
+    description: Allows a player to view the command list.
   
+
   ep.ban:
     default: op
     description: Allows a player to ban.
@@ -236,14 +238,7 @@ permissions:
   ep.epc:
     default: op
     description: You do not have permission to use that command!
-    
-  ep.vanish:
-    default: op
-    description: Go invisable.
-  
-  ep.seevanish:
-    default: op
-    description: Allows you to see player that a vanish.
+
     
   ep.warp:
     default: op

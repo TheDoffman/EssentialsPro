@@ -18,7 +18,6 @@ public class Nicknames implements CommandExecutor, Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    @SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("nickname")) {
           if (args.length == 0) {

@@ -15,7 +15,6 @@ public class ClearInventory implements CommandExecutor {
         Bukkit.getPluginCommand("ci").setExecutor(this);
     }
 
-    @SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player target;
         plugin.prefix = plugin.prefix.replaceAll("&", "\u00A7");

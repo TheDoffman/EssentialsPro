@@ -18,7 +18,6 @@ implements CommandExecutor {
         Bukkit.getPluginCommand("invsee").setExecutor(this);
     }
 
-    @SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("invsee")) {
             if (!sender.hasPermission("ep.invsee")) {

@@ -36,10 +36,8 @@ implements CommandExecutor {
                     return true;
                 }
                 
-                @SuppressWarnings("deprecation")
 				Player target = Bukkit.getServer().getPlayer(args[0]);
                 
-                @SuppressWarnings("deprecation")
 				Player target2 = Bukkit.getServer().getPlayer(args[1]);
                 
                 if (target == null) {

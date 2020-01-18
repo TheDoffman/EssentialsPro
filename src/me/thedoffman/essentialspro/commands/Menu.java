@@ -16,6 +16,7 @@ implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player)sender;
+        if (!sender.hasPermission("ep.essentialspro")) {
         if (cmd.getName().equalsIgnoreCase("essentialspro")) {
             player.sendMessage(ChatColor.GREEN + "--------------[" + ChatColor.WHITE + "EssentialsPro Command List" + ChatColor.GREEN + "]--------------");
             player.sendMessage("");
@@ -76,7 +77,8 @@ implements CommandExecutor {
                 }
             }
         }
-        return true;
+    }
+		return false;
     }
 }
 

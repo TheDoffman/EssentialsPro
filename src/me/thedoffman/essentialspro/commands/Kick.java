@@ -28,7 +28,6 @@ implements CommandExecutor {
             } else if (args.length == 1) {
                 sender.sendMessage(plugin.prefix + ChatColor.RED + "Please specify a reason!");
             } else {
-                @SuppressWarnings("deprecation")
 				Player target = Bukkit.getPlayer((String)args[0]);
                 if (target == null) {
                     sender.sendMessage(plugin.prefix + ChatColor.RED + args[0] + " is not online!");

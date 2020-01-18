@@ -15,7 +15,6 @@ public class Feed implements CommandExecutor {
         Bukkit.getPluginCommand("feed").setExecutor((CommandExecutor)this);
     }
 
-	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player target;
         target = (Player) sender;
