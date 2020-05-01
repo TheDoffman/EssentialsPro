@@ -8,34 +8,34 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Ban implements CommandExecutor {
+public class Ban implements CommandExecutor{
     private Main plugin = Main.getPlugin(Main.class);
 
-    public Ban(Main plugin) {
+    public Ban(Main plugin){
         Bukkit.getPluginCommand("ban").setExecutor(this);
     }
 
     @SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
         this.plugin.prefix = this.plugin.prefix.replaceAll("&", "\u00A7");
-        if (label.equalsIgnoreCase("ban")) {
-            if (!sender.hasPermission("ep.ban")) {
+        if (label.equalsIgnoreCase("ban")){
+            if (!sender.hasPermission("ep.ban")){
                 sender.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
                 return true;
             }
-            if (args.length == 0) {
+            if (args.length == 0){
                 sender.sendMessage(plugin.prefix + ChatColor.RED + "Please specify a player and reason!");
-            } else if (args.length == 1) {
+            } else if (args.length == 1){
                 sender.sendMessage(plugin.prefix + ChatColor.RED + "Please specify a reason!");
             } else {
                 StringBuilder x = new StringBuilder();
                 int i = 1;
-                while (i < args.length) {
+                while (i < args.length){
                     x.append((args[i]) + " ");
                     ++i;
                 }
                 String banner = sender.getName();
-                if (sender instanceof Player) {
+                if (sender instanceof Player){
                     banner = sender.getName();
                 }
 				Player target = Bukkit.getPlayer((String)args[0]);
