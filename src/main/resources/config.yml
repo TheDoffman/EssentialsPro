@@ -1,0 +1,6 @@
+# config.yml
+
+motd:
+  custom: "" # The custom MOTD can be set using the /motd command
+
+join_message: ""

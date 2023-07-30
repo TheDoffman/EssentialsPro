@@ -1,0 +1,65 @@
+package org.hoffmantv.essentialspro.commands;
+
+import org.bukkit.ChatColor;
+import org.bukkit.WeatherType;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.hoffmantv.essentialspro.EssentialsPro;
+
+public class WeatherCommand implements CommandExecutor {
+
+    private final EssentialsPro plugin;
+
+    public WeatherCommand(EssentialsPro plugin) {
+        this.plugin = plugin;
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            return true;
+        }
+
+        Player player = (Player) sender;
+
+        if (!player.hasPermission("essentialspro.weather")) {
+            player.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
+            return true;
+        }
+
+        if (args.length != 1) {
+            player.sendMessage(ChatColor.RED + "Usage: /weather <clear|rain|storm>");
+            return true;
+        }
+
+        String weatherArg = args[0].toLowerCase();
+
+        WeatherType weatherType;
+        switch (weatherArg) {
+            case "clear":
+                weatherType = WeatherType.CLEAR;
+                break;
+            case "rain":
+                weatherType = WeatherType.DOWNFALL;
+                break;
+            case "storm":
+                weatherType = WeatherType.DOWNFALL;
+                player.getWorld().setThundering(true);
+                break;
+            default:
+                player.sendMessage(ChatColor.RED + "Invalid weather argument. Use: clear, rain, or storm.");
+                return true;
+        }
+
+        player.getWorld().setWeatherDuration(0); // Set the weather to last indefinitely
+        player.getWorld().setThunderDuration(0); // Set the thundering to last indefinitely
+        player.getWorld().setStorm(weatherType == WeatherType.DOWNFALL);
+
+        player.sendMessage(ChatColor.GREEN + "Weather set to " + weatherArg + ".");
+
+        return true;
+    }
+}

@@ -1,0 +1,74 @@
+name: EssentialsPro
+version: 1.0
+main: org.hoffmantv.essentialspro.EssentialsPro
+author: HoffmanTV
+description: A Minecraft Essentials plugin.
+api-version: 1.20
+
+commands:
+  kick:
+    description: Kick a player from the server.
+    usage: /kick <player> [reason]
+    permission: essentialspro.kick  # Permission node for the kick command
+  broadcast:
+    description: Broadcast a message to the entire server.
+    usage: /broadcast <message>
+    permission: essentialspro.broadcast
+  help:
+    description: Show the list of available commands.
+    usage: /<command> [page]
+  spawn:
+    description: Teleport to the server spawn point.
+    usage: /spawn
+    permission: essentialspro.spawn  # Permission node for the spawn command
+  setspawn:
+    description: Set the server spawn point.
+    usage: /setspawn
+    permission: essentialspro.setspawn
+  gamemode:
+    description: Change your game mode.
+    usage: /gamemode <1|2|3|4>
+    permission: essentialspro.gamemode
+    aliases: [gm]
+  time:
+    description: Change the time of day in the game world.
+    usage: /<command> <day|night|morning|evening>
+    permission: essentialspro.time   # Add the permission node here
+  weather:
+    description: Change the weather in the game world.
+    usage: /<command> <clear|rain|storm>
+    permission: essentialspro.weather   # Add the permission node here
+  fly:
+    description: Toggle flight mode for the player.
+    usage: /<command>
+    permission: essentialspro.fly   # Add the permission node here
+  heal:
+    description: Heal yourself or another player.
+    usage: /<command> [player]
+    permission: essentialspro.heal
+  feed:
+    description: Feed yourself or another player.
+    usage: /<command> [player]
+    permission: essentialspro.feed
+  tp:
+    description: Teleport to another player.
+    usage: /<command> <player>
+    permission: essentialspro.teleport
+  listplayers:
+    description: Show a list of online players.
+    usage: /<command>
+    permission: essentialspro.listplayers
+    aliases: [lp, list]
+  nickname:
+    description: Change your display name.
+    usage: /<command> <nickname>
+    permission: essentialspro.nickname
+  motd:
+    description: Change the MOTD of the server
+    usage: /motd <message>
+    permission: essentialspro.motd
+  reloadessentials:
+    description: Reload the EssentialsPro configuration
+    usage: /reloadessentials
+    permission: essentialspro.reload
+    aliases: [epr]
