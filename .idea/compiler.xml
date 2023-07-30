@@ -9,8 +9,5 @@
         <module name="EssentialsPro" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="EssentialsPro" target="11" />
-    </bytecodeTargetLevel>
   </component>
 </project>
