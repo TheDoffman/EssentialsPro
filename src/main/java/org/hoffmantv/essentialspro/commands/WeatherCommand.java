@@ -1,7 +1,6 @@
 package org.hoffmantv.essentialspro.commands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.WeatherType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -36,27 +35,24 @@ public class WeatherCommand implements CommandExecutor {
         }
 
         String weatherArg = args[0].toLowerCase();
+        boolean isThundering = false;
 
-        WeatherType weatherType;
         switch (weatherArg) {
             case "clear":
-                weatherType = WeatherType.CLEAR;
                 break;
             case "rain":
-                weatherType = WeatherType.DOWNFALL;
+                isThundering = false;
                 break;
             case "storm":
-                weatherType = WeatherType.DOWNFALL;
-                player.getWorld().setThundering(true);
+                isThundering = true;
                 break;
             default:
                 player.sendMessage(ChatColor.RED + "Invalid weather argument. Use: clear, rain, or storm.");
                 return true;
         }
 
-        player.getWorld().setWeatherDuration(0); // Set the weather to last indefinitely
-        player.getWorld().setThunderDuration(0); // Set the thundering to last indefinitely
-        player.getWorld().setStorm(weatherType == WeatherType.DOWNFALL);
+        player.getWorld().setStorm(!"clear".equals(weatherArg));
+        player.getWorld().setThundering(isThundering);
 
         player.sendMessage(ChatColor.GREEN + "Weather set to " + weatherArg + ".");
 

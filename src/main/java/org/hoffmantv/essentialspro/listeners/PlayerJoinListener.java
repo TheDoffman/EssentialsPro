@@ -1,13 +1,22 @@
 package org.hoffmantv.essentialspro.listeners;
 
-import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.hoffmantv.essentialspro.EssentialsPro;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class PlayerJoinListener implements Listener {
+
+    private JavaPlugin plugin;
+    private FileConfiguration config;
+
+    public PlayerJoinListener(JavaPlugin plugin) {
+        this.plugin = plugin;
+        this.config = plugin.getConfig();
+    }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -15,13 +24,12 @@ public class PlayerJoinListener implements Listener {
         String playerName = player.getName();
 
         // Get the custom join message from the config.yml or use the default message
-        String joinMessage = EssentialsPro.getInstance().getConfig().getString("join_message", "&aWelcome back, [PLAYER]! Enjoy your stay on the server!");
+        String joinMessage = config.getString("join_message", "&aWelcome back, [PLAYER]! Enjoy your stay on the server!");
 
         // Replace the [PLAYER] placeholder with the actual player name
         joinMessage = joinMessage.replace("[PLAYER]", playerName);
 
-        // Send the custom join message to the player
-        player.sendMessage(Component.text(joinMessage));
+        // Send the custom join message to all players with color codes
+        plugin.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&', joinMessage));
     }
 }
-

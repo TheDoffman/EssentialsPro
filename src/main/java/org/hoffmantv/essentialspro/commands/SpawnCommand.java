@@ -6,40 +6,57 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.hoffmantv.essentialspro.EssentialsPro;
 
-public class SpawnCommand implements CommandExecutor {
+public class SpawnCommand implements CommandExecutor, Listener {
+
+    private static final String PERMISSION_SPAWN = "essentialspro.spawn";
+    private static final String MSG_ONLY_PLAYERS = ChatColor.RED + "This command can only be used by players.";
+    private static final String MSG_NO_PERMISSION = ChatColor.RED + "You don't have permission to use this command.";
+    private static final String MSG_NO_SPAWN_SET = ChatColor.RED + "The spawn location is not set.";
+    private static final String MSG_WELCOME_SPAWN = ChatColor.GREEN + "Welcome back to the spawn!";
 
     private final EssentialsPro plugin;
 
     public SpawnCommand(EssentialsPro plugin) {
         this.plugin = plugin;
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!sender.hasPermission(PERMISSION_SPAWN)) {
+            sender.sendMessage(MSG_NO_PERMISSION);
+            return true;
+        }
+
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            sender.sendMessage(MSG_ONLY_PLAYERS);
             return true;
         }
 
         Player player = (Player) sender;
-
-        if (!player.hasPermission("essentialspro.spawn")) {
-            player.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
-            return true;
-        }
-
         Location spawnLocation = plugin.getSpawnLocation();
 
         if (spawnLocation == null) {
-            player.sendMessage(ChatColor.RED + "The spawn location is not set.");
+            player.sendMessage(MSG_NO_SPAWN_SET);
             return true;
         }
 
         player.teleport(spawnLocation);
-        player.sendMessage(ChatColor.GREEN + "Welcome back to the spawn!");
+        player.sendMessage(MSG_WELCOME_SPAWN);
 
         return true;
+    }
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        Location spawnLocation = plugin.getSpawnLocation();
+        if (spawnLocation != null) {
+            event.setRespawnLocation(spawnLocation);
+        }
     }
 }

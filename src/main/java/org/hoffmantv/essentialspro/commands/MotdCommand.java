@@ -30,18 +30,17 @@ public class MotdCommand implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
             // Display current MOTD
-            String motd = config.getString("motd.custom", config.getString("motd.default"));
-            motd = ChatColor.translateAlternateColorCodes('&', motd); // Translate color codes
+            String motd = getMotd();
             sender.sendMessage(ChatColor.GREEN + "Current MOTD: " + motd);
-            return true;
         } else {
             // Set custom MOTD
             String motd = ChatColor.translateAlternateColorCodes('&', String.join(" ", args)); // Translate color codes
             config.set("motd.custom", motd);
             plugin.saveConfig();
+            updateServerProperties(motd);
             sender.sendMessage(ChatColor.GREEN + "MOTD updated to: " + motd);
-            return true;
         }
+        return true;
     }
 
     private void updateServerProperties(String motd) {
@@ -54,8 +53,8 @@ public class MotdCommand implements CommandExecutor, Listener {
             e.printStackTrace();
         }
     }
+
     private String getMotd() {
-        FileConfiguration config = plugin.getConfig();
         String customMotd = config.getString("motd.custom", "").trim();
         if (!customMotd.isEmpty()) {
             return customMotd;
@@ -66,11 +65,7 @@ public class MotdCommand implements CommandExecutor, Listener {
 
     @EventHandler
     public void onServerListPing(ServerListPingEvent event) {
-        String motd = plugin.getConfig().getString("motd.custom", plugin.getConfig().getString("motd.default"));
-        motd = ChatColor.translateAlternateColorCodes('&', motd); // Translate color codes
-        event.setMotd(motd);
+        String motd = getMotd();
         event.setMotd(ChatColor.translateAlternateColorCodes('&', motd));
     }
-
-
 }

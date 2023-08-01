@@ -1,6 +1,5 @@
 package org.hoffmantv.essentialspro.commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,9 +9,7 @@ import org.hoffmantv.essentialspro.EssentialsPro;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class HelpCommand implements CommandExecutor {
 
@@ -78,4 +75,4 @@ public class HelpCommand implements CommandExecutor {
     }
 
     }
-}
+

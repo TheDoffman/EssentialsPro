@@ -10,6 +10,12 @@ import org.hoffmantv.essentialspro.EssentialsPro;
 
 public class TeleportCommand implements CommandExecutor {
 
+    private static final String ONLY_PLAYERS_ERROR = ChatColor.RED + "This command can only be used by players.";
+    private static final String PERMISSION_ERROR = ChatColor.RED + "You don't have permission to use this command.";
+    private static final String USAGE_ERROR = ChatColor.RED + "Usage: /tp <player>";
+    private static final String PLAYER_NOT_FOUND_ERROR = ChatColor.RED + "Player not found or not online.";
+    private static final String TELEPORT_SUCCESS = ChatColor.GREEN + "You have been teleported to ";
+
     private final EssentialsPro plugin;
 
     public TeleportCommand(EssentialsPro plugin) {
@@ -19,30 +25,30 @@ public class TeleportCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            sender.sendMessage(ONLY_PLAYERS_ERROR);
             return true;
         }
 
         Player player = (Player) sender;
 
         if (!player.hasPermission("essentialspro.teleport")) {
-            player.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
+            player.sendMessage(PERMISSION_ERROR);
             return true;
         }
 
         if (args.length == 0) {
-            player.sendMessage(ChatColor.RED + "Usage: /tp <player>");
+            player.sendMessage(USAGE_ERROR);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null || !target.isOnline()) {
-            player.sendMessage(ChatColor.RED + "Player not found or not online.");
+            player.sendMessage(PLAYER_NOT_FOUND_ERROR);
             return true;
         }
 
         player.teleport(target.getLocation());
-        player.sendMessage(ChatColor.GREEN + "You have been teleported to " + target.getName() + ".");
+        player.sendMessage(TELEPORT_SUCCESS + target.getName() + ".");
 
         return true;
     }

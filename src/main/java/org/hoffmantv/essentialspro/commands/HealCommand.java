@@ -25,7 +25,7 @@ public class HealCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if (!player.hasPermission("essentialspro.heal")) {
+        if (!player.hasPermission("ep.heal")) {
             player.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
             return true;
         }

@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.hoffmantv.essentialspro.EssentialsPro;
 
@@ -39,48 +40,58 @@ public class NicknameCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         if (args.length == 0) {
-            player.sendMessage(ChatColor.RED + "Usage: /nickname <nickname>");
-            return true;
+            removeNickname(player);
+        } else {
+            String nickname = ChatColor.translateAlternateColorCodes('&', args[0]);
+            setNickname(player, nickname);
         }
-
-        String nickname = ChatColor.translateAlternateColorCodes('&', args[0]);
-
-        // Check if the nickname is already taken
-        if (isNicknameTaken(nickname)) {
-            player.sendMessage(ChatColor.RED + "The nickname '" + nickname + "' is already taken. Please choose another one.");
-            return true;
-        }
-
-        // You can add additional checks here to ensure the nickname is valid and not offensive, etc.
-
-        // Update the nickname in the nicknames map
-        nicknames.put(player.getUniqueId(), nickname);
-
-        // Update the player's display name
-        player.setDisplayName(nickname);
-
-        // Save the nickname to the nicknames.yml file
-        saveNickname(player.getUniqueId(), nickname);
-
-        player.sendMessage(ChatColor.GREEN + "Your nickname has been set to: " + nickname);
 
         return true;
     }
 
     private boolean isNicknameTaken(String nickname) {
-        for (String existingNickname : nicknames.values()) {
-            if (existingNickname.equalsIgnoreCase(nickname)) {
-                return true;
-            }
+        return nicknames.containsValue(nickname);
+    }
+
+    private void removeNickname(Player player) {
+        UUID playerUUID = player.getUniqueId();
+        if (nicknames.containsKey(playerUUID)) {
+            nicknames.remove(playerUUID);
+            player.setDisplayName(player.getName());
+            nicknameConfig.set("nicknames." + playerUUID.toString(), null);
+            saveNicknameConfig();
+            player.sendMessage(ChatColor.GREEN + "Your nickname has been removed.");
+        } else {
+            player.sendMessage(ChatColor.RED + "You don't have a nickname set.");
         }
-        return false;
+    }
+
+    private void setNickname(Player player, String nickname) {
+        if (isNicknameTaken(nickname)) {
+            player.sendMessage(ChatColor.RED + "The nickname '" + nickname + "' is already taken. Please choose another one.");
+            return;
+        }
+
+        // Update the nickname in the nicknames map and save it
+        UUID playerUUID = player.getUniqueId();
+        nicknames.put(playerUUID, nickname);
+        nicknameConfig.set("nicknames." + playerUUID.toString(), nickname);
+        saveNicknameConfig();
+
+        // Update the player's display name
+        player.setDisplayName(nickname);
+        player.sendMessage(ChatColor.GREEN + "Your nickname has been set to: " + nickname);
     }
 
     private void reloadNicknameConfig() {
         if (!nicknameFile.exists()) {
-            plugin.saveResource("nicknames.yml", false);
+            try {
+                nicknameFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        nicknameConfig = plugin.getConfig();
+        nicknameConfig = YamlConfiguration.loadConfiguration(nicknameFile);
         loadNicknames();
     }
 
@@ -95,8 +106,7 @@ public class NicknameCommand implements CommandExecutor {
         }
     }
 
-    private void saveNickname(UUID playerUUID, String nickname) {
-        nicknameConfig.set("nicknames." + playerUUID.toString(), nickname);
+    private void saveNicknameConfig() {
         try {
             nicknameConfig.save(nicknameFile);
         } catch (IOException e) {

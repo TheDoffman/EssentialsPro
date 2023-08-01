@@ -9,6 +9,12 @@ import org.hoffmantv.essentialspro.EssentialsPro;
 
 public class TimeCommand implements CommandExecutor {
 
+    private static final String ONLY_PLAYERS_ERROR = ChatColor.RED + "This command can only be used by players.";
+    private static final String PERMISSION_ERROR = ChatColor.RED + "You don't have permission to use this command.";
+    private static final String USAGE_ERROR = ChatColor.RED + "Usage: /time <day|night|morning|evening>";
+    private static final String INVALID_TIME_ERROR = ChatColor.RED + "Invalid time argument. Use: day, night, morning, or evening.";
+    private static final String TIME_SUCCESS = ChatColor.GREEN + "Time set to ";
+
     private final EssentialsPro plugin;
 
     public TimeCommand(EssentialsPro plugin) {
@@ -18,19 +24,19 @@ public class TimeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            sender.sendMessage(ONLY_PLAYERS_ERROR);
             return true;
         }
 
         Player player = (Player) sender;
 
         if (!player.hasPermission("essentialspro.time")) {
-            player.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
+            player.sendMessage(PERMISSION_ERROR);
             return true;
         }
 
         if (args.length != 1) {
-            player.sendMessage(ChatColor.RED + "Usage: /time <day|night|morning|evening>");
+            player.sendMessage(USAGE_ERROR);
             return true;
         }
 
@@ -51,12 +57,12 @@ public class TimeCommand implements CommandExecutor {
                 time = 11000; // Set to evening (11000 ticks)
                 break;
             default:
-                player.sendMessage(ChatColor.RED + "Invalid time argument. Use: day, night, morning, or evening.");
+                player.sendMessage(INVALID_TIME_ERROR);
                 return true;
         }
 
         player.getWorld().setTime(time);
-        player.sendMessage(ChatColor.GREEN + "Time set to " + timeArg + ".");
+        player.sendMessage(TIME_SUCCESS + timeArg + ".");
 
         return true;
     }
