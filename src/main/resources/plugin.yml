@@ -6,6 +6,10 @@ description: A Minecraft Essentials plugin.
 api-version: 1.20
 
 commands:
+  firework:
+    description: Launches a firework at the player's location.
+    usage: /<command>
+    permission: essentialspro.firework
   kick:
     description: Kick a player from the server.
     usage: /kick <player> [reason]
@@ -128,3 +132,4 @@ permissions:
       essentialspro.freeze: true
       essentialspro.freeze.others: true
       essentialspro.magiccarpet: true
+      essentialspro.firework: true

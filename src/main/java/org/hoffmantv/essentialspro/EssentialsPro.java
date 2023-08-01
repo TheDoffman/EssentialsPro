@@ -180,6 +180,7 @@ public class EssentialsPro extends JavaPlugin {
             getCommand("message").setExecutor(new MessageCommand());
             getCommand("ban").setExecutor(new BanCommand(banManager));
             getCommand("unban").setExecutor(new UnbanCommand(banManager));
+            getCommand("firework").setExecutor(new FireworkCommand());
 
         }
     }
