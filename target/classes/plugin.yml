@@ -29,7 +29,7 @@ commands:
     description: Change your game mode.
     usage: /gamemode <1|2|3|4>
     permission: essentialspro.gamemode
-    aliases: [gm]
+    aliases: [ gm ]
   time:
     description: Change the time of day in the game world.
     usage: /<command> <day|night|morning|evening>
@@ -59,11 +59,7 @@ commands:
     description: Show a list of online players.
     usage: /<command>
     permission: essentialspro.listplayers
-    aliases: [lp, list]
-  nickname:
-    description: Change your display name.
-    usage: /<command> <nickname>
-    permission: essentialspro.nickname
+    aliases: [ lp, list ]
   motd:
     description: Change the MOTD of the server
     usage: /motd <message>
@@ -72,7 +68,7 @@ commands:
     description: Reload the EssentialsPro configuration
     usage: /reloadessentials
     permission: essentialspro.reload
-    aliases: [epr]
+    aliases: [ epr ]
   smite:
     description: Smite a player with lightning
     usage: /smite <player>
@@ -103,10 +99,6 @@ commands:
     usage: /<command> <player>
     permission: essentialspro.freeze
     permission-message: You don't have permission to use this command.
-  magiccarpet:
-    description: Summon a magic carpet for flying.
-    usage: /magiccarpet
-    permission: essentialspro.magiccarpet
 permissions:
   essentialspro.*:
     description: Gives access to all EssentialsPro commands.

@@ -25,6 +25,7 @@ org/hoffmantv/essentialspro/managers/FreezeManager.class
 org/hoffmantv/essentialspro/commands/TimeCommand.class
 org/hoffmantv/essentialspro/commands/KickCommand.class
 org/hoffmantv/essentialspro/commands/GameModeCommand.class
+org/hoffmantv/essentialspro/listeners/FreezeListener.class
 org/hoffmantv/essentialspro/commands/ListPlayersCommand.class
 org/hoffmantv/essentialspro/commands/ReloadCommand.class
 org/hoffmantv/essentialspro/commands/SmiteCommand.class

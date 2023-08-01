@@ -3,6 +3,8 @@ package org.hoffmantv.essentialspro;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -10,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.hoffmantv.essentialspro.commands.*;
 import org.hoffmantv.essentialspro.events.ColoredSignsEvent;
 import org.hoffmantv.essentialspro.listeners.ChatSpamPrevention;
+import org.hoffmantv.essentialspro.listeners.FreezeListener;
 import org.hoffmantv.essentialspro.listeners.PlayerJoinListener;
 import org.hoffmantv.essentialspro.managers.BanManager;
 import org.hoffmantv.essentialspro.managers.FreezeManager;
@@ -22,18 +25,18 @@ public class EssentialsPro extends JavaPlugin {
     private static EssentialsPro instance;
     private String pluginVersion;
     private Location spawnLocation;
-    private FileConfiguration nicknamesConfig;
     private BanManager banManager;
     private FreezeManager freezeManager;
 
+    private File nicknamesFile;
 
-    private int chatDelay; // Store the chatDelay value
 
     // Plugin enable logic
     @Override
     public void onEnable() {
         instance = this;
         banManager = new BanManager();
+        freezeManager = new FreezeManager();
 
         int pluginId = 2215; // <-- Replace with the id of your plugin!
         Metrics metrics = new Metrics(this, pluginId);
@@ -61,8 +64,6 @@ public class EssentialsPro extends JavaPlugin {
         // Load plugin version and spawn location
         loadPluginVersion();
         loadSpawnLocation();
-        // Load the chat delay from the configuration
-        loadChatDelay();
 
         // Display a message when the plugin is enabled
         sendColoredMessage(ChatColor.GREEN + "EssentialsPro v" + pluginVersion + " has been enabled!");
@@ -70,21 +71,8 @@ public class EssentialsPro extends JavaPlugin {
         // Save default config if it doesn't exist
         saveDefaultConfig();
 
-        // Load nicknames.yml
-        nicknamesConfig = new YamlConfiguration();
-        File nicknamesFile = new File(getDataFolder(), "nicknames.yml");
-        if (!nicknamesFile.exists()) {
-            saveResource("nicknames.yml", false);
-        }
-        try {
-            nicknamesConfig.load(nicknamesFile);
-        } catch (IOException | org.bukkit.configuration.InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-
         // Register commands and listeners
         registerCommands();
-        getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
 
         // Set the default MOTD in the config if it doesn't exist
         FileConfiguration config = getConfig();
@@ -92,11 +80,19 @@ public class EssentialsPro extends JavaPlugin {
             config.set("motd.default", "&a[Welcome to &eOur &fMinecraft &bServer!&a]");
             saveConfig();
         }
+        PluginCommand freezeCommand = this.getCommand("freeze");
+        if (freezeCommand != null) {
+            freezeCommand.setExecutor(new FreezeCommand(freezeManager));
+        } else {
+            getLogger().severe("Failed to get freeze command. Make sure it's declared in your plugin.yml file.");
+        }
 
-        // Initialize FreezeManager
-        freezeManager = new FreezeManager();
+        // Register the event listener
+        getServer().getPluginManager().registerEvents(new FreezeListener(freezeManager), this);
+
 
     }
+
 
     // Plugin disable logic
     @Override
@@ -107,13 +103,6 @@ public class EssentialsPro extends JavaPlugin {
         // Save the spawn location to the config
         saveSpawnLocation();
 
-        // Save nicknames.yml
-        File nicknamesFile = new File(getDataFolder(), "nicknames.yml");
-        try {
-            nicknamesConfig.save(nicknamesFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     // Load the plugin version from the plugin description
@@ -159,64 +148,39 @@ public class EssentialsPro extends JavaPlugin {
         return banManager;
     }
 
-    // Get the nicknames config
-    public FileConfiguration getNicknamesConfig() {
-        return nicknamesConfig;
-    }
+    private void createNicknamesConfig() {
+        nicknamesFile = new File(getDataFolder(), "nickname.yml");
+        if (!nicknamesFile.exists()) {
+            nicknamesFile.getParentFile().mkdirs();
+            saveResource("nickname.yml", false);
+        }
+        }
 
-    // Save the nicknames config to file
-    public void saveNicknamesConfig() {
-        File nicknamesFile = new File(getDataFolder(), "nicknames.yml");
-        try {
-            nicknamesConfig.save(nicknamesFile);
-        } catch (IOException e) {
-            e.printStackTrace();
+        // Register all commands and their executors
+// Register all commands and their executors
+        private void registerCommands () {
+            getCommand("kick").setExecutor(new KickCommand());
+            getCommand("broadcast").setExecutor(new BroadcastCommand());
+            getCommand("help").setExecutor(new HelpCommand(this));
+            getCommand("spawn").setExecutor(new SpawnCommand(this));
+            getCommand("setspawn").setExecutor(new SetSpawnCommand(this));
+            getCommand("gamemode").setExecutor(new GameModeCommand(this));
+            getCommand("time").setExecutor(new TimeCommand(this));
+            getCommand("weather").setExecutor(new WeatherCommand(this));
+            getCommand("fly").setExecutor(new FlyCommand(this));
+            getCommand("heal").setExecutor(new HealCommand(this));
+            getCommand("feed").setExecutor(new FeedCommand(this));
+            getCommand("tp").setExecutor(new TeleportCommand(this));
+            getCommand("listplayers").setExecutor(new ListPlayersCommand());
+            getCommand("motd").setExecutor(new MotdCommand(this));
+            getCommand("reloadessentials").setExecutor(new ReloadCommand(this));
+            getCommand("smite").setExecutor(new SmiteCommand());
+            getCommand("clearchat").setExecutor(new ClearChatCommand());
+            getCommand("inventorysee").setExecutor(new InventorySeeCommand());
+            getCommand("message").setExecutor(new MessageCommand());
+            getCommand("ban").setExecutor(new BanCommand(banManager));
+            getCommand("unban").setExecutor(new UnbanCommand(banManager));
+
         }
     }
 
-    // Provide a static method to access the plugin instance
-    public static EssentialsPro getInstance() {
-        return instance;
-    }
-
-    private void loadChatDelay() {
-        FileConfiguration config = getConfig();
-        chatDelay = config.getInt("chatDelay", 3); // Default value is 3 seconds
-        config.set("chatDelay", chatDelay);
-        saveConfig();
-    }
-
-    public int getChatDelay() {
-        return chatDelay;
-    }
-
-    // Register all commands and their executors
-// Register all commands and their executors
-    private void registerCommands() {
-        getCommand("kick").setExecutor(new KickCommand());
-        getCommand("broadcast").setExecutor(new BroadcastCommand());
-        getCommand("help").setExecutor(new HelpCommand(this));
-        getCommand("spawn").setExecutor(new SpawnCommand(this));
-        getCommand("setspawn").setExecutor(new SetSpawnCommand(this));
-        getCommand("gamemode").setExecutor(new GameModeCommand(this));
-        getCommand("time").setExecutor(new TimeCommand(this));
-        getCommand("weather").setExecutor(new WeatherCommand(this));
-        getCommand("fly").setExecutor(new FlyCommand(this));
-        getCommand("heal").setExecutor(new HealCommand(this));
-        getCommand("feed").setExecutor(new FeedCommand(this));
-        getCommand("tp").setExecutor(new TeleportCommand(this));
-        getCommand("listplayers").setExecutor(new ListPlayersCommand());
-        getCommand("nickname").setExecutor(new NicknameCommand(this));
-        getCommand("motd").setExecutor(new MotdCommand(this));
-        getCommand("reloadessentials").setExecutor(new ReloadCommand(this));
-        getCommand("smite").setExecutor(new SmiteCommand());
-        getCommand("clearchat").setExecutor(new ClearChatCommand());
-        getCommand("inventorysee").setExecutor(new InventorySeeCommand());
-        getCommand("message").setExecutor(new MessageCommand());
-        getCommand("ban").setExecutor(new BanCommand(banManager));
-        getCommand("unban").setExecutor(new UnbanCommand(banManager));
-        getCommand("freeze").setExecutor(new FreezeCommand(freezeManager));
-
-    }
-
-}

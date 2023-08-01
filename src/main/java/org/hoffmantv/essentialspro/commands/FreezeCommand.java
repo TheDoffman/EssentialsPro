@@ -18,8 +18,8 @@ public class FreezeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("essentialspro.freeze")) {
-            sender.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
             return true;
         }
 
@@ -28,16 +28,7 @@ public class FreezeCommand implements CommandExecutor {
             return true;
         }
 
-        Player target;
-        if (sender instanceof Player && args[0].equalsIgnoreCase("self")) {
-            target = (Player) sender;
-        } else {
-            if (!sender.hasPermission("essentialspro.freeze.others")) {
-                sender.sendMessage(ChatColor.RED + "You don't have permission to freeze other players.");
-                return true;
-            }
-            target = Bukkit.getServer().getPlayer(args[0]);
-        }
+        Player target = Bukkit.getPlayer(args[0]);
 
         if (target == null) {
             sender.sendMessage(ChatColor.RED + "Player not found.");
@@ -49,14 +40,10 @@ public class FreezeCommand implements CommandExecutor {
 
         if (isFrozen) {
             target.sendMessage(ChatColor.GREEN + "You have been unfrozen.");
-            sender.sendMessage(target.equals(sender)
-                    ? ChatColor.GREEN + "You have unfrozen yourself."
-                    : ChatColor.GREEN + "Player " + target.getName() + " has been unfrozen.");
+            sender.sendMessage(ChatColor.GREEN + "Player " + target.getName() + " has been unfrozen.");
         } else {
             target.sendMessage(ChatColor.RED + "You have been frozen.");
-            sender.sendMessage(target.equals(sender)
-                    ? ChatColor.GREEN + "You have frozen yourself."
-                    : ChatColor.GREEN + "Player " + target.getName() + " has been frozen.");
+            sender.sendMessage(ChatColor.GREEN + "Player " + target.getName() + " has been frozen.");
         }
 
         return true;

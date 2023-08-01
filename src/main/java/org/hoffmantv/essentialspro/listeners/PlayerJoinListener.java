@@ -9,11 +9,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class PlayerJoinListener implements Listener {
-
     private JavaPlugin plugin;
     private FileConfiguration config;
 
-    public PlayerJoinListener(JavaPlugin plugin) {
+    public PlayerJoinListener( JavaPlugin plugin) {
         this.plugin = plugin;
         this.config = plugin.getConfig();
     }
