@@ -25,8 +25,8 @@ public class NicknameCommand implements CommandExecutor {
 
     public NicknameCommand(EssentialsPro plugin) {
         this.plugin = plugin;
-        this.nicknames = new HashMap<>();
-        this.nicknameFile = new File(plugin.getDataFolder(), "nicknames.yml");
+        nicknames = new HashMap<>();
+        nicknameFile = new File(plugin.getDataFolder(), "nicknames.yml");
         reloadNicknameConfig();
     }
 
@@ -38,27 +38,23 @@ public class NicknameCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
+        String nickname = args.length > 0 ? ChatColor.translateAlternateColorCodes('&', args[0]) : null;
 
-        if (args.length == 0) {
+        if (nickname == null) {
             removeNickname(player);
         } else {
-            String nickname = ChatColor.translateAlternateColorCodes('&', args[0]);
             setNickname(player, nickname);
         }
 
         return true;
     }
 
-    private boolean isNicknameTaken(String nickname) {
-        return nicknames.containsValue(nickname);
-    }
-
     private void removeNickname(Player player) {
-        UUID playerUUID = player.getUniqueId();
-        if (nicknames.containsKey(playerUUID)) {
-            nicknames.remove(playerUUID);
+        UUID playerId = player.getUniqueId();
+        if (nicknames.containsKey(playerId)) {
+            nicknames.remove(playerId);
             player.setDisplayName(player.getName());
-            nicknameConfig.set("nicknames." + playerUUID.toString(), null);
+            nicknameConfig.set(String.format("nicknames.%s", playerId), null);
             saveNicknameConfig();
             player.sendMessage(ChatColor.GREEN + "Your nickname has been removed.");
         } else {
@@ -67,41 +63,44 @@ public class NicknameCommand implements CommandExecutor {
     }
 
     private void setNickname(Player player, String nickname) {
-        if (isNicknameTaken(nickname)) {
-            player.sendMessage(ChatColor.RED + "The nickname '" + nickname + "' is already taken. Please choose another one.");
+        if (nicknames.containsValue(nickname)) {
+            player.sendMessage(ChatColor.RED + String.format("The nickname '%s' is already taken. Please choose another one.", nickname));
             return;
         }
 
-        // Update the nickname in the nicknames map and save it
-        UUID playerUUID = player.getUniqueId();
-        nicknames.put(playerUUID, nickname);
-        nicknameConfig.set("nicknames." + playerUUID.toString(), nickname);
+        UUID playerId = player.getUniqueId();
+        nicknames.put(playerId, nickname);
+        nicknameConfig.set(String.format("nicknames.%s", playerId), nickname);
         saveNicknameConfig();
 
-        // Update the player's display name
         player.setDisplayName(nickname);
-        player.sendMessage(ChatColor.GREEN + "Your nickname has been set to: " + nickname);
+        player.sendMessage(ChatColor.GREEN + String.format("Your nickname has been set to: %s", nickname));
     }
 
     private void reloadNicknameConfig() {
         if (!nicknameFile.exists()) {
-            try {
-                nicknameFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            createNewNicknameFile();
         }
+
         nicknameConfig = YamlConfiguration.loadConfiguration(nicknameFile);
         loadNicknames();
+    }
+
+    private void createNewNicknameFile() {
+        try {
+            nicknameFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadNicknames() {
         ConfigurationSection section = nicknameConfig.getConfigurationSection("nicknames");
         if (section != null) {
             for (String key : section.getKeys(false)) {
-                UUID playerUUID = UUID.fromString(key);
+                UUID playerId = UUID.fromString(key);
                 String nickname = section.getString(key);
-                nicknames.put(playerUUID, nickname);
+                nicknames.put(playerId, nickname);
             }
         }
     }

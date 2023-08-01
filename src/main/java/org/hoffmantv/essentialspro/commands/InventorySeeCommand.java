@@ -30,21 +30,28 @@ public class InventorySeeCommand implements CommandExecutor {
             return true;
         }
 
-        // Create a copy of the target player's inventory
-        Inventory targetInventory = Bukkit.createInventory(null, 45, ChatColor.DARK_GRAY + target.getName() + "'s Inventory");
+        // Clone the target player's inventory
+        Inventory targetInventory = clonePlayerInventory(target);
 
-        ItemStack[] contents = target.getInventory().getContents();
-        int i = 0;
-        for (ItemStack item : contents) {
-            if (item != null) {
-                targetInventory.setItem(i, item.clone());
-            }
-            i++;
-        }
-
-        // Open the copied inventory for the sender
+        // Open the cloned inventory for the sender
         ((Player) sender).openInventory(targetInventory);
 
         return true;
+    }
+
+    private Inventory clonePlayerInventory(Player target) {
+        // Create an inventory with the target player's name
+        Inventory targetInventory = Bukkit.createInventory(null, 45, ChatColor.DARK_GRAY + target.getName() + "'s Inventory");
+
+        // Clone the content from the target's inventory to the created inventory
+        ItemStack[] contents = target.getInventory().getContents();
+        for (int i = 0; i < contents.length; i++) {
+            ItemStack item = contents[i];
+            if (item != null) {
+                targetInventory.setItem(i, item.clone());
+            }
+        }
+
+        return targetInventory;
     }
 }

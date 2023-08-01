@@ -39,9 +39,10 @@ commands:
     usage: /<command> <clear|rain|storm>
     permission: essentialspro.weather   # Add the permission node here
   fly:
-    description: Toggle flight mode for the player.
-    usage: /<command>
-    permission: essentialspro.fly   # Add the permission node here
+    description: Toggles flight mode for the player or others.
+    usage: /<command> [player]
+    permission: essentialspro.fly
+    permission-message: You don't have permission to use this command.
   heal:
     description: Heal yourself or another player.
     usage: /<command> [player]
@@ -89,18 +90,49 @@ commands:
     usage: /message <player> <message>
     permission: essentialspro.message
   ban:
-    description: Ban a player.
-    usage: /ban <player> <reason> <duration>
+    description: Bans a player from the server.
+    usage: /<command> <player> <reason> [duration]
     permission: essentialspro.ban
+    permission-message: You don't have permission to use this command.
   unban:
     description: Unban a player.
     usage: /unban <player>
     permission: essentialspro.unban
   freeze:
-    description: Freeze a player from moving
-    usage: /freeze <player>
+    description: Freezes or unfreezes a player.
+    usage: /<command> <player>
     permission: essentialspro.freeze
+    permission-message: You don't have permission to use this command.
   magiccarpet:
     description: Summon a magic carpet for flying.
     usage: /magiccarpet
     permission: essentialspro.magiccarpet
+permissions:
+  essentialspro.*:
+    description: Gives access to all EssentialsPro commands.
+    children:
+      essentialspro.kick: true
+      essentialspro.broadcast: true
+      essentialspro.spawn: true
+      essentialspro.setspawn: true
+      essentialspro.gamemode: true
+      essentialspro.time: true
+      essentialspro.weather: true
+      essentialspro.fly: true
+      essentialspro.fly.others: true
+      essentialspro.heal: true
+      essentialspro.feed: true
+      essentialspro.teleport: true
+      essentialspro.listplayers: true
+      essentialspro.nickname: true
+      essentialspro.motd: true
+      essentialspro.reload: true
+      essentialspro.smite: true
+      essentialspro.clearchat: true
+      essentialspro.inventorysee: true
+      essentialspro.message: true
+      essentialspro.ban: true
+      essentialspro.unban: true
+      essentialspro.freeze: true
+      essentialspro.freeze.others: true
+      essentialspro.magiccarpet: true

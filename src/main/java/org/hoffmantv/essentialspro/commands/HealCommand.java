@@ -30,34 +30,32 @@ public class HealCommand implements CommandExecutor {
             return true;
         }
 
+        Player target = player;
+
         // Check if the player wants to heal another player
         if (args.length > 0 && player.hasPermission("essentialspro.heal.others")) {
-            Player target = Bukkit.getPlayer(args[0]);
+            target = Bukkit.getPlayer(args[0]);
             if (target == null || !target.isOnline()) {
                 player.sendMessage(ChatColor.RED + "Player not found or not online.");
                 return true;
             }
-
-            // Heal the target player
-            target.setHealth(target.getMaxHealth());
-            target.setFoodLevel(20);
-            target.setSaturation(5.0f);
-            target.setFireTicks(0);
-            target.getActivePotionEffects().forEach(potionEffect -> target.removePotionEffect(potionEffect.getType()));
-
             player.sendMessage(ChatColor.GREEN + "You have healed " + target.getName() + ".");
             target.sendMessage(ChatColor.GREEN + "You have been healed by " + player.getName() + ".");
         } else {
-            // Heal the command sender (player)
-            player.setHealth(player.getMaxHealth());
-            player.setFoodLevel(20);
-            player.setSaturation(5.0f);
-            player.setFireTicks(0);
-            player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
-
             player.sendMessage(ChatColor.GREEN + "You have healed yourself.");
         }
 
+        // Heal the target player
+        healPlayer(target);
+
         return true;
+    }
+
+    private void healPlayer(Player player) {
+        player.setHealth(player.getMaxHealth());
+        player.setFoodLevel(20);
+        player.setSaturation(5.0f);
+        player.setFireTicks(0);
+        player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
     }
 }

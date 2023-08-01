@@ -37,6 +37,5 @@ org/hoffmantv/essentialspro/commands/SpawnCommand.class
 org/hoffmantv/essentialspro/commands/UnbanCommand.class
 org/hoffmantv/essentialspro/Metrics$AdvancedBarChart.class
 org/hoffmantv/essentialspro/commands/FreezeCommand.class
-org/hoffmantv/essentialspro/commands/MagicCarpetCommand.class
 org/hoffmantv/essentialspro/commands/BanCommand.class
 org/hoffmantv/essentialspro/commands/SetSpawnCommand.class
