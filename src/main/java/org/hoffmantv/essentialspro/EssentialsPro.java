@@ -14,6 +14,7 @@ import org.hoffmantv.essentialspro.events.ColoredSignsEvent;
 import org.hoffmantv.essentialspro.listeners.ChatSpamPrevention;
 import org.hoffmantv.essentialspro.listeners.FreezeListener;
 import org.hoffmantv.essentialspro.listeners.PlayerJoinListener;
+import org.hoffmantv.essentialspro.listeners.SignListener;
 import org.hoffmantv.essentialspro.managers.BanManager;
 import org.hoffmantv.essentialspro.managers.FreezeManager;
 
@@ -87,8 +88,9 @@ public class EssentialsPro extends JavaPlugin {
             getLogger().severe("Failed to get freeze command. Make sure it's declared in your plugin.yml file.");
         }
 
-        // Register the event listener
+        // Register the event listeners
         getServer().getPluginManager().registerEvents(new FreezeListener(freezeManager), this);
+        getServer().getPluginManager().registerEvents(new SignListener(this), this);
 
 
     }
@@ -181,6 +183,11 @@ public class EssentialsPro extends JavaPlugin {
             getCommand("ban").setExecutor(new BanCommand(banManager));
             getCommand("unban").setExecutor(new UnbanCommand(banManager));
             getCommand("firework").setExecutor(new FireworkCommand());
+            getCommand("sethome").setExecutor(new HomeCommand(this));
+            getCommand("home").setExecutor(new HomeCommand(this));
+            getCommand("delhome").setExecutor(new HomeCommand(this));
+            getCommand("homes").setExecutor(new HomeCommand(this));
+
 
         }
     }
