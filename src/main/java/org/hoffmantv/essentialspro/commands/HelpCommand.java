@@ -22,7 +22,7 @@ public class HelpCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            sender.sendMessage(ChatColor.RED + "✖ This command can only be used by players.");
             return true;
         }
 
@@ -43,7 +43,7 @@ public class HelpCommand implements CommandExecutor {
         if (args.length > 0 && args[0].matches("\\d+")) {
             int page = Integer.parseInt(args[0]);
             if (page <= 0 || page > totalPages) {
-                player.sendMessage(ChatColor.RED + "Invalid page number. Please enter a number between 1 and " + totalPages + ".");
+                player.sendMessage(ChatColor.RED + "✖ Invalid page number. Please enter a number between 1 and " + totalPages + ".");
                 return true;
             }
             displayCommands(player, allowedCommands, page, pageSize);
@@ -73,6 +73,4 @@ public class HelpCommand implements CommandExecutor {
         }
         return "";
     }
-
-    }
-
+}

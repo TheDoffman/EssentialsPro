@@ -11,20 +11,25 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class prevents spamming in chat.
+ */
 public class ChatSpamPrevention implements Listener {
 
-    private JavaPlugin plugin;
-    private FileConfiguration config;
-    private Map<Player, Long> lastChatTimes;
+    private final JavaPlugin plugin;
+    private final FileConfiguration config;
+    private final Map<Player, Long> lastChatTimes = new HashMap<>();
     private int chatDelay; // Time in seconds between chat messages
 
     public ChatSpamPrevention(JavaPlugin plugin) {
         this.plugin = plugin;
         this.config = plugin.getConfig();
-        this.lastChatTimes = new HashMap<>();
         loadConfig();
     }
 
+    /**
+     * This method loads configuration from the config file.
+     */
     private void loadConfig() {
         if (!config.contains("chatDelay")) {
             config.set("chatDelay", 2); // Default value of 2 seconds
@@ -48,6 +53,9 @@ public class ChatSpamPrevention implements Listener {
         }
     }
 
+    /**
+     * This method sets the delay between chat messages.
+     */
     public void setChatDelay(int chatDelay) {
         this.chatDelay = chatDelay;
     }

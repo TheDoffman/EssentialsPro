@@ -13,13 +13,13 @@ public class KickCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Check if the command sender has permission to use the kick command
         if (!sender.hasPermission("essentialspro.kick")) {
-            sender.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
+            sender.sendMessage(ChatColor.RED + "✖ You don't have permission to use this command.");
             return true;
         }
 
         // Check if the command is used correctly
         if (args.length < 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /kick <player> [reason]");
+            sender.sendMessage(ChatColor.RED + "✖ Usage: /kick <player> [reason]");
             return true;
         }
 
@@ -28,7 +28,7 @@ public class KickCommand implements CommandExecutor {
 
         // Check if the target player is online
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "Player not found or not online.");
+            sender.sendMessage(ChatColor.RED + "✖ Player not found or not online.");
             return true;
         }
 

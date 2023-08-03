@@ -19,19 +19,19 @@ public class FreezeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            sender.sendMessage(ChatColor.RED + "\u2716 This command can only be used by players."); // Cross symbol for error
             return true;
         }
 
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /freeze <player>");
+            sender.sendMessage(ChatColor.RED + "\u2716 Usage: /freeze <player>"); // Cross symbol for error
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
 
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "Player not found.");
+            sender.sendMessage(ChatColor.RED + "\u2716 Player not found."); // Cross symbol for error
             return true;
         }
 
@@ -39,11 +39,11 @@ public class FreezeCommand implements CommandExecutor {
         freezeManager.setPlayerFrozen(target, !isFrozen);
 
         if (isFrozen) {
-            target.sendMessage(ChatColor.GREEN + "You have been unfrozen.");
-            sender.sendMessage(ChatColor.GREEN + "Player " + target.getName() + " has been unfrozen.");
+            target.sendMessage(ChatColor.GREEN + "\u2714 You have been unfrozen."); // Checkmark symbol for success
+            sender.sendMessage(ChatColor.GREEN + "\u2714 Player " + target.getName() + " has been unfrozen."); // Checkmark symbol for success
         } else {
-            target.sendMessage(ChatColor.RED + "You have been frozen.");
-            sender.sendMessage(ChatColor.GREEN + "Player " + target.getName() + " has been frozen.");
+            target.sendMessage(ChatColor.RED + "\u2716 You have been frozen."); // Cross symbol for error
+            sender.sendMessage(ChatColor.GREEN + "\u2714 Player " + target.getName() + " has been frozen."); // Checkmark symbol for success
         }
 
         return true;

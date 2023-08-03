@@ -19,14 +19,14 @@ public class HealCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            sender.sendMessage(ChatColor.RED + "✖ This command can only be used by players.");
             return true;
         }
 
         Player player = (Player) sender;
 
         if (!player.hasPermission("ep.heal")) {
-            player.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
+            player.sendMessage(ChatColor.RED + "✖ You don't have permission to use this command.");
             return true;
         }
 
@@ -36,13 +36,13 @@ public class HealCommand implements CommandExecutor {
         if (args.length > 0 && player.hasPermission("essentialspro.heal.others")) {
             target = Bukkit.getPlayer(args[0]);
             if (target == null || !target.isOnline()) {
-                player.sendMessage(ChatColor.RED + "Player not found or not online.");
+                player.sendMessage(ChatColor.RED + "✖ Player not found or not online.");
                 return true;
             }
-            player.sendMessage(ChatColor.GREEN + "You have healed " + target.getName() + ".");
-            target.sendMessage(ChatColor.GREEN + "You have been healed by " + player.getName() + ".");
+            player.sendMessage(ChatColor.GREEN + "✔ You have healed " + target.getName() + ".");
+            target.sendMessage(ChatColor.GREEN + "✔ You have been healed by " + player.getName() + ".");
         } else {
-            player.sendMessage(ChatColor.GREEN + "You have healed yourself.");
+            player.sendMessage(ChatColor.GREEN + "✔ You have healed yourself.");
         }
 
         // Heal the target player

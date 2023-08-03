@@ -4,22 +4,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.hoffmantv.essentialspro.commands.*;
 import org.hoffmantv.essentialspro.events.ColoredSignsEvent;
 import org.hoffmantv.essentialspro.listeners.ChatSpamPrevention;
 import org.hoffmantv.essentialspro.listeners.FreezeListener;
-import org.hoffmantv.essentialspro.listeners.PlayerJoinListener;
 import org.hoffmantv.essentialspro.listeners.SignListener;
 import org.hoffmantv.essentialspro.managers.BanManager;
 import org.hoffmantv.essentialspro.managers.FreezeManager;
+import org.hoffmantv.essentialspro.managers.TeleportRequestManager;
 
 import java.io.File;
-import java.io.IOException;
 
 public class EssentialsPro extends JavaPlugin {
 
@@ -28,8 +25,8 @@ public class EssentialsPro extends JavaPlugin {
     private Location spawnLocation;
     private BanManager banManager;
     private FreezeManager freezeManager;
-
     private File nicknamesFile;
+    private TeleportRequestManager teleportRequestManager;
 
 
     // Plugin enable logic
@@ -38,6 +35,7 @@ public class EssentialsPro extends JavaPlugin {
         instance = this;
         banManager = new BanManager();
         freezeManager = new FreezeManager();
+        this.teleportRequestManager = new TeleportRequestManager();
 
         int pluginId = 2215; // <-- Replace with the id of your plugin!
         Metrics metrics = new Metrics(this, pluginId);
@@ -162,7 +160,7 @@ public class EssentialsPro extends JavaPlugin {
 // Register all commands and their executors
         private void registerCommands () {
             getCommand("kick").setExecutor(new KickCommand());
-            getCommand("broadcast").setExecutor(new BroadcastCommand());
+            getCommand("broadcast").setExecutor(new BroadcastCommand(this));
             getCommand("help").setExecutor(new HelpCommand(this));
             getCommand("spawn").setExecutor(new SpawnCommand(this));
             getCommand("setspawn").setExecutor(new SetSpawnCommand(this));
@@ -187,6 +185,11 @@ public class EssentialsPro extends JavaPlugin {
             getCommand("home").setExecutor(new HomeCommand(this));
             getCommand("delhome").setExecutor(new HomeCommand(this));
             getCommand("homes").setExecutor(new HomeCommand(this));
+            getCommand("repair").setExecutor(new RepairCommand());
+            getCommand("repair").setExecutor(new RepairCommand());
+            getCommand("tpa").setExecutor(new TpaCommand(teleportRequestManager));
+            getCommand("tpaccept").setExecutor(new TpAcceptCommand(teleportRequestManager));
+            getCommand("tpdeny").setExecutor(new TpDenyCommand(teleportRequestManager));
 
 
         }

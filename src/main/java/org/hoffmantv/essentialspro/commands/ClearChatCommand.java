@@ -12,7 +12,7 @@ public class ClearChatCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("essentialspro.clearchat")) {
-            sender.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
+            sender.sendMessage(ChatColor.RED + "\u274C You don't have permission to use this command.");
             return true;
         }
 
@@ -23,7 +23,7 @@ public class ClearChatCommand implements CommandExecutor {
         }
 
         // Notify the command sender that the chat has been cleared
-        sender.sendMessage(ChatColor.GREEN + "Chat has been cleared for all players.");
+        sender.sendMessage(ChatColor.GREEN + "\uD83D\uDCAC Chat has been cleared for all players.");
 
         return true;
     }

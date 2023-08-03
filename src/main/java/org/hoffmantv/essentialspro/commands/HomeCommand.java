@@ -53,8 +53,9 @@ public class HomeCommand implements CommandExecutor {
             }
 
             homesConfig.set(playerHomePath + "." + homeName, null);
+
             try {
-                homesConfig.save(homesFile);
+                homesConfig.save(homesFile);  // save the config to the file
                 this.reloadHomesConfig();  // reload the config
                 player.sendMessage("§a✓ Home Deleted: §e" + homeName);
             } catch (IOException e) {
@@ -133,6 +134,7 @@ public class HomeCommand implements CommandExecutor {
 
             try {
                 homesConfig.save(homesFile);
+                this.reloadHomesConfig();  // reload the config
                 player.sendMessage("§a✓ Your home '" + homeName + "' has been successfully set at your current location.");
             } catch (IOException e) {
                 player.sendMessage("§c✗ An error occurred while saving your home. Please contact a server administrator.");

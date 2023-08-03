@@ -20,7 +20,7 @@ public class GameModeCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Check if the sender is a player
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players!");
+            sender.sendMessage(ChatColor.RED + "✖ This command can only be used by players!");
             return true;
         }
 
@@ -28,13 +28,13 @@ public class GameModeCommand implements CommandExecutor {
 
         // Check if the player has permission to use the command
         if (!player.hasPermission("essentialspro.gamemode")) {
-            player.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+            player.sendMessage(ChatColor.RED + "✖ You do not have permission to use this command.");
             return true;
         }
 
         // Check the number of arguments
         if (args.length != 1) {
-            player.sendMessage(ChatColor.RED + "Usage: /gamemode <1|2|3|4>");
+            player.sendMessage(ChatColor.RED + "➡ Usage: /gamemode <1|2|3|4>");
             return true;
         }
 
@@ -61,20 +61,20 @@ public class GameModeCommand implements CommandExecutor {
                 gameMode = GameMode.SPECTATOR;
                 break;
             default:
-                player.sendMessage(ChatColor.RED + "Invalid game mode alias. Use 1, 2, 3, or 4.");
+                player.sendMessage(ChatColor.RED + "✖ Invalid game mode alias. Use 1, 2, 3, or 4.");
                 return true;
         }
 
         // Check if the player is already in the requested game mode
         if (player.getGameMode() == gameMode) {
-            player.sendMessage(ChatColor.YELLOW + "You are already in " + gameMode.name() + " mode.");
+            player.sendMessage(ChatColor.YELLOW + "⚠ You are already in " + gameMode.name() + " mode.");
             return true;
         }
 
         // Set the player's game mode
         player.setGameMode(gameMode);
 
-        player.sendMessage(ChatColor.GREEN + "Your game mode has been set to " + gameMode.name() + ".");
+        player.sendMessage(ChatColor.GREEN + "✔ Your game mode has been set to " + gameMode.name() + ".");
 
         return true;
     }

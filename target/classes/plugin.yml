@@ -119,6 +119,23 @@ commands:
     description: Allows a player to delete a home loaction.
     usage: /delhome [name]
     permission: essentialspro.delhome
+  repair:
+    description: Allows a player to fix the item in their hand.
+    usage: /repair
+    permission: essentialspro.repair
+  tpa:
+    description: Send a teleport request to a spicific player.
+    usage: /tpa [name]
+    permission: essentialspro.tpa
+  tpaccept:
+    description: Allows a player to accept a teleport request.
+    usage: /tpaccept
+    permission: essentialspro.tpaccept
+  tpdeny:
+    description: Allows a player to deny a teleport request.
+    usage: /tpdeny
+    permission: essentialspro.tpdeny
+
 permissions:
   essentialspro.*:
     description: Gives access to all EssentialsPro commands.
@@ -153,3 +170,7 @@ permissions:
       essentialspro.delhome: true
       essentialspro.sethome: true
       essentialspro.homes: true
+      essentialspro.repair: true
+      essentialspro.tpdeny: true
+      essentialspro.tpaccept: true
+      essentialspro.tpa: true

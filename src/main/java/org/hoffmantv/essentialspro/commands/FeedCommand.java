@@ -19,14 +19,14 @@ public class FeedCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            sender.sendMessage(ChatColor.RED + "\u274C This command can only be used by players.");
             return true;
         }
 
         Player player = (Player) sender;
 
         if (!player.hasPermission("essentialspro.feed")) {
-            player.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
+            player.sendMessage(ChatColor.RED + "\u274C You don't have permission to use this command.");
             return true;
         }
 
@@ -34,7 +34,7 @@ public class FeedCommand implements CommandExecutor {
         if (args.length > 0 && player.hasPermission("essentialspro.feed.others")) {
             Player target = Bukkit.getPlayer(args[0]);
             if (target == null || !target.isOnline()) {
-                player.sendMessage(ChatColor.RED + "Player not found or not online.");
+                player.sendMessage(ChatColor.RED + "\u274C Player not found or not online.");
                 return true;
             }
 
@@ -42,14 +42,14 @@ public class FeedCommand implements CommandExecutor {
             target.setFoodLevel(20);
             target.setSaturation(5.0f);
 
-            player.sendMessage(ChatColor.GREEN + "You have fed " + target.getName() + ".");
-            target.sendMessage(ChatColor.GREEN + "You have been fed by " + player.getName() + ".");
+            player.sendMessage(ChatColor.GREEN + "\uD83C\uDF57 You have fed " + target.getName() + ".");
+            target.sendMessage(ChatColor.GREEN + "\uD83C\uDF57 You have been fed by " + player.getName() + ".");
         } else {
             // Feed the command sender (player)
             player.setFoodLevel(20);
             player.setSaturation(5.0f);
 
-            player.sendMessage(ChatColor.GREEN + "You have been fed.");
+            player.sendMessage(ChatColor.GREEN + "\uD83C\uDF57 You have been fed.");
         }
 
         return true;

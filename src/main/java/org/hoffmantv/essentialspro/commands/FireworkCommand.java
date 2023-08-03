@@ -23,7 +23,7 @@ public class FireworkCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Ensure the command is being used by a player
         if (!(sender instanceof Player)) {
-            Bukkit.getConsoleSender().sendMessage("This command can only be used by players!");
+            Bukkit.getConsoleSender().sendMessage("\u274C This command can only be used by players!");
             return true;
         }
 
@@ -31,7 +31,7 @@ public class FireworkCommand implements CommandExecutor {
 
         // Check if the player has the right permission
         if (!player.hasPermission("essentialspro.firework")) {
-            player.sendMessage("You do not have permission to use this command!");
+            player.sendMessage("\u274C You do not have permission to use this command!");
             return true;
         }
 
@@ -63,6 +63,8 @@ public class FireworkCommand implements CommandExecutor {
 
         // Update the firework with the generated meta
         firework.setFireworkMeta(meta);
+
+        player.sendMessage("\uD83C\uDF86 Firework launched!");
 
         return true;
     }

@@ -1,6 +1,7 @@
 org/hoffmantv/essentialspro/commands/MessageCommand.class
 org/hoffmantv/essentialspro/listeners/ChatSpamPrevention.class
 org/hoffmantv/essentialspro/Metrics$CustomChart.class
+org/hoffmantv/essentialspro/managers/TeleportRequestManager.class
 org/hoffmantv/essentialspro/listeners/PlayerJoinListener.class
 org/hoffmantv/essentialspro/Metrics.class
 org/hoffmantv/essentialspro/commands/HealCommand.class
@@ -21,6 +22,7 @@ org/hoffmantv/essentialspro/commands/WeatherCommand.class
 org/hoffmantv/essentialspro/commands/InventorySeeCommand.class
 org/hoffmantv/essentialspro/commands/BroadcastCommand.class
 org/hoffmantv/essentialspro/events/ColoredSignsEvent.class
+org/hoffmantv/essentialspro/commands/TpaCommand.class
 org/hoffmantv/essentialspro/managers/FreezeManager.class
 org/hoffmantv/essentialspro/commands/TimeCommand.class
 org/hoffmantv/essentialspro/listeners/SignListener.class
@@ -29,6 +31,7 @@ org/hoffmantv/essentialspro/commands/GameModeCommand.class
 org/hoffmantv/essentialspro/listeners/FreezeListener.class
 org/hoffmantv/essentialspro/commands/ListPlayersCommand.class
 org/hoffmantv/essentialspro/commands/ReloadCommand.class
+org/hoffmantv/essentialspro/commands/TpDenyCommand.class
 org/hoffmantv/essentialspro/commands/SmiteCommand.class
 org/hoffmantv/essentialspro/Metrics$SimpleBarChart.class
 org/hoffmantv/essentialspro/commands/MotdCommand.class
@@ -39,6 +42,9 @@ org/hoffmantv/essentialspro/commands/SpawnCommand.class
 org/hoffmantv/essentialspro/commands/UnbanCommand.class
 org/hoffmantv/essentialspro/Metrics$AdvancedBarChart.class
 org/hoffmantv/essentialspro/commands/FreezeCommand.class
+org/hoffmantv/essentialspro/commands/BroadcastCommand$1.class
+org/hoffmantv/essentialspro/commands/RepairCommand.class
 org/hoffmantv/essentialspro/commands/BanCommand.class
+org/hoffmantv/essentialspro/commands/TpAcceptCommand.class
 org/hoffmantv/essentialspro/commands/SetSpawnCommand.class
 org/hoffmantv/essentialspro/commands/HomeCommand.class

@@ -65,7 +65,7 @@
       <option value="16" />
       <option value="300" />
     </hideBySeverity>
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="2" />

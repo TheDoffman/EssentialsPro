@@ -6,42 +6,53 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.bukkit.plugin.Plugin;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 
+/**
+ * A class responsible for checking and updating plugin version.
+ */
 public class PluginUpdater {
 
     private final Plugin plugin;
     private final int resourceId;
 
+    /**
+     * Constructor for PluginUpdater.
+     *
+     * @param plugin    The plugin to be updated
+     * @param resourceId The resource id for the plugin
+     */
     public PluginUpdater(Plugin plugin, int resourceId) {
         this.plugin = plugin;
         this.resourceId = resourceId;
     }
 
+    /**
+     * Checks whether the plugin is up to date.
+     *
+     * @return true if up to date, false if not
+     */
     public boolean isPluginUpToDate() {
         String currentVersion = plugin.getDescription().getVersion();
         String latestVersion = getLatestVersionFromWebsite();
 
         if (latestVersion != null && !latestVersion.equals(currentVersion)) {
-            // An update is available
             plugin.getLogger().warning("A new version of the plugin is available: " + latestVersion);
             plugin.getLogger().warning("You can download it from: https://dev.bukkit.org/projects/essentialspro/files/latest");
             downloadUpdate();
             return false;
         }
-
         return true;
     }
 
+    /**
+     * Retrieves the latest version of the plugin from the website.
+     *
+     * @return the latest version as a String
+     */
     private String getLatestVersionFromWebsite() {
         String version = null;
         try {
@@ -50,20 +61,21 @@ public class PluginUpdater {
             conn.setRequestMethod("GET");
             conn.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-            reader.close();
+            // using try-with-resources to automatically close the BufferedReader
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
 
-            // Parse the JSON response using Gson
-            JsonElement jsonElement = JsonParser.parseString(response.toString());
-            JsonArray jsonArray = jsonElement.getAsJsonArray();
-            if (!jsonArray.isJsonNull() && jsonArray.size() > 0) {
-                JsonObject latestFile = jsonArray.get(jsonArray.size() - 1).getAsJsonObject();
-                version = latestFile.get("name").getAsString();
+                // Parsing the JSON response using Gson
+                JsonElement jsonElement = JsonParser.parseString(response.toString());
+                JsonArray jsonArray = jsonElement.getAsJsonArray();
+                if (!jsonArray.isJsonNull() && jsonArray.size() > 0) {
+                    JsonObject latestFile = jsonArray.get(jsonArray.size() - 1).getAsJsonObject();
+                    version = latestFile.get("name").getAsString();
+                }
             }
         } catch (IOException e) {
             plugin.getLogger().warning("Failed to check for plugin updates: " + e.getMessage());
@@ -71,9 +83,11 @@ public class PluginUpdater {
         return version;
     }
 
+    /**
+     * Downloads the plugin update.
+     */
     private void downloadUpdate() {
-        // Add your download URL logic here
-        String downloadUrl = "https://dev.bukkit.org/projects/essentialspro/files/latest"; // This is a placeholder, make sure to fetch the correct URL from your API
+        String downloadUrl = "https://dev.bukkit.org/projects/essentialspro/files/latest";
 
         Path updateFolderPath = Paths.get("Update");
         if (!Files.exists(updateFolderPath)) {
