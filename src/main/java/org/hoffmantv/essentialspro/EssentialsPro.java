@@ -181,10 +181,6 @@ public class EssentialsPro extends JavaPlugin {
             getCommand("ban").setExecutor(new BanCommand(banManager));
             getCommand("unban").setExecutor(new UnbanCommand(banManager));
             getCommand("firework").setExecutor(new FireworkCommand());
-            getCommand("sethome").setExecutor(new HomeCommand(this));
-            getCommand("home").setExecutor(new HomeCommand(this));
-            getCommand("delhome").setExecutor(new HomeCommand(this));
-            getCommand("homes").setExecutor(new HomeCommand(this));
             getCommand("repair").setExecutor(new RepairCommand());
             getCommand("repair").setExecutor(new RepairCommand());
             getCommand("tpa").setExecutor(new TpaCommand(teleportRequestManager));

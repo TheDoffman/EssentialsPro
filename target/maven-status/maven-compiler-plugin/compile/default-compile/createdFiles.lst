@@ -47,4 +47,3 @@ org/hoffmantv/essentialspro/commands/RepairCommand.class
 org/hoffmantv/essentialspro/commands/BanCommand.class
 org/hoffmantv/essentialspro/commands/TpAcceptCommand.class
 org/hoffmantv/essentialspro/commands/SetSpawnCommand.class
-org/hoffmantv/essentialspro/commands/HomeCommand.class

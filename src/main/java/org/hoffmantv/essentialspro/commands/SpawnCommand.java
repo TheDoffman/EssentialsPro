@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.hoffmantv.essentialspro.EssentialsPro;
 
@@ -57,6 +58,13 @@ public class SpawnCommand implements CommandExecutor, Listener {
         Location spawnLocation = plugin.getSpawnLocation();
         if (spawnLocation != null) {
             event.setRespawnLocation(spawnLocation);
+        }
+    }
+    @EventHandler
+    public void onSignChange(SignChangeEvent event) {
+        if (event.getLine(0).equalsIgnoreCase("[Spawn]")) {
+            event.setLine(1, ChatColor.GREEN + "[Spawn]");
+            event.setLine(0, "");
         }
     }
 }

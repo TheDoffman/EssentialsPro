@@ -1,5 +1,5 @@
 name: EssentialsPro
-version: 1.1
+version: 1.2
 main: org.hoffmantv.essentialspro.EssentialsPro
 author: HoffmanTV
 description: A Minecraft Essentials plugin.
@@ -103,22 +103,6 @@ commands:
     usage: /freeze <player>
     permission: essentialspro.freeze
     permission-message: You don't have permission to use this command.
-  sethome:
-    description: Sets the home of a player
-    usage: /sethome [name]
-    permission: essentialspro.sethome
-  home:
-    description: Teleports the player to their home
-    usage: /home [name]
-    permission: essentialspro.home
-  homes:
-    description: Shows a list of the players homes.
-    usage: /homes
-    permission: essentialspro.homes
-  delhome:
-    description: Allows a player to delete a home loaction.
-    usage: /delhome [name]
-    permission: essentialspro.delhome
   repair:
     description: Allows a player to fix the item in their hand.
     usage: /repair
@@ -166,10 +150,6 @@ permissions:
       essentialspro.freeze.others: true
       essentialspro.magiccarpet: true
       essentialspro.firework: true
-      essentialspro.home: true
-      essentialspro.delhome: true
-      essentialspro.sethome: true
-      essentialspro.homes: true
       essentialspro.repair: true
       essentialspro.tpdeny: true
       essentialspro.tpaccept: true
