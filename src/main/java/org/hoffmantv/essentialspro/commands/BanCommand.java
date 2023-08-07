@@ -25,18 +25,18 @@ public class BanCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("essentialspro.ban")) {
-            sender.sendMessage(ChatColor.RED + "\u274C I'm sorry, but you do not have permission to execute this command.");
+            sender.sendMessage(ChatColor.RED + "✖ I'm sorry, but you do not have permission to execute this command.");
             return true;
         }
 
         if (args.length < 2) {
-            sender.sendMessage(ChatColor.RED + "\u26A0 Incorrect usage. Correct format: /" + label + " <player> <reason> [duration]");
+            sender.sendMessage(ChatColor.RED + "✖ Incorrect usage. Correct format: /" + label + " <player> <reason> [duration]");
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "\u274C Unable to find player. Please ensure the player name is correct.");
+            sender.sendMessage(ChatColor.RED + "✖ Unable to find player. Please ensure the player name is correct.");
             return true;
         }
 
@@ -48,10 +48,10 @@ public class BanCommand implements CommandExecutor {
             if (durationInSeconds > 0) {
                 banManager.banPlayerTemporarily(target, reason, durationInSeconds);
                 String durationString = formatDuration(durationInSeconds);
-                target.kickPlayer(ChatColor.RED + "\u26D4 You have been temporarily banned for the following reason: '" + reason + "'. This ban will lift in: " + durationString);
+                target.kickPlayer(ChatColor.RED + "✖ You have been temporarily banned for the following reason: '" + reason + "'. This ban will lift in: " + durationString);
                 Bukkit.broadcastMessage(ChatColor.RED + "\uD83D\uDD34 Player '" + target.getName() + "' has been temporarily banned for: '" + reason + "'. This ban will lift in: " + durationString);
             } else {
-                sender.sendMessage(ChatColor.RED + "\u26A0 Invalid duration format. Please use numbers followed by 's' for seconds, 'm' for minutes, 'h' for hours, or 'd' for days (e.g., 1d for one day, 30m for 30 minutes).");
+                sender.sendMessage(ChatColor.RED + "✖ Invalid duration format. Please use numbers followed by 's' for seconds, 'm' for minutes, 'h' for hours, or 'd' for days (e.g., 1d for one day, 30m for 30 minutes).");
             }
         } else {
             banManager.banPlayer(target.getName(), reason);

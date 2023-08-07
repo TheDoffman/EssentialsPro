@@ -87,19 +87,33 @@ public class PluginUpdater {
      * Downloads the plugin update.
      */
     private void downloadUpdate() {
-        String downloadUrl = "https://dev.bukkit.org/projects/essentialspro/files/latest";
+        String latestVersion = getLatestVersionFromWebsite();
+        if (latestVersion == null) {
+            return;
+        }
 
         Path updateFolderPath = Paths.get("Update");
+        Path updateFilePath = updateFolderPath.resolve(plugin.getName() + "-" + latestVersion + ".jar");
+
+        // Check if the update file with the latest version already exists
+        if (Files.exists(updateFilePath)) {
+            plugin.getLogger().info("Latest version of the plugin is already downloaded.");
+            return;
+        }
+
+        String downloadUrl = "https://dev.bukkit.org/projects/essentialspro/files/latest";
+
         if (!Files.exists(updateFolderPath)) {
             try {
                 Files.createDirectories(updateFolderPath);
             } catch (IOException e) {
                 plugin.getLogger().warning("Failed to create update directory: " + e.getMessage());
+                return;
             }
         }
 
         try (BufferedInputStream in = new BufferedInputStream(new URL(downloadUrl).openStream());
-             FileOutputStream fileOutputStream = new FileOutputStream(updateFolderPath.resolve(plugin.getName() + ".jar").toString())) {
+             FileOutputStream fileOutputStream = new FileOutputStream(updateFilePath.toString())) {
             byte dataBuffer[] = new byte[1024];
             int bytesRead;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
@@ -109,4 +123,5 @@ public class PluginUpdater {
             plugin.getLogger().warning("Failed to download update: " + e.getMessage());
         }
     }
+
 }
