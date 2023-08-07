@@ -14,19 +14,19 @@ public class InventorySeeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "✖ This command can only be used by players.");
+            sender.sendMessage(ChatColor.RED + "\u274C This command can only be used by players.");
             return true;
         }
 
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "✖ Usage: /inventorysee <player>");
+            sender.sendMessage(ChatColor.RED + "\u274C Usage: /inventorysee <player>");
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
 
         if (target == null || !target.isOnline()) {
-            sender.sendMessage(ChatColor.RED + "✖ Player not found or not online.");
+            sender.sendMessage(ChatColor.RED + "\u274C Player not found or not online.");
             return true;
         }
 

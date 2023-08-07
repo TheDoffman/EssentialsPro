@@ -10,10 +10,10 @@ import org.bukkit.ChatColor;
 public class SmiteCommand implements CommandExecutor {
 
     private static final String PERMISSION_SMITE = "essentialspro.smite";
-    private static final String MSG_ONLY_PLAYERS = ChatColor.RED + "This command can only be used by players.";
-    private static final String MSG_NO_PERMISSION = ChatColor.RED + "You don't have permission to use this command.";
-    private static final String MSG_USAGE = ChatColor.RED + "Usage: /smite <player>";
-    private static final String MSG_PLAYER_NOT_FOUND = ChatColor.RED + "Player not found or not online.";
+    private static final String MSG_ONLY_PLAYERS = ChatColor.RED + "\u274C This command can only be used by players.";
+    private static final String MSG_NO_PERMISSION = ChatColor.RED + "\u274C You don't have permission to use this command.";
+    private static final String MSG_USAGE = ChatColor.RED + "\u274C Usage: /smite <player>";
+    private static final String MSG_PLAYER_NOT_FOUND = ChatColor.RED + "\u274C Player not found or not online.";
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

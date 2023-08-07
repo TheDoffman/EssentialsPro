@@ -9,10 +9,10 @@ import org.hoffmantv.essentialspro.EssentialsPro;
 
 public class TimeCommand implements CommandExecutor {
 
-    private static final String ONLY_PLAYERS_ERROR = ChatColor.RED + "This command can only be used by players.";
-    private static final String PERMISSION_ERROR = ChatColor.RED + "You don't have permission to use this command.";
-    private static final String USAGE_ERROR = ChatColor.RED + "Usage: /time <day|night|morning|evening>";
-    private static final String INVALID_TIME_ERROR = ChatColor.RED + "Invalid time argument. Use: day, night, morning, or evening.";
+    private static final String ONLY_PLAYERS_ERROR = ChatColor.RED + "\u274C This command can only be used by players.";
+    private static final String PERMISSION_ERROR = ChatColor.RED + "\u274C You don't have permission to use this command.";
+    private static final String USAGE_ERROR = ChatColor.RED + "\u274C Usage: /time <day|night|morning|evening>";
+    private static final String INVALID_TIME_ERROR = ChatColor.RED + "\u274C Invalid time argument. Use: day, night, morning, or evening.";
     private static final String TIME_SUCCESS = ChatColor.GREEN + "Time set to ";
 
     private final EssentialsPro plugin;

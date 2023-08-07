@@ -12,7 +12,7 @@ import java.io.File;
 public class ReloadCommand implements CommandExecutor {
 
     private static final String RELOAD_PERMISSION = "essentialspro.reload";
-    private static final String NO_PERMISSION_MSG = ChatColor.RED + "You don't have permission to use this command.";
+    private static final String NO_PERMISSION_MSG = ChatColor.RED + "\u274C You don't have permission to use this command.";
     private static final String RELOAD_SUCCESS_MSG = ChatColor.GREEN + "EssentialsPro configuration reloaded!";
 
     private final JavaPlugin plugin;

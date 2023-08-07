@@ -10,10 +10,10 @@ import org.hoffmantv.essentialspro.EssentialsPro;
 
 public class TeleportCommand implements CommandExecutor {
 
-    private static final String ONLY_PLAYERS_ERROR = ChatColor.RED + "This command can only be used by players.";
-    private static final String PERMISSION_ERROR = ChatColor.RED + "You don't have permission to use this command.";
-    private static final String USAGE_ERROR = ChatColor.RED + "Usage: /tp <player>";
-    private static final String PLAYER_NOT_FOUND_ERROR = ChatColor.RED + "Player not found or not online.";
+    private static final String ONLY_PLAYERS_ERROR = ChatColor.RED + "\u274C This command can only be used by players.";
+    private static final String PERMISSION_ERROR = ChatColor.RED + "\u274C You don't have permission to use this command.";
+    private static final String USAGE_ERROR = ChatColor.RED + "\u274C Usage: /tp <player>";
+    private static final String PLAYER_NOT_FOUND_ERROR = ChatColor.RED + "\u274C Player not found or not online.";
     private static final String TELEPORT_SUCCESS = ChatColor.GREEN + "You have been teleported to ";
 
     private final EssentialsPro plugin;

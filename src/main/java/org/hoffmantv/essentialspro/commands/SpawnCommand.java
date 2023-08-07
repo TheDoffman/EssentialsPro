@@ -15,9 +15,9 @@ import org.hoffmantv.essentialspro.EssentialsPro;
 public class SpawnCommand implements CommandExecutor, Listener {
 
     private static final String PERMISSION_SPAWN = "essentialspro.spawn";
-    private static final String MSG_ONLY_PLAYERS = ChatColor.RED + "This command can only be used by players.";
-    private static final String MSG_NO_PERMISSION = ChatColor.RED + "You don't have permission to use this command.";
-    private static final String MSG_NO_SPAWN_SET = ChatColor.RED + "The spawn location is not set.";
+    private static final String MSG_ONLY_PLAYERS = ChatColor.RED + "\u274C This command can only be used by players.";
+    private static final String MSG_NO_PERMISSION = ChatColor.RED + "\u274C You don't have permission to use this command.";
+    private static final String MSG_NO_SPAWN_SET = ChatColor.RED + "\u274C The spawn location is not set.";
     private static final String MSG_WELCOME_SPAWN = ChatColor.GREEN + "Welcome back to the spawn!";
 
     private final EssentialsPro plugin;

@@ -12,14 +12,14 @@ public class MessageCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "✖ This command can only be used by players.");
+            sender.sendMessage(ChatColor.RED + "\u274C This command can only be used by players.");
             return true;
         }
 
         Player senderPlayer = (Player) sender;
 
         if (args.length < 2) {
-            senderPlayer.sendMessage(ChatColor.RED + "✖ Usage: /message <player> <message>");
+            senderPlayer.sendMessage(ChatColor.RED + "\u274C Usage: /message <player> <message>");
             return true;
         }
 
@@ -27,7 +27,7 @@ public class MessageCommand implements CommandExecutor {
         Player target = Bukkit.getPlayer(targetName);
 
         if (target == null || !target.isOnline()) {
-            senderPlayer.sendMessage(ChatColor.RED + "✖ Player not found or not online.");
+            senderPlayer.sendMessage(ChatColor.RED + "\u274C Player not found or not online.");
             return true;
         }
 

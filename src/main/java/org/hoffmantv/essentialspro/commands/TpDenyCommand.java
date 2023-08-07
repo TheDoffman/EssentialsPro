@@ -17,19 +17,19 @@ public class TpDenyCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("Only players can use this command.");
+            sender.sendMessage("\u274C Only players can use this command.");
             return true;
         }
 
         Player player = (Player) sender;
         Player requester = teleportRequestManager.getRequest(player);
         if (requester == null) {
-            player.sendMessage(ChatColor.RED + "You have no pending teleport requests.");
+            player.sendMessage(ChatColor.RED + "\u274C You have no pending teleport requests.");
             return true;
         }
 
-        player.sendMessage(ChatColor.RED + "Teleport request denied.");
-        requester.sendMessage(ChatColor.RED + "Your teleport request to " + player.getName() + " was denied.");
+        player.sendMessage(ChatColor.RED + "\u274C Teleport request denied.");
+        requester.sendMessage(ChatColor.RED + "\u274C Your teleport request to " + player.getName() + " was denied.");
         teleportRequestManager.removeRequest(player);
 
         return true;

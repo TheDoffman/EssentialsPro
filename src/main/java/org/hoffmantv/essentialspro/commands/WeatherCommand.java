@@ -18,14 +18,14 @@ public class WeatherCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            sender.sendMessage(ChatColor.RED + "\u274C This command can only be used by players.");
             return true;
         }
 
         Player player = (Player) sender;
 
         if (!player.hasPermission("essentialspro.weather")) {
-            player.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
+            player.sendMessage(ChatColor.RED + "\u274C You don't have permission to use this command.");
             return true;
         }
 
@@ -47,7 +47,7 @@ public class WeatherCommand implements CommandExecutor {
                 isThundering = true;
                 break;
             default:
-                player.sendMessage(ChatColor.RED + "Invalid weather argument. Use: clear, rain, or storm.");
+                player.sendMessage(ChatColor.RED + "\u274C Invalid weather argument. Use: clear, rain, or storm.");
                 return true;
         }
 

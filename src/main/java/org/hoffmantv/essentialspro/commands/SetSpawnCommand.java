@@ -10,8 +10,8 @@ import org.hoffmantv.essentialspro.EssentialsPro;
 public class SetSpawnCommand implements CommandExecutor {
 
     private static final String PERMISSION_SETSPAWN = "essentialspro.setspawn";
-    private static final String MSG_ONLY_PLAYERS = ChatColor.RED + "This command can only be used by players.";
-    private static final String MSG_NO_PERMISSION = ChatColor.RED + "You don't have permission to use this command.";
+    private static final String MSG_ONLY_PLAYERS = ChatColor.RED + "\u274C This command can only be used by players.";
+    private static final String MSG_NO_PERMISSION = ChatColor.RED + "\u274C You don't have permission to use this command.";
     private static final String MSG_SPAWN_SET_SUCCESS = ChatColor.GREEN + "Spawn location set successfully!";
 
     private final EssentialsPro plugin;
@@ -38,7 +38,7 @@ public class SetSpawnCommand implements CommandExecutor {
             plugin.setSpawnLocation(player.getLocation());
             player.sendMessage(MSG_SPAWN_SET_SUCCESS);
         } catch (Exception e) {
-            player.sendMessage(ChatColor.RED + "An error occurred while setting spawn location: " + e.getMessage());
+            player.sendMessage(ChatColor.RED + "\u274C An error occurred while setting spawn location: " + e.getMessage());
             return true;
         }
 

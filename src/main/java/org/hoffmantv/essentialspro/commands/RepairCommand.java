@@ -14,24 +14,24 @@ public class RepairCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "✖ This command can only be used by players.");
+            sender.sendMessage(ChatColor.RED + "\u274C This command can only be used by players.");
             return true;
         }
 
         Player player = (Player) sender;
         if (!player.hasPermission("essentialspro.repair")) {
-            player.sendMessage(ChatColor.RED + "✖ You do not have permission to use this command.");
+            player.sendMessage(ChatColor.RED + "\u274C You do not have permission to use this command.");
             return true;
         }
 
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item.getType().isAir()) {
-            player.sendMessage(ChatColor.RED + "✖ You are not holding any item.");
+            player.sendMessage(ChatColor.RED + "\u274C You are not holding any item.");
             return true;
         }
 
         if (!(item.getItemMeta() instanceof Damageable)) {
-            player.sendMessage(ChatColor.RED + "✖ This item cannot be repaired.");
+            player.sendMessage(ChatColor.RED + "\u274C This item cannot be repaired.");
             return true;
         }
 

@@ -20,7 +20,7 @@ public class GameModeCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Check if the sender is a player
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "✖ This command can only be used by players!");
+            sender.sendMessage(ChatColor.RED + "\u274C This command can only be used by players!");
             return true;
         }
 
@@ -28,7 +28,7 @@ public class GameModeCommand implements CommandExecutor {
 
         // Check if the player has permission to use the command
         if (!player.hasPermission("essentialspro.gamemode")) {
-            player.sendMessage(ChatColor.RED + "✖ You do not have permission to use this command.");
+            player.sendMessage(ChatColor.RED + "\u274C You do not have permission to use this command.");
             return true;
         }
 

@@ -12,7 +12,7 @@ public class ListPlayersCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (isNotPlayer(sender)) {
-            sender.sendMessage(errorMessage("This command can only be used by players."));
+            sender.sendMessage(errorMessage("\u274C This command can only be used by players."));
             return true;
         }
 
@@ -20,7 +20,7 @@ public class ListPlayersCommand implements CommandExecutor {
         String onlinePlayers = getPlayerList(player);
 
         if (onlinePlayers.isEmpty()) {
-            player.sendMessage(errorMessage("No players are currently online."));
+            player.sendMessage(errorMessage("\u274C No players are currently online."));
             return true;
         }
 

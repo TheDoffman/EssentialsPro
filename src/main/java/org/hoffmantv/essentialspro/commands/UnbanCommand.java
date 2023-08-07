@@ -10,7 +10,7 @@ import org.hoffmantv.essentialspro.managers.BanManager;
 public class UnbanCommand implements CommandExecutor {
     private final BanManager banManager;
 
-    private static final String PERMISSION_ERROR = ChatColor.RED + "You don't have permission to use this command.";
+    private static final String PERMISSION_ERROR = ChatColor.RED + "\u274C You don't have permission to use this command.";
 
     public UnbanCommand(BanManager banManager) {
         this.banManager = banManager;
@@ -24,7 +24,7 @@ public class UnbanCommand implements CommandExecutor {
         }
 
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /unban <player>");
+            sender.sendMessage(ChatColor.RED + "\u274C Usage: /unban <player>");
             return true;
         }
 
