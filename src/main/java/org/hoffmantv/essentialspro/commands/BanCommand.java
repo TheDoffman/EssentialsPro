@@ -25,41 +25,61 @@ public class BanCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("essentialspro.ban")) {
-            sender.sendMessage(ChatColor.RED + "✖ I'm sorry, but you do not have permission to execute this command.");
+            sender.sendMessage(ChatColor.RED + "✖ You do not have permission to execute this command.");
             return true;
         }
 
         if (args.length < 2) {
-            sender.sendMessage(ChatColor.RED + "✖ Incorrect usage. Correct format: /" + label + " <player> <reason> [duration]");
+            sendUsage(sender, label);
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "✖ Unable to find player. Please ensure the player name is correct.");
+            sender.sendMessage(ChatColor.RED + "✖ Unable to find player.");
             return true;
         }
 
-        boolean hasDuration = args.length >= 3;
-        String reason = Arrays.stream(args, 1, hasDuration ? args.length - 1 : args.length).collect(Collectors.joining(" "));
+        if (banManager.isBanned(target.getName())) {
+            sender.sendMessage(ChatColor.RED + "✖ Player is already banned.");
+            return true;
+        }
 
-        if (hasDuration) {
-            long durationInSeconds = parseDuration(args[args.length - 1]);
-            if (durationInSeconds > 0) {
-                banManager.banPlayerTemporarily(target, reason, durationInSeconds);
-                String durationString = formatDuration(durationInSeconds);
-                target.kickPlayer(ChatColor.RED + "✖ You have been temporarily banned for the following reason: '" + reason + "'. This ban will lift in: " + durationString);
-                Bukkit.broadcastMessage(ChatColor.RED + "\uD83D\uDD34 Player '" + target.getName() + "' has been temporarily banned for: '" + reason + "'. This ban will lift in: " + durationString);
-            } else {
-                sender.sendMessage(ChatColor.RED + "✖ Invalid duration format. Please use numbers followed by 's' for seconds, 'm' for minutes, 'h' for hours, or 'd' for days (e.g., 1d for one day, 30m for 30 minutes).");
-            }
+        String reason = extractReason(args);
+        if (args.length >= 3) {
+            handleTemporaryBan(sender, target, reason, args[args.length - 1]);
         } else {
-            banManager.banPlayer(target.getName(), reason);
-            target.kickPlayer(ChatColor.RED + "\u26D4 You have been permanently banned for the following reason: '" + reason + "'.");
-            Bukkit.broadcastMessage(ChatColor.RED + "\uD83D\uDD34 Player '" + target.getName() + "' has been permanently banned for: '" + reason + "'.");
+            handlePermanentBan(target, reason);
         }
 
         return true;
+    }
+
+    private void sendUsage(CommandSender sender, String label) {
+        sender.sendMessage(ChatColor.RED + "✖ Usage: /" + label + " <player> <reason> [duration]");
+    }
+
+    private String extractReason(String[] args) {
+        boolean hasDuration = args.length >= 3;
+        return Arrays.stream(args, 1, hasDuration ? args.length - 1 : args.length).collect(Collectors.joining(" "));
+    }
+
+    private void handlePermanentBan(Player target, String reason) {
+        banManager.banPlayer(target.getName(), reason);
+        target.kickPlayer(ChatColor.RED + "\u26D4 You have been permanently banned for: " + reason);
+        Bukkit.broadcastMessage(ChatColor.RED + "\uD83D\uDD34 Player '" + target.getName() + "' has been permanently banned for: " + reason);
+    }
+
+    private void handleTemporaryBan(CommandSender sender, Player target, String reason, String durationString) {
+        long durationInSeconds = parseDuration(durationString);
+        if (durationInSeconds > 0) {
+            banManager.banPlayerTemporarily(target, reason, durationInSeconds);
+            String formattedDuration = formatDuration(durationInSeconds);
+            target.kickPlayer(ChatColor.RED + "✖ You have been temporarily banned for: " + reason + ". Lifts in: " + formattedDuration);
+            Bukkit.broadcastMessage(ChatColor.RED + "\uD83D\uDD34 Player '" + target.getName() + "' has been temporarily banned for: " + reason + ". Lifts in: " + formattedDuration);
+        } else {
+            sender.sendMessage(ChatColor.RED + "✖ Invalid duration. Use 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days. E.g., 1d or 30m.");
+        }
     }
 
     private long parseDuration(String durationString) {
@@ -68,14 +88,10 @@ public class BanCommand implements CommandExecutor {
         if (matcher.matches()) {
             long duration = Long.parseLong(matcher.group(1));
             switch (matcher.group(2)) {
-                case "s":
-                    return duration;
-                case "m":
-                    return TimeUnit.MINUTES.toSeconds(duration);
-                case "h":
-                    return TimeUnit.HOURS.toSeconds(duration);
-                case "d":
-                    return TimeUnit.DAYS.toSeconds(duration);
+                case "s": return duration;
+                case "m": return TimeUnit.MINUTES.toSeconds(duration);
+                case "h": return TimeUnit.HOURS.toSeconds(duration);
+                case "d": return TimeUnit.DAYS.toSeconds(duration);
             }
         }
         return -1;

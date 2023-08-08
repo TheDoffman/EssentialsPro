@@ -9,7 +9,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.hoffmantv.essentialspro.commands.*;
 import org.hoffmantv.essentialspro.events.ColoredSignsEvent;
-import org.hoffmantv.essentialspro.listeners.ChatSpamPrevention;
+import org.hoffmantv.essentialspro.events.DeathEvent;
 import org.hoffmantv.essentialspro.listeners.FreezeListener;
 import org.hoffmantv.essentialspro.listeners.SignListener;
 import org.hoffmantv.essentialspro.managers.BanManager;
@@ -56,10 +56,6 @@ public class EssentialsPro extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(coloredSignsEvent, this);
 
-        // Register the ChatSpamPrevention listener with the provided chat delay
-        ChatSpamPrevention chatSpamPrevention = new ChatSpamPrevention(this);
-        pluginManager.registerEvents(chatSpamPrevention, this);
-
         // Load plugin version and spawn location
         loadPluginVersion();
         loadSpawnLocation();
@@ -68,17 +64,15 @@ public class EssentialsPro extends JavaPlugin {
         sendColoredMessage(ChatColor.GREEN + "EssentialsPro v" + pluginVersion + " has been enabled!");
 
         // Save default config if it doesn't exist
-        saveDefaultConfig();
+        if (!new File(getDataFolder(), "config.yml").exists()) {
+            saveDefaultConfig();
+        }
+
+        createNicknamesConfig();
 
         // Register commands and listeners
         registerCommands();
 
-        // Set the default MOTD in the config if it doesn't exist
-        FileConfiguration config = getConfig();
-        if (!config.contains("motd.default")) {
-            config.set("motd.default", "&a[Welcome to &eOur &fMinecraft &bServer!&a]");
-            saveConfig();
-        }
         PluginCommand freezeCommand = this.getCommand("freeze");
         if (freezeCommand != null) {
             freezeCommand.setExecutor(new FreezeCommand(freezeManager));
@@ -89,6 +83,7 @@ public class EssentialsPro extends JavaPlugin {
         // Register the event listeners
         getServer().getPluginManager().registerEvents(new FreezeListener(freezeManager), this);
         getServer().getPluginManager().registerEvents(new SignListener(this), this);
+        getServer().getPluginManager().registerEvents(new DeathEvent(this), this);
 
 
     }
@@ -125,13 +120,13 @@ public class EssentialsPro extends JavaPlugin {
 
     // Save the spawn location to the config
     private void saveSpawnLocation() {
-        FileConfiguration config = getConfig();
         if (spawnLocation != null) {
+            reloadConfig(); // Reload the config to ensure we have the latest version
+            FileConfiguration config = getConfig();
             config.set("spawn", spawnLocation);
             saveConfig();
         }
     }
-
     // Get the current spawn location
     public Location getSpawnLocation() {
         return spawnLocation;
@@ -148,13 +143,7 @@ public class EssentialsPro extends JavaPlugin {
         return banManager;
     }
 
-    private void createNicknamesConfig() {
-        nicknamesFile = new File(getDataFolder(), "nickname.yml");
-        if (!nicknamesFile.exists()) {
-            nicknamesFile.getParentFile().mkdirs();
-            saveResource("nickname.yml", false);
-        }
-        }
+
 
         // Register all commands and their executors
 // Register all commands and their executors
@@ -189,5 +178,12 @@ public class EssentialsPro extends JavaPlugin {
 
 
         }
+
+    private void createNicknamesConfig() {
+        nicknamesFile = new File(getDataFolder(), "nickname.yml");
+        if (!nicknamesFile.exists()) {
+            saveResource("nickname.yml", false);
+        }
+    }
     }
 

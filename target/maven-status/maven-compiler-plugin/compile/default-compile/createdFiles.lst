@@ -1,5 +1,4 @@
 org/hoffmantv/essentialspro/commands/MessageCommand.class
-org/hoffmantv/essentialspro/listeners/ChatSpamPrevention.class
 org/hoffmantv/essentialspro/Metrics$CustomChart.class
 org/hoffmantv/essentialspro/managers/TeleportRequestManager.class
 org/hoffmantv/essentialspro/listeners/PlayerJoinListener.class
@@ -47,3 +46,4 @@ org/hoffmantv/essentialspro/commands/RepairCommand.class
 org/hoffmantv/essentialspro/commands/BanCommand.class
 org/hoffmantv/essentialspro/commands/TpAcceptCommand.class
 org/hoffmantv/essentialspro/commands/SetSpawnCommand.class
+org/hoffmantv/essentialspro/events/DeathEvent.class

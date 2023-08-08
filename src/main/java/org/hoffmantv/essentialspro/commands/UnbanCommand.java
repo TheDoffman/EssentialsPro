@@ -18,7 +18,7 @@ public class UnbanCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player) || !((Player) sender).hasPermission("essentialspro.unban")) {
+        if (!(sender.hasPermission("essentialspro.unban"))) {
             sender.sendMessage(PERMISSION_ERROR);
             return true;
         }
@@ -31,14 +31,8 @@ public class UnbanCommand implements CommandExecutor {
         String playerName = args[0];
 
         try {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                banManager.unbanPlayer(player, playerName);
-                sender.sendMessage(ChatColor.GREEN + "Player " + playerName + " has been unbanned.");
-            } else {
-                banManager.unbanPlayerFromConsole(playerName);
-                sender.sendMessage(ChatColor.GREEN + "Player " + playerName + " has been unbanned from the console.");
-            }
+            banManager.unbanPlayer(playerName);
+            sender.sendMessage(ChatColor.GREEN + "Player " + playerName + " has been unbanned.");
         } catch (IllegalArgumentException e) {
             sender.sendMessage(ChatColor.RED + e.getMessage());
         }

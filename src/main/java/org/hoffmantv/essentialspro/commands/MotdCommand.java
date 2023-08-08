@@ -34,14 +34,15 @@ public class MotdCommand implements CommandExecutor, Listener {
             sender.sendMessage(ChatColor.GREEN + "Current MOTD: " + motd);
         } else {
             // Set custom MOTD
-            String motd = ChatColor.translateAlternateColorCodes('&', String.join(" ", args)) + " \u263A"; // Translate color codes and add smiley face
+            String motd = ChatColor.translateAlternateColorCodes('&', String.join(" ", args));
             config.set("motd.custom", motd);
-            plugin.saveConfig();
+            plugin.saveConfig();  // This saves the configuration to the config.yml
             updateServerProperties(motd);
             sender.sendMessage(ChatColor.GREEN + "MOTD updated to: " + motd);
         }
         return true;
     }
+
     private void updateServerProperties(String motd) {
         Path serverPropertiesPath = Paths.get("server.properties");
         try {
