@@ -16,21 +16,15 @@ public class ReloadCommand implements CommandExecutor {
     private static final String RELOAD_SUCCESS_MSG = ChatColor.GREEN + "EssentialsPro configuration reloaded!";
 
     private final JavaPlugin plugin;
-    private File homesFile = new File("plugins/EssentialsPro/homes.yml");
-    private YamlConfiguration homesConfig = YamlConfiguration.loadConfiguration(homesFile);
 
     public ReloadCommand(JavaPlugin plugin) {
         this.plugin = plugin;
-    }
-    public void reloadHomesConfig() {
-        homesConfig = YamlConfiguration.loadConfiguration(homesFile);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender.hasPermission(RELOAD_PERMISSION)) {
             plugin.reloadConfig();
-            this.reloadHomesConfig();
             sender.sendMessage(RELOAD_SUCCESS_MSG);
         } else {
             sender.sendMessage(NO_PERMISSION_MSG);
