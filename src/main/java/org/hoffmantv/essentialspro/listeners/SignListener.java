@@ -1,5 +1,6 @@
 package org.hoffmantv.essentialspro.listeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.block.Block;
@@ -38,9 +39,9 @@ public class SignListener implements Listener {
 
                 if (spawnLocation != null) {
                     player.teleport(spawnLocation);
-                    player.sendMessage("§a✓ Teleported to spawn.");
+                    player.sendMessage(ChatColor.GREEN + "✓ Teleported to spawn.");
                 } else {
-                    player.sendMessage("§c✗ The spawn location is not set.");
+                    player.sendMessage(ChatColor.RED + "✗ The spawn location is not set.");
                 }
             }
         }
