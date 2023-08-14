@@ -39,6 +39,7 @@ org/hoffmantv/essentialspro/Metrics$DrilldownPie.class
 org/hoffmantv/essentialspro/Metrics$JsonObjectBuilder.class
 org/hoffmantv/essentialspro/commands/SpawnCommand.class
 org/hoffmantv/essentialspro/commands/UnbanCommand.class
+org/hoffmantv/essentialspro/commands/ClearInventoryCommand.class
 org/hoffmantv/essentialspro/Metrics$AdvancedBarChart.class
 org/hoffmantv/essentialspro/commands/FreezeCommand.class
 org/hoffmantv/essentialspro/commands/BroadcastCommand$1.class

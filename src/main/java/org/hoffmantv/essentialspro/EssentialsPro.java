@@ -175,7 +175,7 @@ public class EssentialsPro extends JavaPlugin {
             getCommand("tpa").setExecutor(new TpaCommand(teleportRequestManager));
             getCommand("tpaccept").setExecutor(new TpAcceptCommand(teleportRequestManager));
             getCommand("tpdeny").setExecutor(new TpDenyCommand(teleportRequestManager));
-
+            this.getCommand("clearinventory").setExecutor(new ClearInventoryCommand());
 
         }
 

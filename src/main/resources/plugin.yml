@@ -119,7 +119,11 @@ commands:
     description: Allows a player to deny a teleport request.
     usage: /tpdeny
     permission: essentialspro.tpdeny
-
+  clearinventory:
+    description: Clears a player's inventory.
+    usage: /clearinventory [player]
+    permission: essentialspro.clearinventory
+    aliases: [ ci ]
 permissions:
   essentialspro.*:
     description: Gives access to all EssentialsPro commands.
