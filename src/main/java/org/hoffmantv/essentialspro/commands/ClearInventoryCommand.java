@@ -1,10 +1,12 @@
 package org.hoffmantv.essentialspro.commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.Bukkit;
+import org.bukkit.util.ChatPaginator;
 
 public class ClearInventoryCommand implements CommandExecutor {
 
@@ -26,7 +28,7 @@ public class ClearInventoryCommand implements CommandExecutor {
                 else if(args.length == 1) {
                     target = Bukkit.getPlayer(args[0]);
                     if(target == null) {
-                        sender.sendMessage("That player is not online!");
+                        sender.sendMessage(ChatColor.RED + "That player is not online!");
                         return true;
                     }
                 }
@@ -36,13 +38,13 @@ public class ClearInventoryCommand implements CommandExecutor {
                 }
 
                 target.getInventory().clear();
-                target.sendMessage("Your inventory has been cleared.");
+                target.sendMessage(ChatColor.GREEN + "Your inventory has been cleared.");
                 if(!target.equals(sender)) {
-                    sender.sendMessage(target.getName() + "'s inventory has been cleared.");
+                    sender.sendMessage(ChatColor.RED + target.getName() + "'s inventory has been cleared.");
                 }
 
             } else {
-                sender.sendMessage("You don't have permission to use this command.");
+                sender.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
             }
         }
         return true;
