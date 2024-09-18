@@ -140,6 +140,10 @@ commands:
     description: Unjails a player.
     usage: /unjail <player>
     permission: essentialspro.unjail
+  shadowmode:
+    description: Toggle Shadow Mode for invisibility and non-interaction.
+    usage: /shadowmode
+    permission: essentialspro.shadowmode
 permissions:
   essentialspro.*:
     description: Gives access to all EssentialsPro commands.
@@ -178,3 +182,4 @@ permissions:
       essentialspro.unmute: true
       essentialspro.unjail: true
       essentialspro.jail: true
+      essentialspro.shadowmode: true

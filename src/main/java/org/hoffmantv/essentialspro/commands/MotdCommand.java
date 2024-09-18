@@ -1,6 +1,7 @@
 package org.hoffmantv.essentialspro.commands;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,14 +32,16 @@ public class MotdCommand implements CommandExecutor, Listener {
         if (args.length == 0) {
             // Display current MOTD
             String motd = getMotd();
-            sender.sendMessage(ChatColor.GREEN + "Current MOTD: " + motd);
+            sender.sendMessage(Component.text("Current MOTD: ", NamedTextColor.GREEN)
+                    .append(Component.text(motd, NamedTextColor.WHITE)));
         } else {
             // Set custom MOTD
-            String motd = ChatColor.translateAlternateColorCodes('&', String.join(" ", args));
+            String motd = translateAlternateColorCodes('&', String.join(" ", args));
             config.set("motd.custom", motd);
-            plugin.saveConfig();  // This saves the configuration to the config.yml
+            plugin.saveConfig();  // Save the updated MOTD to config.yml
             updateServerProperties(motd);
-            sender.sendMessage(ChatColor.GREEN + "MOTD updated to: " + motd);
+            sender.sendMessage(Component.text("MOTD updated to: ", NamedTextColor.GREEN)
+                    .append(Component.text(motd, NamedTextColor.WHITE)));
         }
         return true;
     }
@@ -56,16 +59,17 @@ public class MotdCommand implements CommandExecutor, Listener {
 
     private String getMotd() {
         String customMotd = config.getString("motd.custom", "").trim();
-        if (!customMotd.isEmpty()) {
-            return customMotd;
-        } else {
-            return config.getString("motd.default", "");
-        }
+        return !customMotd.isEmpty() ? customMotd : config.getString("motd.default", "");
     }
 
     @EventHandler
     public void onServerListPing(ServerListPingEvent event) {
         String motd = getMotd();
-        event.setMotd(ChatColor.translateAlternateColorCodes('&', motd));
+        event.setMotd(translateAlternateColorCodes('&', motd));
+    }
+
+    // Utility method to simulate translateAlternateColorCodes using Adventure API
+    private String translateAlternateColorCodes(char altColorChar, String textToTranslate) {
+        return textToTranslate.replace(altColorChar, '§');
     }
 }

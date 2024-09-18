@@ -1,6 +1,7 @@
 package org.hoffmantv.essentialspro.commands;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,11 +10,11 @@ import org.hoffmantv.essentialspro.EssentialsPro;
 
 public class TimeCommand implements CommandExecutor {
 
-    private static final String ONLY_PLAYERS_ERROR = ChatColor.RED + "\u274C This command can only be used by players.";
-    private static final String PERMISSION_ERROR = ChatColor.RED + "\u274C You don't have permission to use this command.";
-    private static final String USAGE_ERROR = ChatColor.RED + "\u274C Usage: /time <day|night|morning|evening>";
-    private static final String INVALID_TIME_ERROR = ChatColor.RED + "\u274C Invalid time argument. Use: day, night, morning, or evening.";
-    private static final String TIME_SUCCESS = ChatColor.GREEN + "Time set to ";
+    private static final Component ONLY_PLAYERS_ERROR = Component.text("This command can only be used by players.", NamedTextColor.RED);
+    private static final Component PERMISSION_ERROR = Component.text("You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component USAGE_ERROR = Component.text("Usage: /time <day|night|morning|evening>", NamedTextColor.RED);
+    private static final Component INVALID_TIME_ERROR = Component.text("Invalid time argument. Use: day, night, morning, or evening.", NamedTextColor.RED);
+    private static final Component TIME_SUCCESS = Component.text("Time set to ", NamedTextColor.GREEN);
 
     private final EssentialsPro plugin;
 
@@ -62,7 +63,7 @@ public class TimeCommand implements CommandExecutor {
         }
 
         player.getWorld().setTime(time);
-        player.sendMessage(TIME_SUCCESS + timeArg + ".");
+        player.sendMessage(TIME_SUCCESS.append(Component.text(timeArg + ".", NamedTextColor.GREEN)));
 
         return true;
     }

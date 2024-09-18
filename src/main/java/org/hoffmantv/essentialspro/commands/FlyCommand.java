@@ -1,7 +1,8 @@
 package org.hoffmantv.essentialspro.commands;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,7 +21,7 @@ public class FlyCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Ensure command can only be used by players
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            sender.sendMessage(Component.text("This command can only be used by players.", NamedTextColor.RED));
             return true;
         }
 
@@ -28,7 +29,7 @@ public class FlyCommand implements CommandExecutor {
 
         // Check if the player has the required permissions
         if (!player.hasPermission("essentialspro.fly")) {
-            player.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
+            player.sendMessage(Component.text("You don't have permission to use this command.", NamedTextColor.RED));
             return true;
         }
 
@@ -37,13 +38,13 @@ public class FlyCommand implements CommandExecutor {
         // If an argument is provided, consider it as target player
         if (args.length >= 1) {
             if (!player.hasPermission("essentialspro.fly.others")) {
-                player.sendMessage(ChatColor.RED + "You don't have permission to change others' flight mode.");
+                player.sendMessage(Component.text("You don't have permission to change others' flight mode.", NamedTextColor.RED));
                 return true;
             }
 
             target = Bukkit.getPlayerExact(args[0]);
             if (target == null) {
-                player.sendMessage(ChatColor.RED + "Could not find player: " + args[0]);
+                player.sendMessage(Component.text("Could not find player: " + args[0], NamedTextColor.RED));
                 return true;
             }
         }
@@ -64,9 +65,9 @@ public class FlyCommand implements CommandExecutor {
 
     // Utility method for sending messages
     private void sendMessage(Player target, Player player, String message) {
-        target.sendMessage(ChatColor.GREEN + message);
+        target.sendMessage(Component.text(message, NamedTextColor.GREEN));
         if (!target.equals(player)) {
-            player.sendMessage(ChatColor.GREEN + target.getName() + "'s " + message);
+            player.sendMessage(Component.text(target.getName() + "'s " + message, NamedTextColor.GREEN));
         }
     }
 }

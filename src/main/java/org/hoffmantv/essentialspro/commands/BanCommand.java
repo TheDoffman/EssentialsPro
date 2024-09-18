@@ -1,7 +1,8 @@
 package org.hoffmantv.essentialspro.commands;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,7 +26,7 @@ public class BanCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("essentialspro.ban")) {
-            sender.sendMessage(ChatColor.RED + "✖ You do not have permission to execute this command.");
+            sender.sendMessage(Component.text("✖ You do not have permission to execute this command.").color(NamedTextColor.RED));
             return true;
         }
 
@@ -36,12 +37,12 @@ public class BanCommand implements CommandExecutor {
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "✖ Unable to find player.");
+            sender.sendMessage(Component.text("✖ Unable to find player.").color(NamedTextColor.RED));
             return true;
         }
 
         if (banManager.isBanned(target.getName())) {
-            sender.sendMessage(ChatColor.RED + "✖ Player is already banned.");
+            sender.sendMessage(Component.text("✖ Player is already banned.").color(NamedTextColor.RED));
             return true;
         }
 
@@ -56,18 +57,19 @@ public class BanCommand implements CommandExecutor {
     }
 
     private void sendUsage(CommandSender sender, String label) {
-        sender.sendMessage(ChatColor.RED + "✖ Usage: /" + label + " <player> <reason> [duration]");
+        sender.sendMessage(Component.text("✖ Usage: /" + label + " <player> <reason> [duration]").color(NamedTextColor.RED));
     }
 
     private String extractReason(String[] args) {
         boolean hasDuration = args.length >= 3;
-        return Arrays.stream(args, 1, hasDuration ? args.length - 1 : args.length).collect(Collectors.joining(" "));
+        return Arrays.stream(args, 1, hasDuration ? args.length - 1 : args.length)
+                .collect(Collectors.joining(" "));
     }
 
     private void handlePermanentBan(Player target, String reason) {
         banManager.banPlayer(target.getName(), reason);
-        target.kickPlayer(ChatColor.RED + "\u26D4 You have been permanently banned for: " + reason);
-        Bukkit.broadcastMessage(ChatColor.RED + "\uD83D\uDD34 Player '" + target.getName() + "' has been permanently banned for: " + reason);
+        target.kickPlayer(Component.text("✖ You have been permanently banned for: " + reason).color(NamedTextColor.RED).toString());
+        Bukkit.broadcast(Component.text("⚠ Player '" + target.getName() + "' has been permanently banned for: " + reason).color(NamedTextColor.RED));
     }
 
     private void handleTemporaryBan(CommandSender sender, Player target, String reason, String durationString) {
@@ -75,10 +77,10 @@ public class BanCommand implements CommandExecutor {
         if (durationInSeconds > 0) {
             banManager.banPlayerTemporarily(target, reason, durationInSeconds);
             String formattedDuration = formatDuration(durationInSeconds);
-            target.kickPlayer(ChatColor.RED + "✖ You have been temporarily banned for: " + reason + ". Lifts in: " + formattedDuration);
-            Bukkit.broadcastMessage(ChatColor.RED + "\uD83D\uDD34 Player '" + target.getName() + "' has been temporarily banned for: " + reason + ". Lifts in: " + formattedDuration);
+            target.kickPlayer(Component.text("✖ You have been temporarily banned for: " + reason + ". Lifts in: " + formattedDuration).color(NamedTextColor.RED).toString());
+            Bukkit.broadcast(Component.text("⚠ Player '" + target.getName() + "' has been temporarily banned for: " + reason + ". Lifts in: " + formattedDuration).color(NamedTextColor.RED));
         } else {
-            sender.sendMessage(ChatColor.RED + "✖ Invalid duration. Use 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days. E.g., 1d or 30m.");
+            sender.sendMessage(Component.text("✖ Invalid duration. Use 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days. E.g., 1d or 30m.").color(NamedTextColor.RED));
         }
     }
 

@@ -1,7 +1,8 @@
 package org.hoffmantv.essentialspro.commands;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,14 +13,14 @@ public class MessageCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "\u274C This command can only be used by players.");
+            sender.sendMessage(Component.text("❌ This command can only be used by players.", NamedTextColor.RED));
             return true;
         }
 
         Player senderPlayer = (Player) sender;
 
         if (args.length < 2) {
-            senderPlayer.sendMessage(ChatColor.RED + "\u274C Usage: /message <player> <message>");
+            senderPlayer.sendMessage(Component.text("❌ Usage: /message <player> <message>", NamedTextColor.RED));
             return true;
         }
 
@@ -27,25 +28,24 @@ public class MessageCommand implements CommandExecutor {
         Player target = Bukkit.getPlayer(targetName);
 
         if (target == null || !target.isOnline()) {
-            senderPlayer.sendMessage(ChatColor.RED + "\u274C Player not found or not online.");
+            senderPlayer.sendMessage(Component.text("❌ Player not found or not online.", NamedTextColor.RED));
             return true;
         }
 
-        // Combine the rest of the arguments into the message
+        // Manually join the rest of the arguments after the first one (the target player's name)
         StringBuilder messageBuilder = new StringBuilder();
         for (int i = 1; i < args.length; i++) {
-            messageBuilder.append(args[i]);
-            if (i < args.length - 1) {
-                messageBuilder.append(" ");
-            }
+            messageBuilder.append(args[i]).append(" ");
         }
-        String message = messageBuilder.toString();
+        String message = messageBuilder.toString().trim(); // Trim to remove the trailing space
 
         // Send the message to the sender
-        senderPlayer.sendMessage(ChatColor.GRAY + "You" + ChatColor.RESET + " -> " + ChatColor.GRAY + target.getName() + ": " + ChatColor.RESET + message);
+        senderPlayer.sendMessage(Component.text("You -> " + target.getName() + ": ")
+                .append(Component.text(message, NamedTextColor.GRAY)));
 
         // Send the message to the target
-        target.sendMessage(ChatColor.GRAY + senderPlayer.getName() + ChatColor.RESET + " -> " + ChatColor.GRAY + "You: " + ChatColor.RESET + message);
+        target.sendMessage(Component.text(senderPlayer.getName() + " -> You: ")
+                .append(Component.text(message, NamedTextColor.GRAY)));
 
         return true;
     }

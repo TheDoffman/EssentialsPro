@@ -1,10 +1,12 @@
 package org.hoffmantv.essentialspro.commands;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
 import java.util.stream.Collectors;
 
 public class ListPlayersCommand implements CommandExecutor {
@@ -12,7 +14,7 @@ public class ListPlayersCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (isNotPlayer(sender)) {
-            sender.sendMessage(errorMessage("\u274C This command can only be used by players."));
+            sender.sendMessage(errorMessage("❌ This command can only be used by players."));
             return true;
         }
 
@@ -20,7 +22,7 @@ public class ListPlayersCommand implements CommandExecutor {
         String onlinePlayers = getPlayerList(player);
 
         if (onlinePlayers.isEmpty()) {
-            player.sendMessage(errorMessage("\u274C No players are currently online."));
+            player.sendMessage(errorMessage("❌ No players are currently online."));
             return true;
         }
 
@@ -34,19 +36,20 @@ public class ListPlayersCommand implements CommandExecutor {
         return !(sender instanceof Player);
     }
 
-    private String errorMessage(String message) {
-        return ChatColor.RED + message;
+    private Component errorMessage(String message) {
+        return Component.text(message, NamedTextColor.RED);
     }
 
-    private String successMessage(String message) {
-        return ChatColor.GREEN + message;
+    private Component successMessage(String message) {
+        return Component.text(message, NamedTextColor.GREEN);
     }
 
-    private String headerMessage(Player player, String title) {
-        return ChatColor.YELLOW + "---- " + ChatColor.GOLD + title + " ("
-                + player.getServer().getOnlinePlayers().size() + "/"
-                + player.getServer().getMaxPlayers() + ")"
-                + ChatColor.YELLOW + " ----";
+    private Component headerMessage(Player player, String title) {
+        return Component.text("---- ", NamedTextColor.YELLOW)
+                .append(Component.text(title, NamedTextColor.GOLD))
+                .append(Component.text(" (" + player.getServer().getOnlinePlayers().size() + "/"
+                        + player.getServer().getMaxPlayers() + ")", NamedTextColor.YELLOW))
+                .append(Component.text(" ----", NamedTextColor.YELLOW));
     }
 
     private String getPlayerList(Player player) {

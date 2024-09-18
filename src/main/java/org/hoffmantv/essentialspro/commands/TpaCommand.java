@@ -1,7 +1,8 @@
 package org.hoffmantv.essentialspro.commands;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,7 +10,8 @@ import org.bukkit.entity.Player;
 import org.hoffmantv.essentialspro.managers.TeleportRequestManager;
 
 public class TpaCommand implements CommandExecutor {
-    private TeleportRequestManager teleportRequestManager;
+
+    private final TeleportRequestManager teleportRequestManager;
 
     public TpaCommand(TeleportRequestManager teleportRequestManager) {
         this.teleportRequestManager = teleportRequestManager;
@@ -18,30 +20,33 @@ public class TpaCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("\u274C Only players can use this command.");
+            sender.sendMessage(Component.text("Only players can use this command.", NamedTextColor.RED));
             return true;
         }
 
         Player player = (Player) sender;
+
         if (!player.hasPermission("essentialspro.tpa")) {
-            player.sendMessage(ChatColor.RED + "\u274C You do not have permission to use this command.");
+            player.sendMessage(Component.text("You do not have permission to use this command.", NamedTextColor.RED));
             return true;
         }
 
         if (args.length != 1) {
-            player.sendMessage(ChatColor.RED + "\u274C Usage: /tpa <player>");
+            player.sendMessage(Component.text("✖ Usage: /tpa <player>", NamedTextColor.RED));
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            player.sendMessage(ChatColor.RED + "\u274C Player not found.");
+            player.sendMessage(Component.text("Player not found.", NamedTextColor.RED));
             return true;
         }
 
         teleportRequestManager.addRequest(player, target);
-        target.sendMessage(ChatColor.GREEN + player.getName() + " has requested to teleport to you. Use /tpaccept to accept or /tpadeny to deny.");
-        player.sendMessage(ChatColor.GREEN + "Teleport request sent to " + target.getName());
+
+        target.sendMessage(Component.text(player.getName() + " has requested to teleport to you.", NamedTextColor.GREEN)
+                .append(Component.text(" Use /tpaccept to accept or /tpadeny to deny.", NamedTextColor.GRAY)));
+        player.sendMessage(Component.text("Teleport request sent to " + target.getName(), NamedTextColor.GREEN));
 
         return true;
     }

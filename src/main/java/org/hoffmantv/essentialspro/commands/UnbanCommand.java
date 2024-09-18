@@ -1,16 +1,16 @@
 package org.hoffmantv.essentialspro.commands;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.hoffmantv.essentialspro.managers.BanManager;
 
 public class UnbanCommand implements CommandExecutor {
     private final BanManager banManager;
 
-    private static final String PERMISSION_ERROR = ChatColor.RED + "\u274C You don't have permission to use this command.";
+    private static final Component PERMISSION_ERROR = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
 
     public UnbanCommand(BanManager banManager) {
         this.banManager = banManager;
@@ -24,7 +24,7 @@ public class UnbanCommand implements CommandExecutor {
         }
 
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "\u274C Usage: /unban <player>");
+            sender.sendMessage(Component.text("Usage: /unban <player>", NamedTextColor.RED));
             return true;
         }
 
@@ -32,9 +32,9 @@ public class UnbanCommand implements CommandExecutor {
 
         try {
             banManager.unbanPlayer(playerName);
-            sender.sendMessage(ChatColor.GREEN + "Player " + playerName + " has been unbanned.");
+            sender.sendMessage(Component.text("Player " + playerName + " has been unbanned.", NamedTextColor.GREEN));
         } catch (IllegalArgumentException e) {
-            sender.sendMessage(ChatColor.RED + e.getMessage());
+            sender.sendMessage(Component.text(e.getMessage(), NamedTextColor.RED));
         }
 
         return true;

@@ -11,30 +11,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.*;
 
-/**
- * A class responsible for checking and updating plugin version.
- */
 public class PluginUpdater {
 
     private final Plugin plugin;
     private final int resourceId;
 
-    /**
-     * Constructor for PluginUpdater.
-     *
-     * @param plugin    The plugin to be updated
-     * @param resourceId The resource id for the plugin
-     */
     public PluginUpdater(Plugin plugin, int resourceId) {
         this.plugin = plugin;
         this.resourceId = resourceId;
     }
 
-    /**
-     * Checks whether the plugin is up to date.
-     *
-     * @return true if up to date, false if not
-     */
     public boolean isPluginUpToDate() {
         String currentVersion = plugin.getDescription().getVersion();
         String latestVersion = getLatestVersionFromWebsite();
@@ -48,11 +34,6 @@ public class PluginUpdater {
         return true;
     }
 
-    /**
-     * Retrieves the latest version of the plugin from the website.
-     *
-     * @return the latest version as a String
-     */
     private String getLatestVersionFromWebsite() {
         String version = null;
         try {
@@ -83,9 +64,6 @@ public class PluginUpdater {
         return version;
     }
 
-    /**
-     * Downloads the plugin update.
-     */
     private void downloadUpdate() {
         String latestVersion = getLatestVersionFromWebsite();
         if (latestVersion == null) {

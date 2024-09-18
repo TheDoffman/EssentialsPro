@@ -1,6 +1,7 @@
 package org.hoffmantv.essentialspro.commands;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,10 +16,11 @@ import org.hoffmantv.essentialspro.EssentialsPro;
 public class SpawnCommand implements CommandExecutor, Listener {
 
     private static final String PERMISSION_SPAWN = "essentialspro.spawn";
-    private static final String MSG_ONLY_PLAYERS = ChatColor.RED + "\u274C This command can only be used by players.";
-    private static final String MSG_NO_PERMISSION = ChatColor.RED + "\u274C You don't have permission to use this command.";
-    private static final String MSG_NO_SPAWN_SET = ChatColor.RED + "\u274C The spawn location is not set.";
-    private static final String MSG_WELCOME_SPAWN = ChatColor.GREEN + "Welcome back to the spawn!";
+
+    private static final Component MSG_ONLY_PLAYERS = Component.text("This command can only be used by players.", NamedTextColor.RED);
+    private static final Component MSG_NO_PERMISSION = Component.text("You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component MSG_NO_SPAWN_SET = Component.text("The spawn location is not set.", NamedTextColor.RED);
+    private static final Component MSG_WELCOME_SPAWN = Component.text("Welcome back to the spawn!", NamedTextColor.GREEN);
 
     private final EssentialsPro plugin;
 
@@ -60,10 +62,11 @@ public class SpawnCommand implements CommandExecutor, Listener {
             event.setRespawnLocation(spawnLocation);
         }
     }
+
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
         if (event.getLine(0).equalsIgnoreCase("[Spawn]")) {
-            event.setLine(1, ChatColor.GREEN + "[Spawn]");
+            event.setLine(1, Component.text("[Spawn]", NamedTextColor.GREEN).toString());
             event.setLine(0, "");
         }
     }

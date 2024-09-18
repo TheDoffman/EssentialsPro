@@ -1,7 +1,8 @@
 package org.hoffmantv.essentialspro.commands;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,32 +24,32 @@ public class MuteCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("essentialspro.mute")) {
-            sender.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
+            sender.sendMessage(Component.text("You don't have permission to use this command.", NamedTextColor.RED));
             return true;
         }
 
         if (args.length < 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /mute <player> [duration]");
+            sender.sendMessage(Component.text("Usage: /mute <player> [duration]", NamedTextColor.RED));
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "Player not found.");
+            sender.sendMessage(Component.text("Player not found.", NamedTextColor.RED));
             return true;
         }
 
         if (muteManager.isMuted(target)) {
             muteManager.unmutePlayer(target);
-            sender.sendMessage(ChatColor.GREEN + "Player " + target.getName() + " has been unmuted.");
-            target.sendMessage(ChatColor.GREEN + "You have been unmuted.");
+            sender.sendMessage(Component.text("Player " + target.getName() + " has been unmuted.", NamedTextColor.GREEN));
+            target.sendMessage(Component.text("You have been unmuted.", NamedTextColor.GREEN));
             return true;
         }
 
         long duration = parseDuration(args.length > 1 ? args[1] : "10m"); // Default to 10 minutes if no duration is provided
         muteManager.mutePlayer(target, duration);
-        sender.sendMessage(ChatColor.GREEN + "Player " + target.getName() + " has been muted for " + formatDuration(duration) + ".");
-        target.sendMessage(ChatColor.RED + "You have been muted for " + formatDuration(duration) + ".");
+        sender.sendMessage(Component.text("Player " + target.getName() + " has been muted for " + formatDuration(duration) + ".", NamedTextColor.GREEN));
+        target.sendMessage(Component.text("You have been muted for " + formatDuration(duration) + ".", NamedTextColor.RED));
 
         return true;
     }
@@ -68,6 +69,8 @@ public class MuteCommand implements CommandExecutor {
                     return TimeUnit.HOURS.toSeconds(duration);
                 case "d":
                     return TimeUnit.DAYS.toSeconds(duration);
+                default:
+                    return 600; // Default to 10 minutes (600 seconds)
             }
         }
         return 600; // Default to 10 minutes (600 seconds)

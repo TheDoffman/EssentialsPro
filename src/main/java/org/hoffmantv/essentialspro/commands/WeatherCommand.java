@@ -1,6 +1,7 @@
 package org.hoffmantv.essentialspro.commands;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,19 +19,19 @@ public class WeatherCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "\u274C This command can only be used by players.");
+            sender.sendMessage(Component.text("This command can only be used by players.", NamedTextColor.RED));
             return true;
         }
 
         Player player = (Player) sender;
 
         if (!player.hasPermission("essentialspro.weather")) {
-            player.sendMessage(ChatColor.RED + "\u274C You don't have permission to use this command.");
+            player.sendMessage(Component.text("You don't have permission to use this command.", NamedTextColor.RED));
             return true;
         }
 
         if (args.length != 1) {
-            player.sendMessage(ChatColor.RED + "Usage: /weather <clear|rain|storm>");
+            player.sendMessage(Component.text("Usage: /weather <clear|rain|storm>", NamedTextColor.RED));
             return true;
         }
 
@@ -47,14 +48,14 @@ public class WeatherCommand implements CommandExecutor {
                 isThundering = true;
                 break;
             default:
-                player.sendMessage(ChatColor.RED + "\u274C Invalid weather argument. Use: clear, rain, or storm.");
+                player.sendMessage(Component.text("Invalid weather argument. Use: clear, rain, or storm.", NamedTextColor.RED));
                 return true;
         }
 
         player.getWorld().setStorm(!"clear".equals(weatherArg));
         player.getWorld().setThundering(isThundering);
 
-        player.sendMessage(ChatColor.GREEN + "Weather set to " + weatherArg + ".");
+        player.sendMessage(Component.text("Weather set to " + weatherArg + ".", NamedTextColor.GREEN));
 
         return true;
     }

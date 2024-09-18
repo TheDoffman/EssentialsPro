@@ -11,6 +11,7 @@ org/hoffmantv/essentialspro/Metrics$SingleLineChart.class
 org/hoffmantv/essentialspro/commands/FireworkCommand.class
 org/hoffmantv/essentialspro/Metrics$AdvancedPie.class
 org/hoffmantv/essentialspro/Metrics$MetricsBase.class
+org/hoffmantv/essentialspro/commands/ShadowModeCommand.class
 org/hoffmantv/essentialspro/commands/HelpCommand.class
 org/hoffmantv/essentialspro/commands/ClearChatCommand.class
 org/hoffmantv/essentialspro/commands/UnmuteCommand.class

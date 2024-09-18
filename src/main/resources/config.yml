@@ -7,8 +7,8 @@ motd:
 spawn:
 
 # Custom messages for players joining and leaving
-  joinMessage: "&e[+] {player} has joined the server!"
-  leaveMessage: "&c[-] {player} has left the server!"
+joinMessage: "<yellow>[+] <green>{player} <yellow>has joined the server!"
+leaveMessage: "<red>[-] <gray>{player} <red>has left the server!"
 
 # Modify what people see when they die
 death_messages:

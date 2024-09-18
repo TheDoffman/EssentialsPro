@@ -1,7 +1,8 @@
 package org.hoffmantv.essentialspro.commands;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,14 +20,14 @@ public class FeedCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "\u274C This command can only be used by players.");
+            sender.sendMessage(Component.text("This command can only be used by players.").color(NamedTextColor.RED));
             return true;
         }
 
         Player player = (Player) sender;
 
         if (!player.hasPermission("essentialspro.feed")) {
-            player.sendMessage(ChatColor.RED + "\u274C You don't have permission to use this command.");
+            player.sendMessage(Component.text("You don't have permission to use this command.").color(NamedTextColor.RED));
             return true;
         }
 
@@ -34,7 +35,7 @@ public class FeedCommand implements CommandExecutor {
         if (args.length > 0 && player.hasPermission("essentialspro.feed.others")) {
             Player target = Bukkit.getPlayer(args[0]);
             if (target == null || !target.isOnline()) {
-                player.sendMessage(ChatColor.RED + "\u274C Player not found or not online.");
+                player.sendMessage(Component.text("Player not found or not online.").color(NamedTextColor.RED));
                 return true;
             }
 
@@ -42,14 +43,14 @@ public class FeedCommand implements CommandExecutor {
             target.setFoodLevel(20);
             target.setSaturation(5.0f);
 
-            player.sendMessage(ChatColor.GREEN + "\uD83C\uDF57 You have fed " + target.getName() + ".");
-            target.sendMessage(ChatColor.GREEN + "\uD83C\uDF57 You have been fed by " + player.getName() + ".");
+            player.sendMessage(Component.text("You have fed " + target.getName() + ".").color(NamedTextColor.GREEN));
+            target.sendMessage(Component.text("You have been fed by " + player.getName() + ".").color(NamedTextColor.GREEN));
         } else {
             // Feed the command sender (player)
             player.setFoodLevel(20);
             player.setSaturation(5.0f);
 
-            player.sendMessage(ChatColor.GREEN + "\uD83C\uDF57 You have been fed.");
+            player.sendMessage(Component.text("You have been fed.").color(NamedTextColor.GREEN));
         }
 
         return true;

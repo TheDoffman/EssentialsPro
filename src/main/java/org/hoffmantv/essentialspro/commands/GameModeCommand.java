@@ -1,6 +1,7 @@
 package org.hoffmantv.essentialspro.commands;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,7 +11,7 @@ import org.hoffmantv.essentialspro.EssentialsPro;
 
 public class GameModeCommand implements CommandExecutor {
 
-    private EssentialsPro plugin;
+    private final EssentialsPro plugin;
 
     public GameModeCommand(EssentialsPro plugin) {
         this.plugin = plugin;
@@ -20,7 +21,7 @@ public class GameModeCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Check if the sender is a player
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "\u274C This command can only be used by players!");
+            sender.sendMessage(Component.text("❌ This command can only be used by players!").color(NamedTextColor.RED));
             return true;
         }
 
@@ -28,13 +29,13 @@ public class GameModeCommand implements CommandExecutor {
 
         // Check if the player has permission to use the command
         if (!player.hasPermission("essentialspro.gamemode")) {
-            player.sendMessage(ChatColor.RED + "\u274C You do not have permission to use this command.");
+            player.sendMessage(Component.text("❌ You do not have permission to use this command.").color(NamedTextColor.RED));
             return true;
         }
 
         // Check the number of arguments
         if (args.length != 1) {
-            player.sendMessage(ChatColor.RED + "➡ Usage: /gamemode <1|2|3|4>");
+            player.sendMessage(Component.text("➡ Usage: /gamemode <1|2|3|4>").color(NamedTextColor.RED));
             return true;
         }
 
@@ -61,20 +62,19 @@ public class GameModeCommand implements CommandExecutor {
                 gameMode = GameMode.SPECTATOR;
                 break;
             default:
-                player.sendMessage(ChatColor.RED + "✖ Invalid game mode alias. Use 1, 2, 3, or 4.");
+                player.sendMessage(Component.text("❌ Invalid game mode alias. Use 1, 2, 3, or 4.").color(NamedTextColor.RED));
                 return true;
         }
 
         // Check if the player is already in the requested game mode
         if (player.getGameMode() == gameMode) {
-            player.sendMessage(ChatColor.YELLOW + "⚠ You are already in " + gameMode.name() + " mode.");
+            player.sendMessage(Component.text("⚠ You are already in " + gameMode.name() + " mode.").color(NamedTextColor.YELLOW));
             return true;
         }
 
         // Set the player's game mode
         player.setGameMode(gameMode);
-
-        player.sendMessage(ChatColor.GREEN + "✔ Your game mode has been set to " + gameMode.name() + ".");
+        player.sendMessage(Component.text("✔ Your game mode has been set to " + gameMode.name() + ".").color(NamedTextColor.GREEN));
 
         return true;
     }

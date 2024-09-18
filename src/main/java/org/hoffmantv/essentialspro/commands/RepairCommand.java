@@ -1,6 +1,7 @@
 package org.hoffmantv.essentialspro.commands;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,24 +15,25 @@ public class RepairCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "\u274C This command can only be used by players.");
+            sender.sendMessage(Component.text("This command can only be used by players.", NamedTextColor.RED));
             return true;
         }
 
         Player player = (Player) sender;
+
         if (!player.hasPermission("essentialspro.repair")) {
-            player.sendMessage(ChatColor.RED + "\u274C You do not have permission to use this command.");
+            player.sendMessage(Component.text("You do not have permission to use this command.", NamedTextColor.RED));
             return true;
         }
 
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item.getType().isAir()) {
-            player.sendMessage(ChatColor.RED + "\u274C You are not holding any item.");
+            player.sendMessage(Component.text("You are not holding any item.", NamedTextColor.RED));
             return true;
         }
 
         if (!(item.getItemMeta() instanceof Damageable)) {
-            player.sendMessage(ChatColor.RED + "\u274C This item cannot be repaired.");
+            player.sendMessage(Component.text("This item cannot be repaired.", NamedTextColor.RED));
             return true;
         }
 
@@ -39,9 +41,9 @@ public class RepairCommand implements CommandExecutor {
         if (itemMeta.hasDamage()) {
             itemMeta.setDamage(0);
             item.setItemMeta((ItemMeta) itemMeta);
-            player.sendMessage(ChatColor.GREEN + "✔ Item repaired.");
+            player.sendMessage(Component.text("Item repaired.", NamedTextColor.GREEN));
         } else {
-            player.sendMessage(ChatColor.GRAY + "ℹ The item you are holding does not need repair.");
+            player.sendMessage(Component.text("The item you are holding does not need repair.", NamedTextColor.GRAY));
         }
 
         return true;

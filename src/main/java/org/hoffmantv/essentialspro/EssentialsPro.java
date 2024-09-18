@@ -150,6 +150,7 @@ public class EssentialsPro extends JavaPlugin {
         registerCommand("mute", new MuteCommand(muteManager));
         registerCommand("unmute", new UnmuteCommand(muteManager));
         registerCommand("clearinventory", new ClearInventoryCommand());
+        registerCommand("ShadowMode", new ShadowModeCommand(this));
     }
 
     // Helper method for registering commands
@@ -171,6 +172,7 @@ public class EssentialsPro extends JavaPlugin {
         pluginManager.registerEvents(new JoinLeaveListener(this), this);
         pluginManager.registerEvents(new ChatListener(muteManager), this);
         pluginManager.registerEvents(new ColoredSignsEvent(), this);
+        pluginManager.registerEvents(new ShadowModeCommand(this), this);
     }
 
     // Create the nicknames config file

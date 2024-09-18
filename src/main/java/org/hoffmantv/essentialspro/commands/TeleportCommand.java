@@ -1,7 +1,8 @@
 package org.hoffmantv.essentialspro.commands;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,11 +11,10 @@ import org.hoffmantv.essentialspro.EssentialsPro;
 
 public class TeleportCommand implements CommandExecutor {
 
-    private static final String ONLY_PLAYERS_ERROR = ChatColor.RED + "\u274C This command can only be used by players.";
-    private static final String PERMISSION_ERROR = ChatColor.RED + "\u274C You don't have permission to use this command.";
-    private static final String USAGE_ERROR = ChatColor.RED + "\u274C Usage: /tp <player>";
-    private static final String PLAYER_NOT_FOUND_ERROR = ChatColor.RED + "\u274C Player not found or not online.";
-    private static final String TELEPORT_SUCCESS = ChatColor.GREEN + "You have been teleported to ";
+    private static final Component ONLY_PLAYERS_ERROR = Component.text("This command can only be used by players.", NamedTextColor.RED);
+    private static final Component PERMISSION_ERROR = Component.text("You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component USAGE_ERROR = Component.text("Usage: /tp <player>", NamedTextColor.RED);
+    private static final Component PLAYER_NOT_FOUND_ERROR = Component.text("Player not found or not online.", NamedTextColor.RED);
 
     private final EssentialsPro plugin;
 
@@ -48,7 +48,7 @@ public class TeleportCommand implements CommandExecutor {
         }
 
         player.teleport(target.getLocation());
-        player.sendMessage(TELEPORT_SUCCESS + target.getName() + ".");
+        player.sendMessage(Component.text("You have been teleported to " + target.getName() + ".", NamedTextColor.GREEN));
 
         return true;
     }

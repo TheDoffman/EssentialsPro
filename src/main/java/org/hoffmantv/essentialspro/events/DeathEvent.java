@@ -1,6 +1,7 @@
 package org.hoffmantv.essentialspro.events;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -14,23 +15,24 @@ public class DeathEvent implements Listener {
         this.plugin = plugin;
     }
 
-    public String getCustomDeathMessage(String cause, String playerName) {
+    public Component getCustomDeathMessage(String cause, String playerName) {
         String message = plugin.getConfig().getString("death_messages." + cause);
-        if (message == null) {
-            return ""; // Return default or some other fallback message
+        if (message == null || message.isEmpty()) {
+            return Component.empty(); // Return an empty component if no custom message exists
         }
-        return ChatColor.translateAlternateColorCodes('&', message.replace("[player]", playerName));
+        // Replace [player] placeholder with actual player name and translate color codes
+        message = message.replace("[player]", playerName);
+        return LegacyComponentSerializer.legacyAmpersand().deserialize(message);
     }
+
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         String cause = event.getEntity().getLastDamageCause().getCause().toString();
         String playerName = event.getEntity().getName();
 
-        String customMessage = getCustomDeathMessage(cause, playerName);
-        if (!customMessage.isEmpty()) {
-            event.setDeathMessage(customMessage);
+        Component customMessage = getCustomDeathMessage(cause, playerName);
+        if (!customMessage.equals(Component.empty())) {
+            event.deathMessage(customMessage); // Set the custom death message using Adventure API
         }
     }
-
-
 }

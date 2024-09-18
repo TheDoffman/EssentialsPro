@@ -1,6 +1,7 @@
 package org.hoffmantv.essentialspro.commands;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,10 +10,9 @@ import org.hoffmantv.essentialspro.EssentialsPro;
 
 public class SetSpawnCommand implements CommandExecutor {
 
-    private static final String PERMISSION_SETSPAWN = "essentialspro.setspawn";
-    private static final String MSG_ONLY_PLAYERS = ChatColor.RED + "\u274C This command can only be used by players.";
-    private static final String MSG_NO_PERMISSION = ChatColor.RED + "\u274C You don't have permission to use this command.";
-    private static final String MSG_SPAWN_SET_SUCCESS = ChatColor.GREEN + "Spawn location set successfully!";
+    private static final Component MSG_ONLY_PLAYERS = Component.text("This command can only be used by players.", NamedTextColor.RED);
+    private static final Component MSG_NO_PERMISSION = Component.text("You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component MSG_SPAWN_SET_SUCCESS = Component.text("Spawn location set successfully!", NamedTextColor.GREEN);
 
     private final EssentialsPro plugin;
 
@@ -29,7 +29,7 @@ public class SetSpawnCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if (!player.hasPermission(PERMISSION_SETSPAWN)) {
+        if (!player.hasPermission("essentialspro.setspawn")) {
             player.sendMessage(MSG_NO_PERMISSION);
             return true;
         }
@@ -38,7 +38,7 @@ public class SetSpawnCommand implements CommandExecutor {
             plugin.setSpawnLocation(player.getLocation());
             player.sendMessage(MSG_SPAWN_SET_SUCCESS);
         } catch (Exception e) {
-            player.sendMessage(ChatColor.RED + "\u274C An error occurred while setting spawn location: " + e.getMessage());
+            player.sendMessage(Component.text("An error occurred while setting spawn location: " + e.getMessage(), NamedTextColor.RED));
             return true;
         }
 
