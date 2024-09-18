@@ -13,6 +13,7 @@ org/hoffmantv/essentialspro/Metrics$AdvancedPie.class
 org/hoffmantv/essentialspro/Metrics$MetricsBase.class
 org/hoffmantv/essentialspro/commands/HelpCommand.class
 org/hoffmantv/essentialspro/commands/ClearChatCommand.class
+org/hoffmantv/essentialspro/commands/UnmuteCommand.class
 org/hoffmantv/essentialspro/commands/TeleportCommand.class
 org/hoffmantv/essentialspro/Metrics$SimplePie.class
 org/hoffmantv/essentialspro/commands/FlyCommand.class
@@ -23,7 +24,9 @@ org/hoffmantv/essentialspro/commands/InventorySeeCommand.class
 org/hoffmantv/essentialspro/commands/BroadcastCommand.class
 org/hoffmantv/essentialspro/events/ColoredSignsEvent.class
 org/hoffmantv/essentialspro/commands/TpaCommand.class
+org/hoffmantv/essentialspro/commands/MuteCommand.class
 org/hoffmantv/essentialspro/managers/FreezeManager.class
+org/hoffmantv/essentialspro/managers/MuteManager.class
 org/hoffmantv/essentialspro/commands/TimeCommand.class
 org/hoffmantv/essentialspro/listeners/SignListener.class
 org/hoffmantv/essentialspro/commands/KickCommand.class
@@ -44,6 +47,7 @@ org/hoffmantv/essentialspro/commands/ClearInventoryCommand.class
 org/hoffmantv/essentialspro/Metrics$AdvancedBarChart.class
 org/hoffmantv/essentialspro/commands/FreezeCommand.class
 org/hoffmantv/essentialspro/commands/BroadcastCommand$1.class
+org/hoffmantv/essentialspro/listeners/ChatListener.class
 org/hoffmantv/essentialspro/commands/RepairCommand.class
 org/hoffmantv/essentialspro/commands/BanCommand.class
 org/hoffmantv/essentialspro/commands/TpAcceptCommand.class

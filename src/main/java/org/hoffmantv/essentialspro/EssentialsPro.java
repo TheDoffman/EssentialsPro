@@ -10,11 +10,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.hoffmantv.essentialspro.commands.*;
 import org.hoffmantv.essentialspro.events.ColoredSignsEvent;
 import org.hoffmantv.essentialspro.events.DeathEvent;
+import org.hoffmantv.essentialspro.listeners.ChatListener;
 import org.hoffmantv.essentialspro.listeners.FreezeListener;
 import org.hoffmantv.essentialspro.listeners.JoinLeaveListener;
 import org.hoffmantv.essentialspro.listeners.SignListener;
 import org.hoffmantv.essentialspro.managers.BanManager;
 import org.hoffmantv.essentialspro.managers.FreezeManager;
+import org.hoffmantv.essentialspro.managers.MuteManager;
 import org.hoffmantv.essentialspro.managers.TeleportRequestManager;
 
 import java.io.File;
@@ -29,6 +31,8 @@ public class EssentialsPro extends JavaPlugin {
     private File nicknamesFile;
     private TeleportRequestManager teleportRequestManager;
 
+    private MuteManager muteManager;
+
 
     // Plugin enable logic
     @Override
@@ -37,6 +41,9 @@ public class EssentialsPro extends JavaPlugin {
         banManager = new BanManager();
         freezeManager = new FreezeManager();
         this.teleportRequestManager = new TeleportRequestManager();
+
+        muteManager = new MuteManager(getDataFolder());
+
 
         int pluginId = 2215; // <-- Replace with the id of your plugin!
         Metrics metrics = new Metrics(this, pluginId);
@@ -86,7 +93,7 @@ public class EssentialsPro extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SignListener(this), this);
         getServer().getPluginManager().registerEvents(new DeathEvent(this), this);
         getServer().getPluginManager().registerEvents(new JoinLeaveListener(this), this);
-
+        getServer().getPluginManager().registerEvents(new ChatListener(muteManager), this);
 
     }
 
@@ -177,6 +184,8 @@ public class EssentialsPro extends JavaPlugin {
             getCommand("tpa").setExecutor(new TpaCommand(teleportRequestManager));
             getCommand("tpaccept").setExecutor(new TpAcceptCommand(teleportRequestManager));
             getCommand("tpdeny").setExecutor(new TpDenyCommand(teleportRequestManager));
+            getCommand("mute").setExecutor(new MuteCommand(muteManager));
+            getCommand("unmute").setExecutor(new UnmuteCommand(muteManager));
             this.getCommand("clearinventory").setExecutor(new ClearInventoryCommand());
 
         }

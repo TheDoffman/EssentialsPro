@@ -10,6 +10,14 @@ commands:
     description: Launches a firework at the player's location.
     usage: /<command>
     permission: essentialspro.firework
+  mute:
+    description: Mute or unmute a player.
+    usage: /mute <player> [duration]
+    permission: essentialspro.mute
+  unmute:
+    description: Unmute a player.
+    usage: /unmute <player>
+    permission: essentialspro.unmute
   kick:
     description: Kick a player from the server.
     usage: /kick <player> [reason]
@@ -158,3 +166,5 @@ permissions:
       essentialspro.tpdeny: true
       essentialspro.tpaccept: true
       essentialspro.tpa: true
+      essentialspro.mute: true
+      essentialspro.unmute: true
