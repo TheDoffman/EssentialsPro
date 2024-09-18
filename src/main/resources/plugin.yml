@@ -1,0 +1,160 @@
+name: EssentialsPro
+version: 1.2.1
+main: org.hoffmantv.essentialspro.EssentialsPro
+author: HoffmanTV
+description: A Minecraft Essentials plugin.
+api-version: 1.20
+
+commands:
+  firework:
+    description: Launches a firework at the player's location.
+    usage: /<command>
+    permission: essentialspro.firework
+  kick:
+    description: Kick a player from the server.
+    usage: /kick <player> [reason]
+    permission: essentialspro.kick  # Permission node for the kick command
+  broadcast:
+    description: Broadcast a message to the entire server.
+    usage: /broadcast <message>
+    permission: essentialspro.broadcast
+  help:
+    description: Show the list of available commands.
+    usage: /<command> [page]
+  spawn:
+    description: Teleport to the server spawn point.
+    usage: /spawn
+    permission: essentialspro.spawn  # Permission node for the spawn command
+  setspawn:
+    description: Set the server spawn point.
+    usage: /setspawn
+    permission: essentialspro.setspawn
+  gamemode:
+    description: Change your game mode.
+    usage: /gamemode <1|2|3|4>
+    permission: essentialspro.gamemode
+    aliases: [ gm ]
+  time:
+    description: Change the time of day in the game world.
+    usage: /<command> <day|night|morning|evening>
+    permission: essentialspro.time   # Add the permission node here
+  weather:
+    description: Change the weather in the game world.
+    usage: /<command> <clear|rain|storm>
+    permission: essentialspro.weather   # Add the permission node here
+  fly:
+    description: Toggles flight mode for the player or others.
+    usage: /<command> [player]
+    permission: essentialspro.fly
+    permission-message: You don't have permission to use this command.
+  heal:
+    description: Heal yourself or another player.
+    usage: /<command> [player]
+    permission: essentialspro.heal
+  feed:
+    description: Feed yourself or another player.
+    usage: /<command> [player]
+    permission: essentialspro.feed
+  tp:
+    description: Teleport to another player.
+    usage: /<command> <player>
+    permission: essentialspro.teleport
+  listplayers:
+    description: Show a list of online players.
+    usage: /<command>
+    permission: essentialspro.listplayers
+    aliases: [ lp, list ]
+  motd:
+    description: Change the MOTD of the server
+    usage: /motd <message>
+    permission: essentialspro.motd
+  reloadessentials:
+    description: Reload the EssentialsPro configuration
+    usage: /reloadessentials
+    permission: essentialspro.reload
+    aliases: [ epr ]
+  smite:
+    description: Smite a player with lightning
+    usage: /smite <player>
+    permission: essentialspro.smite
+  clearchat:
+    description: Clears the chat for all players.
+    usage: /clearchat
+    permission: essentialspro.clearchat
+  inventorysee:
+    description: Allows a player to see into another player's inventory.
+    usage: /inventorysee <player>
+    permission: essentialspro.inventorysee
+  message:
+    description: Send a private message to another player.
+    usage: /message <player> <message>
+    permission: essentialspro.message
+  ban:
+    description: Bans a player from the server.
+    usage: /<command> <player> <reason> [duration]
+    permission: essentialspro.ban
+    permission-message: You don't have permission to use this command.
+  unban:
+    description: Unban a player.
+    usage: /unban <player>
+    permission: essentialspro.unban
+  freeze:
+    description: Freezes or unfreezes a player.
+    usage: /freeze <player>
+    permission: essentialspro.freeze
+    permission-message: You don't have permission to use this command.
+  repair:
+    description: Allows a player to fix the item in their hand.
+    usage: /repair
+    permission: essentialspro.repair
+  tpa:
+    description: Send a teleport request to a spicific player.
+    usage: /tpa [name]
+    permission: essentialspro.tpa
+  tpaccept:
+    description: Allows a player to accept a teleport request.
+    usage: /tpaccept
+    permission: essentialspro.tpaccept
+  tpdeny:
+    description: Allows a player to deny a teleport request.
+    usage: /tpdeny
+    permission: essentialspro.tpdeny
+  clearinventory:
+    description: Clears a player's inventory.
+    usage: /clearinventory [player]
+    permission: essentialspro.clearinventory
+    aliases: [ ci ]
+permissions:
+  essentialspro.*:
+    description: Gives access to all EssentialsPro commands.
+    children:
+      essentialspro.kick: true
+      essentialspro.broadcast: true
+      essentialspro.spawn: true
+      essentialspro.setspawn: true
+      essentialspro.gamemode: true
+      essentialspro.time: true
+      essentialspro.weather: true
+      essentialspro.fly: true
+      essentialspro.fly.others: true
+      essentialspro.heal: true
+      essentialspro.feed: true
+      essentialspro.teleport: true
+      essentialspro.listplayers: true
+      essentialspro.nickname: true
+      essentialspro.motd: true
+      essentialspro.reload: true
+      essentialspro.smite: true
+      essentialspro.clearchat: true
+      essentialspro.inventorysee: true
+      essentialspro.message: true
+      essentialspro.ban: true
+      essentialspro.unban: true
+      essentialspro.freeze: true
+      essentialspro.freeze.others: true
+      essentialspro.magiccarpet: true
+      essentialspro.firework: true
+      essentialspro.repair: true
+      essentialspro.tpdeny: true
+      essentialspro.tpaccept: true
+      essentialspro.tpa: true
