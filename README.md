@@ -85,5 +85,3 @@ spawn:
   x: 100
   y: 65
   z: 200
-
-This README provides all necessary information about the plugin, including features, commands, permissions, configuration options, and future plans. You can tailor the content as needed!
