@@ -1,8 +1,10 @@
 package org.hoffmantv.essentialspro;
 
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -14,93 +16,64 @@ import org.hoffmantv.essentialspro.listeners.ChatListener;
 import org.hoffmantv.essentialspro.listeners.FreezeListener;
 import org.hoffmantv.essentialspro.listeners.JoinLeaveListener;
 import org.hoffmantv.essentialspro.listeners.SignListener;
-import org.hoffmantv.essentialspro.managers.*;
+import org.hoffmantv.essentialspro.managers.BanManager;
+import org.hoffmantv.essentialspro.managers.FreezeManager;
+import org.hoffmantv.essentialspro.managers.MuteManager;
+import org.hoffmantv.essentialspro.managers.TeleportRequestManager;
 
 import java.io.File;
 
 public class EssentialsPro extends JavaPlugin {
 
-    private static EssentialsPro instance;
     private String pluginVersion;
     private Location spawnLocation;
     private BanManager banManager;
     private FreezeManager freezeManager;
-    private File nicknamesFile;
     private TeleportRequestManager teleportRequestManager;
     private MuteManager muteManager;
 
     // Plugin enable logic
     @Override
     public void onEnable() {
-        instance = this;
+        EssentialsPro instance = this;
         banManager = new BanManager();
         freezeManager = new FreezeManager();
-        this.teleportRequestManager = new TeleportRequestManager();
+        teleportRequestManager = new TeleportRequestManager();
         muteManager = new MuteManager(getDataFolder());
 
-
-        int pluginId = 2215; // <-- Replace with the id of your plugin!
-        Metrics metrics = new Metrics(this, pluginId);
+        // Register plugin metrics
+        Metrics metrics = new Metrics(this, 2215);
 
         // Check for updates
         PluginUpdater updater = new PluginUpdater(this, 97026);
-        boolean upToDate = updater.isPluginUpToDate();
-
-        if (!upToDate) {
-            // Optionally, you can perform additional actions when an update is available.
-            // For example, you might want to log a warning, send a message to the console, or notify the server admins.
+        if (!updater.isPluginUpToDate()) {
+            getLogger().info("A new version is available!");
         }
 
-        // Create an instance of the ColoredSignsEvent and pass 'this' (the plugin instance) to the constructor
-        ColoredSignsEvent coloredSignsEvent = new ColoredSignsEvent();
-
-        // Get the Bukkit PluginManager and register the listener
-        PluginManager pluginManager = getServer().getPluginManager();
-        pluginManager.registerEvents(coloredSignsEvent, this);
+        // Register listeners and commands
+        registerListeners();
+        registerCommands();
 
         // Load plugin version and spawn location
         loadPluginVersion();
         loadSpawnLocation();
 
-        // Display a message when the plugin is enabled
-        sendColoredMessage(ChatColor.GREEN + "EssentialsPro v" + pluginVersion + " has been enabled!");
+        // Display enable message
+        sendColoredMessage(ChatColor.WHITE + "EssentialsPro v" + pluginVersion + " has been enabled!");
 
-        // Save default config if it doesn't exist
+        // Save the default config if it doesn't exist
         if (!new File(getDataFolder(), "config.yml").exists()) {
             saveDefaultConfig();
         }
 
         createNicknamesConfig();
-
-        // Register commands and listeners
-        registerCommands();
-
-        PluginCommand freezeCommand = this.getCommand("freeze");
-        if (freezeCommand != null) {
-            freezeCommand.setExecutor(new FreezeCommand(freezeManager));
-        } else {
-            getLogger().severe("Failed to get freeze command. Make sure it's declared in your plugin.yml file.");
-        }
-
-        // Register the event listeners
-        getServer().getPluginManager().registerEvents(new FreezeListener(freezeManager), this);
-        getServer().getPluginManager().registerEvents(new SignListener(this), this);
-        getServer().getPluginManager().registerEvents(new DeathEvent(this), this);
-        getServer().getPluginManager().registerEvents(new JoinLeaveListener(this), this);
-        getServer().getPluginManager().registerEvents(new ChatListener(muteManager), this);
-
     }
-
 
     // Plugin disable logic
     @Override
     public void onDisable() {
-        // Display a message when the plugin is disabled
-        sendColoredMessage(ChatColor.RED + "EssentialsPro v" + pluginVersion + " has been disabled.");
-
-        // Save the spawn location to the config
+        sendColoredMessage(NamedTextColor.RED + "EssentialsPro v" + pluginVersion + " has been disabled.");
         saveSpawnLocation();
-
     }
 
     // Load the plugin version from the plugin description
@@ -124,12 +97,12 @@ public class EssentialsPro extends JavaPlugin {
     // Save the spawn location to the config
     private void saveSpawnLocation() {
         if (spawnLocation != null) {
-            reloadConfig(); // Reload the config to ensure we have the latest version
             FileConfiguration config = getConfig();
             config.set("spawn", spawnLocation);
             saveConfig();
         }
     }
+
     // Get the current spawn location
     public Location getSpawnLocation() {
         return spawnLocation;
@@ -146,47 +119,65 @@ public class EssentialsPro extends JavaPlugin {
         return banManager;
     }
 
-// Register all commands and their executors
-        private void registerCommands () {
+    // Register all commands and their executors
+    private void registerCommands() {
+        registerCommand("kick", new KickCommand());
+        registerCommand("broadcast", new BroadcastCommand(this));
+        registerCommand("help", new HelpCommand(this));
+        registerCommand("spawn", new SpawnCommand(this));
+        registerCommand("setspawn", new SetSpawnCommand(this));
+        registerCommand("gamemode", new GameModeCommand(this));
+        registerCommand("time", new TimeCommand(this));
+        registerCommand("weather", new WeatherCommand(this));
+        registerCommand("fly", new FlyCommand(this));
+        registerCommand("heal", new HealCommand(this));
+        registerCommand("feed", new FeedCommand(this));
+        registerCommand("tp", new TeleportCommand(this));
+        registerCommand("listplayers", new ListPlayersCommand());
+        registerCommand("motd", new MotdCommand(this));
+        registerCommand("reloadessentials", new ReloadCommand(this));
+        registerCommand("smite", new SmiteCommand());
+        registerCommand("clearchat", new ClearChatCommand());
+        registerCommand("inventorysee", new InventorySeeCommand());
+        registerCommand("message", new MessageCommand());
+        registerCommand("ban", new BanCommand(banManager));
+        registerCommand("unban", new UnbanCommand(banManager));
+        registerCommand("firework", new FireworkCommand());
+        registerCommand("repair", new RepairCommand());
+        registerCommand("tpa", new TpaCommand(teleportRequestManager));
+        registerCommand("tpaccept", new TpAcceptCommand(teleportRequestManager));
+        registerCommand("tpdeny", new TpDenyCommand(teleportRequestManager));
+        registerCommand("mute", new MuteCommand(muteManager));
+        registerCommand("unmute", new UnmuteCommand(muteManager));
+        registerCommand("clearinventory", new ClearInventoryCommand());
+    }
 
-            getCommand("kick").setExecutor(new KickCommand());
-            getCommand("broadcast").setExecutor(new BroadcastCommand(this));
-            getCommand("help").setExecutor(new HelpCommand(this));
-            getCommand("spawn").setExecutor(new SpawnCommand(this));
-            getCommand("setspawn").setExecutor(new SetSpawnCommand(this));
-            getCommand("gamemode").setExecutor(new GameModeCommand(this));
-            getCommand("time").setExecutor(new TimeCommand(this));
-            getCommand("weather").setExecutor(new WeatherCommand(this));
-            getCommand("fly").setExecutor(new FlyCommand(this));
-            getCommand("heal").setExecutor(new HealCommand(this));
-            getCommand("feed").setExecutor(new FeedCommand(this));
-            getCommand("tp").setExecutor(new TeleportCommand(this));
-            getCommand("listplayers").setExecutor(new ListPlayersCommand());
-            getCommand("motd").setExecutor(new MotdCommand(this));
-            getCommand("reloadessentials").setExecutor(new ReloadCommand(this));
-            getCommand("smite").setExecutor(new SmiteCommand());
-            getCommand("clearchat").setExecutor(new ClearChatCommand());
-            getCommand("inventorysee").setExecutor(new InventorySeeCommand());
-            getCommand("message").setExecutor(new MessageCommand());
-            getCommand("ban").setExecutor(new BanCommand(banManager));
-            getCommand("unban").setExecutor(new UnbanCommand(banManager));
-            getCommand("firework").setExecutor(new FireworkCommand());
-            getCommand("repair").setExecutor(new RepairCommand());
-            getCommand("repair").setExecutor(new RepairCommand());
-            getCommand("tpa").setExecutor(new TpaCommand(teleportRequestManager));
-            getCommand("tpaccept").setExecutor(new TpAcceptCommand(teleportRequestManager));
-            getCommand("tpdeny").setExecutor(new TpDenyCommand(teleportRequestManager));
-            getCommand("mute").setExecutor(new MuteCommand(muteManager));
-            getCommand("unmute").setExecutor(new UnmuteCommand(muteManager));
-            this.getCommand("clearinventory").setExecutor(new ClearInventoryCommand());
-
+    // Helper method for registering commands
+    private void registerCommand(String commandName, CommandExecutor executor) {
+        PluginCommand command = this.getCommand(commandName);
+        if (command != null) {
+            command.setExecutor(executor);
+        } else {
+            getLogger().severe("Failed to register command: " + commandName);
         }
+    }
 
+    // Register all listeners
+    private void registerListeners() {
+        PluginManager pluginManager = getServer().getPluginManager();
+        pluginManager.registerEvents(new FreezeListener(freezeManager), this);
+        pluginManager.registerEvents(new SignListener(this), this);
+        pluginManager.registerEvents(new DeathEvent(this), this);
+        pluginManager.registerEvents(new JoinLeaveListener(this), this);
+        pluginManager.registerEvents(new ChatListener(muteManager), this);
+        pluginManager.registerEvents(new ColoredSignsEvent(), this);
+    }
+
+    // Create the nicknames config file
     private void createNicknamesConfig() {
-        nicknamesFile = new File(getDataFolder(), "nickname.yml");
+        File nicknamesFile = new File(getDataFolder(), "nickname.yml");
         if (!nicknamesFile.exists()) {
             saveResource("nickname.yml", false);
         }
     }
-    }
-
+}
