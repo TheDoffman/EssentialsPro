@@ -132,6 +132,14 @@ commands:
     usage: /clearinventory [player]
     permission: essentialspro.clearinventory
     aliases: [ ci ]
+  jail:
+    description: Jails a player, preventing them from moving, breaking blocks, or dropping items.
+    usage: /jail <player>
+    permission: essentialspro.jail
+  unjail:
+    description: Unjails a player.
+    usage: /unjail <player>
+    permission: essentialspro.unjail
 permissions:
   essentialspro.*:
     description: Gives access to all EssentialsPro commands.
@@ -168,3 +176,5 @@ permissions:
       essentialspro.tpa: true
       essentialspro.mute: true
       essentialspro.unmute: true
+      essentialspro.unjail: true
+      essentialspro.jail: true

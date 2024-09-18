@@ -14,10 +14,7 @@ import org.hoffmantv.essentialspro.listeners.ChatListener;
 import org.hoffmantv.essentialspro.listeners.FreezeListener;
 import org.hoffmantv.essentialspro.listeners.JoinLeaveListener;
 import org.hoffmantv.essentialspro.listeners.SignListener;
-import org.hoffmantv.essentialspro.managers.BanManager;
-import org.hoffmantv.essentialspro.managers.FreezeManager;
-import org.hoffmantv.essentialspro.managers.MuteManager;
-import org.hoffmantv.essentialspro.managers.TeleportRequestManager;
+import org.hoffmantv.essentialspro.managers.*;
 
 import java.io.File;
 
@@ -30,8 +27,8 @@ public class EssentialsPro extends JavaPlugin {
     private FreezeManager freezeManager;
     private File nicknamesFile;
     private TeleportRequestManager teleportRequestManager;
-
     private MuteManager muteManager;
+    private JailManager jailManager; // Declare JailManager
 
 
     // Plugin enable logic
@@ -43,6 +40,7 @@ public class EssentialsPro extends JavaPlugin {
         this.teleportRequestManager = new TeleportRequestManager();
 
         muteManager = new MuteManager(getDataFolder());
+        JailCommand jailCommand = new JailCommand(this);
 
 
         int pluginId = 2215; // <-- Replace with the id of your plugin!
@@ -94,6 +92,7 @@ public class EssentialsPro extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new DeathEvent(this), this);
         getServer().getPluginManager().registerEvents(new JoinLeaveListener(this), this);
         getServer().getPluginManager().registerEvents(new ChatListener(muteManager), this);
+        getServer().getPluginManager().registerEvents(jailCommand, this);
 
     }
 
@@ -152,11 +151,10 @@ public class EssentialsPro extends JavaPlugin {
         return banManager;
     }
 
-
-
-        // Register all commands and their executors
 // Register all commands and their executors
         private void registerCommands () {
+            JailCommand jailCommand = new JailCommand(this);
+
             getCommand("kick").setExecutor(new KickCommand());
             getCommand("broadcast").setExecutor(new BroadcastCommand(this));
             getCommand("help").setExecutor(new HelpCommand(this));
@@ -186,6 +184,8 @@ public class EssentialsPro extends JavaPlugin {
             getCommand("tpdeny").setExecutor(new TpDenyCommand(teleportRequestManager));
             getCommand("mute").setExecutor(new MuteCommand(muteManager));
             getCommand("unmute").setExecutor(new UnmuteCommand(muteManager));
+            getCommand("jail").setExecutor(new JailCommand(this));
+            getCommand("unjail").setExecutor(new UnJailCommand(jailManager));
             this.getCommand("clearinventory").setExecutor(new ClearInventoryCommand());
 
         }

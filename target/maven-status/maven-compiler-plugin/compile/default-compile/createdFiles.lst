@@ -12,9 +12,11 @@ org/hoffmantv/essentialspro/commands/FireworkCommand.class
 org/hoffmantv/essentialspro/Metrics$AdvancedPie.class
 org/hoffmantv/essentialspro/Metrics$MetricsBase.class
 org/hoffmantv/essentialspro/commands/HelpCommand.class
+org/hoffmantv/essentialspro/managers/JailManager.class
 org/hoffmantv/essentialspro/commands/ClearChatCommand.class
 org/hoffmantv/essentialspro/commands/UnmuteCommand.class
 org/hoffmantv/essentialspro/commands/TeleportCommand.class
+org/hoffmantv/essentialspro/commands/UnJailCommand.class
 org/hoffmantv/essentialspro/Metrics$SimplePie.class
 org/hoffmantv/essentialspro/commands/FlyCommand.class
 org/hoffmantv/essentialspro/Metrics$JsonObjectBuilder$JsonObject.class
@@ -39,6 +41,7 @@ org/hoffmantv/essentialspro/commands/SmiteCommand.class
 org/hoffmantv/essentialspro/Metrics$SimpleBarChart.class
 org/hoffmantv/essentialspro/commands/MotdCommand.class
 org/hoffmantv/essentialspro/commands/FeedCommand.class
+org/hoffmantv/essentialspro/commands/JailCommand.class
 org/hoffmantv/essentialspro/Metrics$DrilldownPie.class
 org/hoffmantv/essentialspro/Metrics$JsonObjectBuilder.class
 org/hoffmantv/essentialspro/commands/SpawnCommand.class
