@@ -28,8 +28,6 @@ public class EssentialsPro extends JavaPlugin {
     private File nicknamesFile;
     private TeleportRequestManager teleportRequestManager;
     private MuteManager muteManager;
-    private JailManager jailManager; // Declare JailManager
-
 
     // Plugin enable logic
     @Override
@@ -38,9 +36,7 @@ public class EssentialsPro extends JavaPlugin {
         banManager = new BanManager();
         freezeManager = new FreezeManager();
         this.teleportRequestManager = new TeleportRequestManager();
-
         muteManager = new MuteManager(getDataFolder());
-        JailCommand jailCommand = new JailCommand(this);
 
 
         int pluginId = 2215; // <-- Replace with the id of your plugin!
@@ -92,7 +88,6 @@ public class EssentialsPro extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new DeathEvent(this), this);
         getServer().getPluginManager().registerEvents(new JoinLeaveListener(this), this);
         getServer().getPluginManager().registerEvents(new ChatListener(muteManager), this);
-        getServer().getPluginManager().registerEvents(jailCommand, this);
 
     }
 
@@ -153,7 +148,6 @@ public class EssentialsPro extends JavaPlugin {
 
 // Register all commands and their executors
         private void registerCommands () {
-            JailCommand jailCommand = new JailCommand(this);
 
             getCommand("kick").setExecutor(new KickCommand());
             getCommand("broadcast").setExecutor(new BroadcastCommand(this));
@@ -184,8 +178,6 @@ public class EssentialsPro extends JavaPlugin {
             getCommand("tpdeny").setExecutor(new TpDenyCommand(teleportRequestManager));
             getCommand("mute").setExecutor(new MuteCommand(muteManager));
             getCommand("unmute").setExecutor(new UnmuteCommand(muteManager));
-            getCommand("jail").setExecutor(new JailCommand(this));
-            getCommand("unjail").setExecutor(new UnJailCommand(jailManager));
             this.getCommand("clearinventory").setExecutor(new ClearInventoryCommand());
 
         }
