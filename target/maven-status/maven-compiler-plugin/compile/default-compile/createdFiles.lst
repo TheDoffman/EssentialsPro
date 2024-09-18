@@ -17,6 +17,7 @@ org/hoffmantv/essentialspro/commands/TeleportCommand.class
 org/hoffmantv/essentialspro/Metrics$SimplePie.class
 org/hoffmantv/essentialspro/commands/FlyCommand.class
 org/hoffmantv/essentialspro/Metrics$JsonObjectBuilder$JsonObject.class
+org/hoffmantv/essentialspro/listeners/JoinLeaveListener.class
 org/hoffmantv/essentialspro/commands/WeatherCommand.class
 org/hoffmantv/essentialspro/commands/InventorySeeCommand.class
 org/hoffmantv/essentialspro/commands/BroadcastCommand.class

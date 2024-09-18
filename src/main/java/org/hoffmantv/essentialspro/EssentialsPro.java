@@ -11,6 +11,7 @@ import org.hoffmantv.essentialspro.commands.*;
 import org.hoffmantv.essentialspro.events.ColoredSignsEvent;
 import org.hoffmantv.essentialspro.events.DeathEvent;
 import org.hoffmantv.essentialspro.listeners.FreezeListener;
+import org.hoffmantv.essentialspro.listeners.JoinLeaveListener;
 import org.hoffmantv.essentialspro.listeners.SignListener;
 import org.hoffmantv.essentialspro.managers.BanManager;
 import org.hoffmantv.essentialspro.managers.FreezeManager;
@@ -84,6 +85,7 @@ public class EssentialsPro extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new FreezeListener(freezeManager), this);
         getServer().getPluginManager().registerEvents(new SignListener(this), this);
         getServer().getPluginManager().registerEvents(new DeathEvent(this), this);
+        getServer().getPluginManager().registerEvents(new JoinLeaveListener(this), this);
 
 
     }
