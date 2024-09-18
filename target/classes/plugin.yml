@@ -144,6 +144,10 @@ commands:
     description: Toggle Shadow Mode for invisibility and non-interaction.
     usage: /shadowmode
     permission: essentialspro.shadowmode
+  freezetime:
+    description: Allows a player to freeze the time cycle of the server.
+    usage: /freezetime [global|player <player>] [duration]
+    permission: essentialspro.freezetime
 permissions:
   essentialspro.*:
     description: Gives access to all EssentialsPro commands.
@@ -183,3 +187,4 @@ permissions:
       essentialspro.unjail: true
       essentialspro.jail: true
       essentialspro.shadowmode: true
+      essentialspro.freezetime: true

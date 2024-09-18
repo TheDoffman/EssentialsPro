@@ -151,6 +151,7 @@ public class EssentialsPro extends JavaPlugin {
         registerCommand("unmute", new UnmuteCommand(muteManager));
         registerCommand("clearinventory", new ClearInventoryCommand());
         registerCommand("ShadowMode", new ShadowModeCommand(this));
+        registerCommand("FreezeTime", new FreezeTimeCommand(this));
     }
 
     // Helper method for registering commands
