@@ -3,9 +3,12 @@ package org.hoffmantv.essentialspro.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
@@ -21,60 +24,56 @@ public class SpawnMobCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        // Check for permissions
+        // Permission check
         if (!player.hasPermission("essentialspro.spawnmob")) {
-            player.sendMessage(ChatColor.RED + "✖ You do not have permission to use this command.");
+            player.sendMessage(ChatColor.RED + "✖ You don't have permission to use this command.");
             return true;
         }
 
-        // Check for correct usage
-        if (args.length < 1 || args.length > 2) {
-            player.sendMessage(ChatColor.RED + "Usage: /spawnmob <mob_type> [amount]");
+        // Validate arguments
+        if (args.length < 1) {
+            player.sendMessage(ChatColor.RED + "✖ Usage: /spawnmob <mob_type> [amount]");
             return true;
         }
 
-        String mobTypeString = args[0].toUpperCase();
+        String mobTypeName = args[0].toUpperCase();
+        EntityType entityType;
+
+        try {
+            entityType = EntityType.valueOf(mobTypeName);
+        } catch (IllegalArgumentException e) {
+            player.sendMessage(ChatColor.RED + "✖ Invalid mob type: " + mobTypeName);
+            return true;
+        }
+
+        // Determine the amount of mobs to spawn
         int amount = 1;
-
-        // Parse the amount (if provided)
-        if (args.length == 2) {
+        if (args.length >= 2) {
             try {
                 amount = Integer.parseInt(args[1]);
-                if (amount < 1 || amount > 50) {
-                    player.sendMessage(ChatColor.RED + "✖ Amount must be between 1 and 50.");
-                    return true;
+                if (amount <= 0) {
+                    throw new NumberFormatException();
                 }
             } catch (NumberFormatException e) {
-                player.sendMessage(ChatColor.RED + "✖ Invalid number: " + args[1]);
+                player.sendMessage(ChatColor.RED + "✖ Invalid amount. Usage: /spawnmob <mob_type> [amount]");
                 return true;
             }
         }
 
-        // Check if the mob type is valid
-        EntityType entityType;
-        try {
-            entityType = EntityType.valueOf(mobTypeString);
-        } catch (IllegalArgumentException e) {
-            player.sendMessage(ChatColor.RED + "✖ Invalid mob type: " + mobTypeString);
-            return true;
-        }
-
-        // Ensure the entity type is spawnable
-        if (!entityType.isSpawnable() || !entityType.isAlive()) {
-            player.sendMessage(ChatColor.RED + "✖ You cannot spawn this type of entity.");
-            return true;
-        }
-
-        // Spawn the mobs at the player's location
+        // Spawn the mobs
         Location location = player.getLocation();
+        World world = player.getWorld();
+
         for (int i = 0; i < amount; i++) {
-            player.getWorld().spawnEntity(location, entityType);
+            Entity entity = world.spawnEntity(location, entityType);
+
+            // Add particle effect at spawn location
+            world.spawnParticle(Particle.FLAME, location, 50, 0.5, 0.5, 0.5, 0.05);
+            world.spawnParticle(Particle.SMOKE_NORMAL, location, 30, 0.5, 0.5, 0.5, 0.05);
         }
 
-        // Feedback to the player
-        player.sendMessage(ChatColor.GREEN + "✔ Spawned " + amount + " " + mobTypeString + "(s) at your location.");
-        Bukkit.getLogger().info(player.getName() + " spawned " + amount + " " + mobTypeString + "(s).");
-
+        // Confirmation message
+        player.sendMessage(ChatColor.GREEN + "✔ Spawned " + amount + " " + mobTypeName.toLowerCase() + "(s) at your location.");
         return true;
     }
 }
