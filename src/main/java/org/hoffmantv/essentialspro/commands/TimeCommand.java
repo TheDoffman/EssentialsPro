@@ -8,13 +8,24 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.hoffmantv.essentialspro.EssentialsPro;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class TimeCommand implements CommandExecutor {
 
-    private static final Component ONLY_PLAYERS_ERROR = Component.text("This command can only be used by players.", NamedTextColor.RED);
-    private static final Component PERMISSION_ERROR = Component.text("You don't have permission to use this command.", NamedTextColor.RED);
-    private static final Component USAGE_ERROR = Component.text("Usage: /time <day|night|morning|evening>", NamedTextColor.RED);
-    private static final Component INVALID_TIME_ERROR = Component.text("Invalid time argument. Use: day, night, morning, or evening.", NamedTextColor.RED);
-    private static final Component TIME_SUCCESS = Component.text("Time set to ", NamedTextColor.GREEN);
+    private static final Component ONLY_PLAYERS_ERROR = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
+    private static final Component PERMISSION_ERROR = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component USAGE_ERROR = Component.text("✖ Usage: /time <day|night|morning|evening>", NamedTextColor.RED);
+    private static final Component TIME_SUCCESS_PREFIX = Component.text("✔ Time set to ", NamedTextColor.GREEN);
+
+    // Mapping of time arguments to their respective tick values
+    private static final Map<String, Long> TIME_OPTIONS = new HashMap<>();
+    static {
+        TIME_OPTIONS.put("day", 1000L);
+        TIME_OPTIONS.put("night", 13000L);
+        TIME_OPTIONS.put("morning", 0L);
+        TIME_OPTIONS.put("evening", 11000L);
+    }
 
     private final EssentialsPro plugin;
 
@@ -24,6 +35,7 @@ public class TimeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        // Ensure command is used by a player
         if (!(sender instanceof Player)) {
             sender.sendMessage(ONLY_PLAYERS_ERROR);
             return true;
@@ -31,39 +43,33 @@ public class TimeCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
+        // Check permissions
         if (!player.hasPermission("essentialspro.time")) {
             player.sendMessage(PERMISSION_ERROR);
             return true;
         }
 
+        // Validate arguments
         if (args.length != 1) {
             player.sendMessage(USAGE_ERROR);
             return true;
         }
 
         String timeArg = args[0].toLowerCase();
+        Long timeTicks = TIME_OPTIONS.get(timeArg);
 
-        long time;
-        switch (timeArg) {
-            case "day":
-                time = 1000; // Set to morning (1000 ticks)
-                break;
-            case "night":
-                time = 13000; // Set to night (13000 ticks)
-                break;
-            case "morning":
-                time = 0; // Set to morning (0 ticks)
-                break;
-            case "evening":
-                time = 11000; // Set to evening (11000 ticks)
-                break;
-            default:
-                player.sendMessage(INVALID_TIME_ERROR);
-                return true;
+        if (timeTicks == null) {
+            // Construct a message listing valid options
+            Component validOptions = Component.text("Valid options: ", NamedTextColor.YELLOW)
+                    .append(Component.text(String.join(", ", TIME_OPTIONS.keySet()), NamedTextColor.GREEN));
+
+            player.sendMessage(Component.text("✖ Invalid time argument. ", NamedTextColor.RED).append(validOptions));
+            return true;
         }
 
-        player.getWorld().setTime(time);
-        player.sendMessage(TIME_SUCCESS.append(Component.text(timeArg + ".", NamedTextColor.GREEN)));
+        // Set the world time
+        player.getWorld().setTime(timeTicks);
+        player.sendMessage(TIME_SUCCESS_PREFIX.append(Component.text(timeArg + ".", NamedTextColor.GREEN)));
 
         return true;
     }

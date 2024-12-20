@@ -2,6 +2,7 @@ package org.hoffmantv.essentialspro.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,12 +18,13 @@ public class SpawnCommand implements CommandExecutor, Listener {
 
     private static final String PERMISSION_SPAWN = "essentialspro.spawn";
 
-    private static final Component MSG_ONLY_PLAYERS = Component.text("This command can only be used by players.", NamedTextColor.RED);
-    private static final Component MSG_NO_PERMISSION = Component.text("You don't have permission to use this command.", NamedTextColor.RED);
-    private static final Component MSG_NO_SPAWN_SET = Component.text("The spawn location is not set.", NamedTextColor.RED);
+    private static final Component MSG_ONLY_PLAYERS = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
+    private static final Component MSG_NO_PERMISSION = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component MSG_NO_SPAWN_SET = Component.text("✖ The spawn location is not set.", NamedTextColor.RED);
     private static final Component MSG_WELCOME_SPAWN = Component.text("Welcome back to the spawn!", NamedTextColor.GREEN);
 
     private final EssentialsPro plugin;
+    private final LegacyComponentSerializer legacySerializer = LegacyComponentSerializer.legacySection();
 
     public SpawnCommand(EssentialsPro plugin) {
         this.plugin = plugin;
@@ -31,6 +33,7 @@ public class SpawnCommand implements CommandExecutor, Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        // Permission check first, so console without perm won't get player-only message
         if (!sender.hasPermission(PERMISSION_SPAWN)) {
             sender.sendMessage(MSG_NO_PERMISSION);
             return true;
@@ -65,9 +68,15 @@ public class SpawnCommand implements CommandExecutor, Listener {
 
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
-        if (event.getLine(0).equalsIgnoreCase("[Spawn]")) {
-            event.setLine(1, Component.text("[Spawn]", NamedTextColor.GREEN).toString());
-            event.setLine(0, "");
+        // If first line is [Spawn], rewrite sign
+        String line0 = event.getLine(0);
+        if (line0 != null && line0.equalsIgnoreCase("[Spawn]")) {
+            // Create a green "[Spawn]" component and convert it back to legacy for the sign
+            Component spawnText = Component.text("[Spawn]", NamedTextColor.GREEN);
+            String legacySpawnText = legacySerializer.serialize(spawnText);
+
+            event.setLine(0, ""); // Clear first line
+            event.setLine(1, legacySpawnText);
         }
     }
 }

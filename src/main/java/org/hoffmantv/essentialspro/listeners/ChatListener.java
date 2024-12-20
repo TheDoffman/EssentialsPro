@@ -19,10 +19,18 @@ public class ChatListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (muteManager.isMuted(event.getPlayer())) {
             long remainingTime = muteManager.getRemainingMuteTime(event.getPlayer());
-            // Send message using Adventure API with NamedTextColor for coloring
-            event.getPlayer().sendMessage(Component.text("You are muted. Time remaining: " + remainingTime + " seconds.")
-                    .color(NamedTextColor.RED));
-            event.setCancelled(true);  // Prevent the message from being sent
+
+            // Build the muted message using Adventure API
+            Component mutedMessage = Component.text("You are muted. ")
+                    .color(NamedTextColor.RED)
+                    .append(Component.text("Time remaining: "))
+                    .append(Component.text(remainingTime + " seconds", NamedTextColor.YELLOW));
+
+            // Send the message to the player
+            event.getPlayer().sendMessage(mutedMessage);
+
+            // Cancel the chat event to prevent the message from being sent
+            event.setCancelled(true);
         }
     }
 }

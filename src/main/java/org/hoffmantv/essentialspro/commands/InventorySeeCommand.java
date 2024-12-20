@@ -12,26 +12,39 @@ import org.bukkit.inventory.ItemStack;
 
 public class InventorySeeCommand implements CommandExecutor {
 
+    private static final Component NO_PERMISSION = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component ONLY_PLAYERS = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
+    private static final Component USAGE = Component.text("✖ Usage: /inventorysee <player>", NamedTextColor.RED);
+    private static final Component PLAYER_NOT_FOUND = Component.text("✖ Player not found or not online.", NamedTextColor.RED);
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Ensure only players can use this command
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Component.text("This command can only be used by players.", NamedTextColor.RED));
+            sender.sendMessage(ONLY_PLAYERS);
             return true;
         }
 
-        // Ensure the proper number of arguments
+        Player player = (Player) sender;
+
+        // Check for permission
+        if (!player.hasPermission("essentialspro.inventorysee")) {
+            player.sendMessage(NO_PERMISSION);
+            return true;
+        }
+
+        // Validate arguments
         if (args.length != 1) {
-            sender.sendMessage(Component.text("Usage: /inventorysee <player>", NamedTextColor.RED));
+            player.sendMessage(USAGE);
             return true;
         }
 
         // Get the target player
         Player target = Bukkit.getPlayer(args[0]);
 
-        // Validate target player
+        // Validate the target player
         if (target == null || !target.isOnline()) {
-            sender.sendMessage(Component.text("Player not found or not online.", NamedTextColor.RED));
+            player.sendMessage(PLAYER_NOT_FOUND);
             return true;
         }
 
@@ -39,14 +52,19 @@ public class InventorySeeCommand implements CommandExecutor {
         Inventory targetInventory = clonePlayerInventory(target);
 
         // Open the cloned inventory for the sender
-        ((Player) sender).openInventory(targetInventory);
+        player.openInventory(targetInventory);
+
+        // Optionally notify the sender that they are now viewing the player's inventory
+        player.sendMessage(Component.text("✔ You are now viewing " + target.getName() + "'s inventory.", NamedTextColor.GREEN));
 
         return true;
     }
 
-    // Method to clone the target player's inventory
+    /**
+     * Clones the target player's inventory into a new inventory.
+     */
     private Inventory clonePlayerInventory(Player target) {
-        // Create a new inventory with the target player's name
+        // Create a new inventory with a custom title
         Inventory targetInventory = Bukkit.createInventory(null, 45, Component.text(target.getName() + "'s Inventory", NamedTextColor.DARK_GRAY));
 
         // Clone items from the target player's inventory into the new inventory

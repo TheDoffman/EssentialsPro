@@ -16,39 +16,58 @@ import org.bukkit.inventory.meta.FireworkMeta;
 
 import java.util.Random;
 
-// Handles the '/firework' command, which launches a random firework.
 public class FireworkCommand implements CommandExecutor {
+    private static final String PERMISSION = "essentialspro.firework";
+    private static final Component NO_PERMISSION = Component.text("✖ You do not have permission to use this command!", NamedTextColor.RED);
+    private static final Component PLAYER_ONLY = Component.text("✖ This command can only be used by players!", NamedTextColor.RED);
+    private static final Component USAGE = Component.text("Usage: /firework [help]", NamedTextColor.YELLOW);
+    private static final Component LAUNCH_SUCCESS = Component.text("✔ Firework launched!", NamedTextColor.GOLD);
+
     private final Random random = new Random();
 
-    // When the command is executed
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure the command is being used by a player
+        // Check if sender is a player
         if (!(sender instanceof Player)) {
-            Bukkit.getConsoleSender().sendMessage(Component.text("This command can only be used by players!").color(NamedTextColor.RED));
+            sender.sendMessage(PLAYER_ONLY);
+            // Also log to console for clarity
+            Bukkit.getConsoleSender().sendMessage("This command can only be used by players!");
             return true;
         }
 
         Player player = (Player) sender;
 
-        // Check if the player has the right permission
-        if (!player.hasPermission("essentialspro.firework")) {
-            player.sendMessage(Component.text("You do not have permission to use this command!").color(NamedTextColor.RED));
+        // Permission check
+        if (!player.hasPermission(PERMISSION)) {
+            player.sendMessage(NO_PERMISSION);
             return true;
         }
 
-        // Generate a firework at the player's location
+        // Check if the player wants help info
+        if (args.length > 0 && args[0].equalsIgnoreCase("help")) {
+            player.sendMessage(USAGE);
+            player.sendMessage(Component.text("This command launches a random firework at your location.", NamedTextColor.GREEN));
+            return true;
+        }
+
+        // Proceed to launch a random firework
+        launchRandomFirework(player);
+        player.sendMessage(LAUNCH_SUCCESS);
+
+        return true;
+    }
+
+    private void launchRandomFirework(Player player) {
         Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
         FireworkMeta meta = firework.getFireworkMeta();
 
-        // Randomly decide the type of the firework
+        // Random firework type
         Type type = Type.values()[random.nextInt(Type.values().length)];
 
-        // Randomly generate main and fade colors
+        // Random colors
         Color color = getRandomColor();
         Color fade = getRandomColor();
 
-        // Construct a firework effect with the randomly generated parameters
         FireworkEffect effect = FireworkEffect.builder()
                 .flicker(random.nextBoolean())
                 .trail(random.nextBoolean())
@@ -57,18 +76,9 @@ public class FireworkCommand implements CommandExecutor {
                 .withFade(fade)
                 .build();
 
-        // Set the firework's effect
         meta.addEffect(effect);
-
-        // Randomly set the power of the firework, affecting its flight duration
         meta.setPower(random.nextInt(3) + 1);
-
-        // Update the firework with the generated meta
         firework.setFireworkMeta(meta);
-
-        player.sendMessage(Component.text("Firework launched!").color(NamedTextColor.GOLD));
-
-        return true;
     }
 
     // Helper method to generate a random color

@@ -10,9 +10,9 @@ import org.hoffmantv.essentialspro.EssentialsPro;
 
 public class SetSpawnCommand implements CommandExecutor {
 
-    private static final Component MSG_ONLY_PLAYERS = Component.text("This command can only be used by players.", NamedTextColor.RED);
-    private static final Component MSG_NO_PERMISSION = Component.text("You don't have permission to use this command.", NamedTextColor.RED);
-    private static final Component MSG_SPAWN_SET_SUCCESS = Component.text("Spawn location set successfully!", NamedTextColor.GREEN);
+    private static final Component MSG_ONLY_PLAYERS = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
+    private static final Component MSG_NO_PERMISSION = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component MSG_SPAWN_SET_SUCCESS = Component.text("✔ Spawn location set successfully!", NamedTextColor.GREEN);
 
     private final EssentialsPro plugin;
 
@@ -22,13 +22,12 @@ public class SetSpawnCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!isPlayer(sender)) {
             sender.sendMessage(MSG_ONLY_PLAYERS);
             return true;
         }
 
         Player player = (Player) sender;
-
         if (!player.hasPermission("essentialspro.setspawn")) {
             player.sendMessage(MSG_NO_PERMISSION);
             return true;
@@ -38,10 +37,14 @@ public class SetSpawnCommand implements CommandExecutor {
             plugin.setSpawnLocation(player.getLocation());
             player.sendMessage(MSG_SPAWN_SET_SUCCESS);
         } catch (Exception e) {
-            player.sendMessage(Component.text("An error occurred while setting spawn location: " + e.getMessage(), NamedTextColor.RED));
-            return true;
+            player.sendMessage(Component.text("✖ An error occurred while setting the spawn location: " + e.getMessage(), NamedTextColor.RED));
+            plugin.getLogger().warning("Failed to set spawn location: " + e.getMessage());
         }
 
         return true;
+    }
+
+    private boolean isPlayer(CommandSender sender) {
+        return sender instanceof Player;
     }
 }

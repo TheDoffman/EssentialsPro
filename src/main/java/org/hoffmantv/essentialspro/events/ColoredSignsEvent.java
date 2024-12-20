@@ -9,15 +9,20 @@ import org.bukkit.event.block.SignChangeEvent;
 public class ColoredSignsEvent implements Listener {
 
     @EventHandler
-    public void onSignChange(SignChangeEvent e) {
+    public void onSignChange(SignChangeEvent event) {
         // Check if the player has the "ep.signcolor" permission
-        if (e.getPlayer().hasPermission("ep.signcolor")) {
-            String[] lines = e.getLines();
+        if (event.getPlayer().hasPermission("ep.signcolor")) {
             for (int i = 0; i < 4; i++) {
-                String line = lines[i];
-                // Use LegacyComponentSerializer to translate color codes using '&' character
+                String line = event.getLine(i);
+                if (line == null) {
+                    line = "";
+                }
+
+                // Convert legacy '&' color codes to Adventure Components
                 Component coloredLine = LegacyComponentSerializer.legacyAmpersand().deserialize(line);
-                e.setLine(i, LegacyComponentSerializer.legacySection().serialize(coloredLine));
+
+                // Set the line directly as a Component (Paper API)
+                event.line(i, coloredLine);
             }
         }
     }

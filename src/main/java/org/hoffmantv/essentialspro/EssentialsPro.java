@@ -1,8 +1,8 @@
 package org.hoffmantv.essentialspro;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
@@ -12,14 +12,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.hoffmantv.essentialspro.commands.*;
 import org.hoffmantv.essentialspro.events.ColoredSignsEvent;
 import org.hoffmantv.essentialspro.events.DeathEvent;
-import org.hoffmantv.essentialspro.listeners.ChatListener;
-import org.hoffmantv.essentialspro.listeners.FreezeListener;
-import org.hoffmantv.essentialspro.listeners.JoinLeaveListener;
-import org.hoffmantv.essentialspro.listeners.SignListener;
-import org.hoffmantv.essentialspro.managers.BanManager;
-import org.hoffmantv.essentialspro.managers.FreezeManager;
-import org.hoffmantv.essentialspro.managers.MuteManager;
-import org.hoffmantv.essentialspro.managers.TeleportRequestManager;
+import org.hoffmantv.essentialspro.listeners.*;
+import org.hoffmantv.essentialspro.managers.*;
 
 import java.io.File;
 
@@ -32,61 +26,52 @@ public class EssentialsPro extends JavaPlugin {
     private TeleportRequestManager teleportRequestManager;
     private MuteManager muteManager;
 
-    // Plugin enable logic
     @Override
     public void onEnable() {
-        EssentialsPro instance = this;
+        // Initialize managers
         banManager = new BanManager();
         freezeManager = new FreezeManager();
         teleportRequestManager = new TeleportRequestManager();
         muteManager = new MuteManager(getDataFolder());
 
-        // Register plugin metrics
-        Metrics metrics = new Metrics(this, 2215);
+        // Register metrics for plugin stats
+        new Metrics(this, 2215);
 
         // Check for updates
         PluginUpdater updater = new PluginUpdater(this, 97026);
         if (!updater.isPluginUpToDate()) {
-            getLogger().info("A new version is available!");
+            getLogger().info("A new version of EssentialsPro is available!");
         }
 
-        // Register listeners and commands
-        registerListeners();
+        // Register commands and listeners
         registerCommands();
+        registerListeners();
 
-        // Load plugin version and spawn location
+        // Load plugin version and configuration
         loadPluginVersion();
         loadSpawnLocation();
 
-        // Display enable message
-        sendColoredMessage(ChatColor.WHITE + "EssentialsPro v" + pluginVersion + " has been enabled!");
+        // Display plugin enabled message
+        sendConsoleMessage(Component.text("EssentialsPro v" + pluginVersion + " has been enabled!", NamedTextColor.GREEN));
 
-        // Save the default config if it doesn't exist
-        if (!new File(getDataFolder(), "config.yml").exists()) {
-            saveDefaultConfig();
-        }
-
-        createNicknamesConfig();
+        // Save default config if it doesn't exist
+        saveDefaultConfigIfMissing();
     }
 
-    // Plugin disable logic
     @Override
     public void onDisable() {
-        sendColoredMessage(NamedTextColor.RED + "EssentialsPro v" + pluginVersion + " has been disabled.");
+        sendConsoleMessage(Component.text("EssentialsPro v" + pluginVersion + " has been disabled.", NamedTextColor.RED));
         saveSpawnLocation();
     }
 
-    // Load the plugin version from the plugin description
     private void loadPluginVersion() {
         pluginVersion = getDescription().getVersion();
     }
 
-    // Send a colored message to the console
-    private void sendColoredMessage(String message) {
+    private void sendConsoleMessage(Component message) {
         Bukkit.getServer().getConsoleSender().sendMessage(message);
     }
 
-    // Load the spawn location from the config
     private void loadSpawnLocation() {
         FileConfiguration config = getConfig();
         if (config.contains("spawn")) {
@@ -94,7 +79,6 @@ public class EssentialsPro extends JavaPlugin {
         }
     }
 
-    // Save the spawn location to the config
     private void saveSpawnLocation() {
         if (spawnLocation != null) {
             FileConfiguration config = getConfig();
@@ -103,23 +87,19 @@ public class EssentialsPro extends JavaPlugin {
         }
     }
 
-    // Get the current spawn location
     public Location getSpawnLocation() {
         return spawnLocation;
     }
 
-    // Set the spawn location and save it to the config
     public void setSpawnLocation(Location location) {
         spawnLocation = location;
         saveSpawnLocation();
     }
 
-    // Get the BanManager instance
     public BanManager getBanManager() {
         return banManager;
     }
 
-    // Register all commands and their executors
     private void registerCommands() {
         registerCommand("kick", new KickCommand());
         registerCommand("broadcast", new BroadcastCommand(this));
@@ -150,21 +130,19 @@ public class EssentialsPro extends JavaPlugin {
         registerCommand("mute", new MuteCommand(muteManager));
         registerCommand("unmute", new UnmuteCommand(muteManager));
         registerCommand("clearinventory", new ClearInventoryCommand());
-        registerCommand("ShadowMode", new ShadowModeCommand(this));
-        registerCommand("FreezeTime", new FreezeTimeCommand(this));
+        registerCommand("shadowmode", new ShadowModeCommand(this));
+        registerCommand("freezetime", new FreezeTimeCommand(this));
     }
 
-    // Helper method for registering commands
     private void registerCommand(String commandName, CommandExecutor executor) {
         PluginCommand command = this.getCommand(commandName);
         if (command != null) {
             command.setExecutor(executor);
         } else {
-            getLogger().severe("Failed to register command: " + commandName);
+            getLogger().warning("Failed to register command: " + commandName);
         }
     }
 
-    // Register all listeners
     private void registerListeners() {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new FreezeListener(freezeManager), this);
@@ -173,14 +151,12 @@ public class EssentialsPro extends JavaPlugin {
         pluginManager.registerEvents(new JoinLeaveListener(this), this);
         pluginManager.registerEvents(new ChatListener(muteManager), this);
         pluginManager.registerEvents(new ColoredSignsEvent(), this);
-        pluginManager.registerEvents(new ShadowModeCommand(this), this);
     }
 
-    // Create the nicknames config file
-    private void createNicknamesConfig() {
-        File nicknamesFile = new File(getDataFolder(), "nickname.yml");
-        if (!nicknamesFile.exists()) {
-            saveResource("nickname.yml", false);
+    private void saveDefaultConfigIfMissing() {
+        File configFile = new File(getDataFolder(), "config.yml");
+        if (!configFile.exists()) {
+            saveDefaultConfig();
         }
     }
 }

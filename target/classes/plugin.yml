@@ -10,144 +10,181 @@ commands:
     description: Launches a firework at the player's location.
     usage: /<command>
     permission: essentialspro.firework
+    permission-message: "✖ You do not have permission to use this command."
   mute:
     description: Mute or unmute a player.
     usage: /mute <player> [duration]
     permission: essentialspro.mute
+    permission-message: "✖ You do not have permission to use this command."
   unmute:
     description: Unmute a player.
     usage: /unmute <player>
     permission: essentialspro.unmute
+    permission-message: "✖ You do not have permission to use this command."
   kick:
     description: Kick a player from the server.
     usage: /kick <player> [reason]
     permission: essentialspro.kick  # Permission node for the kick command
+    permission-message: "✖ You do not have permission to use this command."
   broadcast:
     description: Broadcast a message to the entire server.
     usage: /broadcast <message>
     permission: essentialspro.broadcast
+    permission-message: "✖ You do not have permission to use this command."
   help:
     description: Show the list of available commands.
     usage: /<command> [page]
+    permission-message: "✖ You do not have permission to use this command."
   spawn:
     description: Teleport to the server spawn point.
     usage: /spawn
     permission: essentialspro.spawn  # Permission node for the spawn command
+    permission-message: "✖ You do not have permission to use this command."
   setspawn:
     description: Set the server spawn point.
     usage: /setspawn
     permission: essentialspro.setspawn
+    permission-message: "✖ You do not have permission to use this command."
   gamemode:
     description: Change your game mode.
     usage: /gamemode <1|2|3|4>
     permission: essentialspro.gamemode
     aliases: [ gm ]
+    permission-message: "✖ You do not have permission to use this command."
   time:
     description: Change the time of day in the game world.
     usage: /<command> <day|night|morning|evening>
     permission: essentialspro.time   # Add the permission node here
+    permission-message: "✖ You do not have permission to use this command."
   weather:
     description: Change the weather in the game world.
     usage: /<command> <clear|rain|storm>
     permission: essentialspro.weather   # Add the permission node here
+    permission-message: "✖ You do not have permission to use this command."
   fly:
     description: Toggles flight mode for the player or others.
     usage: /<command> [player]
     permission: essentialspro.fly
-    permission-message: You don't have permission to use this command.
+    permission-message: "✖ You do not have permission to use this command."
   heal:
     description: Heal yourself or another player.
     usage: /<command> [player]
     permission: essentialspro.heal
+    permission-message: "✖ You do not have permission to use this command."
   feed:
     description: Feed yourself or another player.
     usage: /<command> [player]
     permission: essentialspro.feed
+    permission-message: "✖ You do not have permission to use this command."
   tp:
     description: Teleport to another player.
     usage: /<command> <player>
     permission: essentialspro.teleport
+    permission-message: "✖ You do not have permission to use this command."
   listplayers:
     description: Show a list of online players.
     usage: /<command>
     permission: essentialspro.listplayers
     aliases: [ lp, list ]
+    permission-message: "✖ You do not have permission to use this command."
   motd:
     description: Change the MOTD of the server
     usage: /motd <message>
     permission: essentialspro.motd
+    permission-message: "✖ You do not have permission to use this command."
   reloadessentials:
     description: Reload the EssentialsPro configuration
     usage: /reloadessentials
     permission: essentialspro.reload
     aliases: [ epr ]
+    permission-message: "✖ You do not have permission to use this command."
   smite:
     description: Smite a player with lightning
     usage: /smite <player>
     permission: essentialspro.smite
+    permission-message: "✖ You do not have permission to use this command."
   clearchat:
     description: Clears the chat for all players.
     usage: /clearchat
     permission: essentialspro.clearchat
+    permission-message: "✖ You do not have permission to use this command."
   inventorysee:
     description: Allows a player to see into another player's inventory.
     usage: /inventorysee <player>
     permission: essentialspro.inventorysee
+    permission-message: "✖ You do not have permission to use this command."
   message:
     description: Send a private message to another player.
     usage: /message <player> <message>
     permission: essentialspro.message
+    permission-message: "✖ You do not have permission to use this command."
   ban:
     description: Bans a player from the server.
     usage: /<command> <player> <reason> [duration]
     permission: essentialspro.ban
-    permission-message: You don't have permission to use this command.
+    permission-message: "✖ You do not have permission to use this command."
   unban:
     description: Unban a player.
     usage: /unban <player>
     permission: essentialspro.unban
+    permission-message: "✖ You do not have permission to use this command."
   freeze:
     description: Freezes or unfreezes a player.
     usage: /freeze <player>
     permission: essentialspro.freeze
-    permission-message: You don't have permission to use this command.
+    permission-message: "✖ You do not have permission to use this command."
+
   repair:
     description: Allows a player to fix the item in their hand.
     usage: /repair
     permission: essentialspro.repair
+    permission-message: "✖ You do not have permission to use this command."
   tpa:
     description: Send a teleport request to a spicific player.
     usage: /tpa [name]
     permission: essentialspro.tpa
+    permission-message: "✖ You do not have permission to use this command."
   tpaccept:
     description: Allows a player to accept a teleport request.
     usage: /tpaccept
     permission: essentialspro.tpaccept
+    permission-message: "✖ You do not have permission to use this command."
   tpdeny:
     description: Allows a player to deny a teleport request.
     usage: /tpdeny
     permission: essentialspro.tpdeny
+    permission-message: "✖ You do not have permission to use this command."
   clearinventory:
     description: Clears a player's inventory.
     usage: /clearinventory [player]
     permission: essentialspro.clearinventory
     aliases: [ ci ]
+    permission-message: "✖ You do not have permission to use this command."
   jail:
     description: Jails a player, preventing them from moving, breaking blocks, or dropping items.
     usage: /jail <player>
     permission: essentialspro.jail
+    permission-message: "✖ You do not have permission to use this command."
   unjail:
     description: Unjails a player.
     usage: /unjail <player>
     permission: essentialspro.unjail
+    permission-message: "✖ You do not have permission to use this command."
   shadowmode:
     description: Toggle Shadow Mode for invisibility and non-interaction.
     usage: /shadowmode
     permission: essentialspro.shadowmode
+    permission-message: "✖ You do not have permission to use this command."
   freezetime:
     description: Allows a player to freeze the time cycle of the server.
     usage: /freezetime [global|player <player>] [duration]
     permission: essentialspro.freezetime
+    permission-message: "✖ You do not have permission to use this command."
+  spawnmob:
+    description: Spawns a mob of the specified type.
+    usage: /spawnmob <mob_type> [amount]
+    permission: essentialspro.spawnmob
+    permission-message: "✖ You do not have permission to use this command."
 permissions:
   essentialspro.*:
     description: Gives access to all EssentialsPro commands.

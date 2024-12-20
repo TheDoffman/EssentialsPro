@@ -11,6 +11,10 @@ import org.hoffmantv.essentialspro.managers.FreezeManager;
 
 public class FreezeCommand implements CommandExecutor {
 
+    private static final Component MSG_ONLY_PLAYERS = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
+    private static final Component MSG_USAGE = Component.text("✖ Usage: /freeze <player>", NamedTextColor.RED);
+    private static final Component MSG_PLAYER_NOT_FOUND = Component.text("✖ Player not found.", NamedTextColor.RED);
+
     private final FreezeManager freezeManager;
 
     public FreezeCommand(FreezeManager freezeManager) {
@@ -19,32 +23,38 @@ public class FreezeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        // Check if the command sender is a player
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Component.text("\u2716 This command can only be used by players.", NamedTextColor.RED)); // Cross symbol for error
+            sender.sendMessage(MSG_ONLY_PLAYERS);
             return true;
         }
 
+        // Check arguments length
         if (args.length != 1) {
-            sender.sendMessage(Component.text("\u2716 Usage: /freeze <player>", NamedTextColor.RED)); // Cross symbol for error
+            sender.sendMessage(MSG_USAGE);
             return true;
         }
 
+        // Fetch the target player
         Player target = Bukkit.getPlayer(args[0]);
 
         if (target == null) {
-            sender.sendMessage(Component.text("\u2716 Player not found.", NamedTextColor.RED)); // Cross symbol for error
+            sender.sendMessage(MSG_PLAYER_NOT_FOUND);
             return true;
         }
 
-        boolean isFrozen = freezeManager.isPlayerFrozen(target);
-        freezeManager.setPlayerFrozen(target, !isFrozen);
+        // Toggle the frozen state
+        boolean wasFrozen = freezeManager.isPlayerFrozen(target);
+        freezeManager.setPlayerFrozen(target, !wasFrozen);
 
-        if (isFrozen) {
-            target.sendMessage(Component.text("\u2714 You have been unfrozen.", NamedTextColor.GREEN)); // Checkmark symbol for success
-            sender.sendMessage(Component.text("\u2714 Player " + target.getName() + " has been unfrozen.", NamedTextColor.GREEN)); // Checkmark symbol for success
+        if (wasFrozen) {
+            // The player was frozen, now unfrozen
+            target.sendMessage(Component.text("✔ You have been unfrozen.", NamedTextColor.GREEN));
+            sender.sendMessage(Component.text("✔ Player " + target.getName() + " has been unfrozen.", NamedTextColor.GREEN));
         } else {
-            target.sendMessage(Component.text("\u2716 You have been frozen.", NamedTextColor.RED)); // Cross symbol for error
-            sender.sendMessage(Component.text("\u2714 Player " + target.getName() + " has been frozen.", NamedTextColor.GREEN)); // Checkmark symbol for success
+            // The player was not frozen, now frozen
+            target.sendMessage(Component.text("✖ You have been frozen.", NamedTextColor.RED));
+            sender.sendMessage(Component.text("✔ Player " + target.getName() + " has been frozen.", NamedTextColor.GREEN));
         }
 
         return true;
