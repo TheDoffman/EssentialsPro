@@ -132,6 +132,7 @@ public class EssentialsPro extends JavaPlugin {
         registerCommand("clearinventory", new ClearInventoryCommand());
         registerCommand("shadowmode", new ShadowModeCommand(this));
         registerCommand("freezetime", new FreezeTimeCommand(this));
+        registerCommand("workbench", new WorkbenchCommand());
     }
 
     private void registerCommand(String commandName, CommandExecutor executor) {

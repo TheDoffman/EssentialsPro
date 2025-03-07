@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="78dfb246-38fb-47d6-9fcf-362b7c7c9db7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/WorkbenchCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/BanCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/BanCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/EssentialsPro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/EssentialsPro.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
