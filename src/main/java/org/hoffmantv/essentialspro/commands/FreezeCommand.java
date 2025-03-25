@@ -9,6 +9,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.hoffmantv.essentialspro.managers.FreezeManager;
 
+/**
+ * Command that toggles the freeze state of a specified player.
+ * When frozen, the player is prevented from moving or interacting with the world.
+ */
 public class FreezeCommand implements CommandExecutor {
 
     private static final Component MSG_ONLY_PLAYERS = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
@@ -23,38 +27,38 @@ public class FreezeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Check if the command sender is a player
+        // Ensure the command sender is a player
         if (!(sender instanceof Player)) {
             sender.sendMessage(MSG_ONLY_PLAYERS);
             return true;
         }
+        Player senderPlayer = (Player) sender;
 
-        // Check arguments length
+        // Verify proper argument count
         if (args.length != 1) {
-            sender.sendMessage(MSG_USAGE);
+            senderPlayer.sendMessage(MSG_USAGE);
             return true;
         }
 
-        // Fetch the target player
+        // Retrieve the target player
         Player target = Bukkit.getPlayer(args[0]);
-
         if (target == null) {
-            sender.sendMessage(MSG_PLAYER_NOT_FOUND);
+            senderPlayer.sendMessage(MSG_PLAYER_NOT_FOUND);
             return true;
         }
 
-        // Toggle the frozen state
+        // Toggle the freeze state
         boolean wasFrozen = freezeManager.isPlayerFrozen(target);
         freezeManager.setPlayerFrozen(target, !wasFrozen);
 
         if (wasFrozen) {
-            // The player was frozen, now unfrozen
+            // If target was frozen, unfreeze them
             target.sendMessage(Component.text("✔ You have been unfrozen.", NamedTextColor.GREEN));
-            sender.sendMessage(Component.text("✔ Player " + target.getName() + " has been unfrozen.", NamedTextColor.GREEN));
+            senderPlayer.sendMessage(Component.text("✔ Player " + target.getName() + " has been unfrozen.", NamedTextColor.GREEN));
         } else {
-            // The player was not frozen, now frozen
+            // If target was not frozen, freeze them
             target.sendMessage(Component.text("✖ You have been frozen.", NamedTextColor.RED));
-            sender.sendMessage(Component.text("✔ Player " + target.getName() + " has been frozen.", NamedTextColor.GREEN));
+            senderPlayer.sendMessage(Component.text("✔ Player " + target.getName() + " has been frozen.", NamedTextColor.GREEN));
         }
 
         return true;

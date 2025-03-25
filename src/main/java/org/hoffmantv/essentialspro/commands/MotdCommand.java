@@ -18,11 +18,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * The MotdCommand class handles the /motd command.
+ * If no arguments are provided, it displays the current MOTD.
+ * Otherwise, it sets the custom MOTD and updates the server.properties file.
+ * The MOTD is displayed to players using legacy formatting codes.
+ */
 public class MotdCommand implements CommandExecutor, Listener {
 
     private final EssentialsPro plugin;
     private final FileConfiguration config;
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
+    private final LegacyComponentSerializer legacySerializer = LegacyComponentSerializer.legacySection();
 
     public MotdCommand(EssentialsPro plugin) {
         this.plugin = plugin;
@@ -32,37 +39,37 @@ public class MotdCommand implements CommandExecutor, Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // If no arguments are provided, display the current MOTD
+        // If no arguments, display the current MOTD with an info icon.
         if (args.length == 0) {
             String motd = getMotd();
             sender.sendMessage(
-                    Component.text("Current MOTD: ", NamedTextColor.GREEN)
+                    Component.text("ℹ Current MOTD: ", NamedTextColor.GREEN)
                             .append(Component.text(motd, NamedTextColor.WHITE))
             );
         } else {
-            // Set custom MOTD
+            // Otherwise, set a custom MOTD.
             String motdInput = String.join(" ", args);
-            // Process with MiniMessage for advanced formatting if desired
-            // Store this raw string as is, or consider storing MiniMessage tags and convert later
             config.set("motd.custom", motdInput);
             plugin.saveConfig();
             updateServerProperties(motdInput);
-
-            sender.sendMessage(Component.text("MOTD updated to: ", NamedTextColor.GREEN)
-                    .append(Component.text(motdInput, NamedTextColor.WHITE)));
+            sender.sendMessage(
+                    Component.text("✔ MOTD updated to: ", NamedTextColor.GREEN)
+                            .append(Component.text(motdInput, NamedTextColor.WHITE))
+            );
         }
         return true;
     }
 
     /**
-     * Updates the 'motd' line in server.properties with the given motd.
+     * Updates the MOTD in the server.properties file with the provided MOTD.
+     *
+     * @param motd The new MOTD string.
      */
     private void updateServerProperties(String motd) {
         Path serverPropertiesPath = Paths.get("server.properties");
         try {
             String serverPropertiesContent = Files.readString(serverPropertiesPath);
-            // Convert MiniMessage/legacy to a plain string for server.properties
-            // The server only reads motd as legacy formatting codes (i.e., §)
+            // Convert the MOTD to a legacy formatted string
             String legacyMotd = toLegacyString(motd);
             serverPropertiesContent = serverPropertiesContent.replaceAll("motd=.*", "motd=" + legacyMotd);
             Files.write(serverPropertiesPath, serverPropertiesContent.getBytes());
@@ -72,7 +79,10 @@ public class MotdCommand implements CommandExecutor, Listener {
     }
 
     /**
-     * Returns the current MOTD. If custom MOTD is present, use that; otherwise, use default.
+     * Retrieves the current MOTD from the config.
+     * Uses the custom MOTD if available, otherwise the default MOTD.
+     *
+     * @return The MOTD string.
      */
     private String getMotd() {
         String customMotd = config.getString("motd.custom", "").trim();
@@ -82,20 +92,22 @@ public class MotdCommand implements CommandExecutor, Listener {
     @EventHandler
     public void onServerListPing(ServerListPingEvent event) {
         String motd = getMotd();
-        // Convert to legacy string to display correctly in the server list
         event.setMotd(toLegacyString(motd));
     }
 
     /**
-     * Converts a MiniMessage/legacy-compatible string into a legacy formatted string
-     * with '§' codes for compatibility with server list and server.properties.
+     * Converts a string containing ampersand color codes to a legacy formatted string using '§' codes.
+     * Optionally, you can use MiniMessage by uncommenting the code below.
+     *
+     * @param text The input text.
+     * @return The legacy formatted string.
      */
     private String toLegacyString(String text) {
-        // If you want MiniMessage formatting, you can do:
+        // If using MiniMessage formatting:
         // Component comp = miniMessage.deserialize(text);
-        // return LegacyComponentSerializer.legacySection().serialize(comp);
+        // return legacySerializer.serialize(comp);
 
-        // If currently using ampersand codes, you can just replace them:
+        // For simple ampersand-to-section conversion:
         return text.replace('&', '§');
     }
 }

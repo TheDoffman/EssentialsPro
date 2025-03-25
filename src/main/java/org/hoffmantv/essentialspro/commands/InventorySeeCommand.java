@@ -10,21 +10,26 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * InventorySeeCommand allows a player to view the inventory of another online player.
+ * Usage: /inventorysee <player>
+ */
 public class InventorySeeCommand implements CommandExecutor {
 
-    private static final Component NO_PERMISSION = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    // Pre-defined messages using Adventure API with Unicode symbols.
     private static final Component ONLY_PLAYERS = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
+    private static final Component NO_PERMISSION = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
     private static final Component USAGE = Component.text("✖ Usage: /inventorysee <player>", NamedTextColor.RED);
     private static final Component PLAYER_NOT_FOUND = Component.text("✖ Player not found or not online.", NamedTextColor.RED);
+    private static final Component VIEW_SUCCESS = Component.text("✔ You are now viewing ", NamedTextColor.GREEN);
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure only players can use this command
+        // Ensure the sender is a player
         if (!(sender instanceof Player)) {
             sender.sendMessage(ONLY_PLAYERS);
             return true;
         }
-
         Player player = (Player) sender;
 
         // Check for permission
@@ -33,49 +38,48 @@ public class InventorySeeCommand implements CommandExecutor {
             return true;
         }
 
-        // Validate arguments
+        // Validate that exactly one argument is provided
         if (args.length != 1) {
             player.sendMessage(USAGE);
             return true;
         }
 
-        // Get the target player
+        // Retrieve the target player
         Player target = Bukkit.getPlayer(args[0]);
-
-        // Validate the target player
         if (target == null || !target.isOnline()) {
             player.sendMessage(PLAYER_NOT_FOUND);
             return true;
         }
 
-        // Clone the target player's inventory
-        Inventory targetInventory = clonePlayerInventory(target);
+        // Clone the target's inventory and open it for the sender
+        Inventory clonedInventory = clonePlayerInventory(target);
+        player.openInventory(clonedInventory);
 
-        // Open the cloned inventory for the sender
-        player.openInventory(targetInventory);
-
-        // Optionally notify the sender that they are now viewing the player's inventory
-        player.sendMessage(Component.text("✔ You are now viewing " + target.getName() + "'s inventory.", NamedTextColor.GREEN));
-
+        // Inform the sender that they are now viewing the target's inventory
+        player.sendMessage(VIEW_SUCCESS.append(Component.text(target.getName(), NamedTextColor.GREEN))
+                .append(Component.text("'s inventory.", NamedTextColor.GREEN)));
         return true;
     }
 
     /**
-     * Clones the target player's inventory into a new inventory.
+     * Creates a clone of the target player's inventory.
+     *
+     * @param target The player whose inventory should be cloned.
+     * @return A new Inventory containing clones of the target's item stacks.
      */
     private Inventory clonePlayerInventory(Player target) {
-        // Create a new inventory with a custom title
-        Inventory targetInventory = Bukkit.createInventory(null, 45, Component.text(target.getName() + "'s Inventory", NamedTextColor.DARK_GRAY));
+        // Create an inventory with 45 slots and a title using the target's name
+        Inventory clonedInventory = Bukkit.createInventory(null, 45,
+                Component.text(target.getName() + "'s Inventory", NamedTextColor.DARK_GRAY));
 
-        // Clone items from the target player's inventory into the new inventory
+        // Copy items from the target's inventory
         ItemStack[] contents = target.getInventory().getContents();
         for (int i = 0; i < contents.length; i++) {
             ItemStack item = contents[i];
             if (item != null) {
-                targetInventory.setItem(i, item.clone());
+                clonedInventory.setItem(i, item.clone());
             }
         }
-
-        return targetInventory;
+        return clonedInventory;
     }
 }

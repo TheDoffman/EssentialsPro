@@ -8,7 +8,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-
 public class MessageCommand implements CommandExecutor {
 
     private static final Component ONLY_PLAYERS_ERROR = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
@@ -18,49 +17,55 @@ public class MessageCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure only players can use this command
+        // Ensure only players use this command
         if (!(sender instanceof Player)) {
             sender.sendMessage(ONLY_PLAYERS_ERROR);
             return true;
         }
 
-        Player player = (Player) sender;
+        Player senderPlayer = (Player) sender;
 
         // Check permission
-        if (!player.hasPermission("essentialspro.message")) {
-            player.sendMessage(NO_PERMISSION);
+        if (!senderPlayer.hasPermission("essentialspro.message")) {
+            senderPlayer.sendMessage(NO_PERMISSION);
             return true;
         }
 
-        // Validate arguments
+        // Validate arguments: at least target and message must be provided
         if (args.length < 2) {
-            player.sendMessage(USAGE_ERROR);
+            senderPlayer.sendMessage(USAGE_ERROR);
             return true;
         }
 
-        // Get the target player
+        // Retrieve the target player by name
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null || !target.isOnline()) {
-            player.sendMessage(PLAYER_NOT_FOUND);
+            senderPlayer.sendMessage(PLAYER_NOT_FOUND);
             return true;
         }
 
-        // Join the rest of the arguments into a message string
+        // Combine the remaining arguments into the message
         String message = joinArguments(args, 1);
 
-        // Send the message to the sender
-        player.sendMessage(Component.text("You -> " + target.getName() + ": ")
-                .append(Component.text(message, NamedTextColor.GRAY)));
+        // Build sender and target messages using a speech bubble icon (💬) for clarity
+        Component senderMsg = Component.text("💬 You → " + target.getName() + ": ", NamedTextColor.AQUA)
+                .append(Component.text(message, NamedTextColor.GRAY));
+        Component targetMsg = Component.text("💬 " + senderPlayer.getName() + " → You: ", NamedTextColor.AQUA)
+                .append(Component.text(message, NamedTextColor.GRAY));
 
-        // Send the message to the target
-        target.sendMessage(Component.text(player.getName() + " -> You: ")
-                .append(Component.text(message, NamedTextColor.GRAY)));
+        // Send the messages
+        senderPlayer.sendMessage(senderMsg);
+        target.sendMessage(targetMsg);
 
         return true;
     }
 
     /**
-     * Joins the arguments starting from a specific index into a single space-separated string.
+     * Joins the command arguments from the specified start index into a single space-separated string.
+     *
+     * @param args       The array of command arguments.
+     * @param startIndex The starting index to join from.
+     * @return The joined string.
      */
     private String joinArguments(String[] args, int startIndex) {
         StringBuilder sb = new StringBuilder();

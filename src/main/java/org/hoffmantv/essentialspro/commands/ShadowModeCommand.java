@@ -2,7 +2,10 @@ package org.hoffmantv.essentialspro.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,64 +25,84 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * ShadowModeCommand toggles a player's "shadow mode," a state in which the player becomes invisible (via spectator mode)
+ * and is prevented from performing actions like breaking/placing blocks, interacting, attacking, chatting, or moving.
+ *
+ * Note: Sending a message on every blocked action may be spammy; consider adding a cooldown mechanism if necessary.
+ */
 public class ShadowModeCommand implements CommandExecutor, Listener {
 
     private final JavaPlugin plugin;
     private final Set<UUID> shadowPlayers = new HashSet<>();
 
-    // Message constants
-    private static final Component MSG_ONLY_PLAYERS = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
-    private static final Component MSG_ENTER_SHADOW = Component.text("You are now in Shadow Mode. You are invisible and cannot interact with the world.", NamedTextColor.GRAY);
-    private static final Component MSG_EXIT_SHADOW = Component.text("You have exited Shadow Mode.", NamedTextColor.GREEN);
-    private static final Component MSG_ENABLED_SHADOW = Component.text("You are now in Shadow Mode!", NamedTextColor.DARK_GRAY);
-    private static final Component MSG_DISABLED_SHADOW = Component.text("You have left Shadow Mode.", NamedTextColor.DARK_GREEN);
+    // Message constants using Adventure API with Unicode symbols
+    private static final Component ONLY_PLAYERS_MSG = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
+    private static final Component ENTER_SHADOW_MSG = Component.text("✔ You are now in Shadow Mode. You are invisible and cannot interact with the world.", NamedTextColor.GRAY);
+    private static final Component EXIT_SHADOW_MSG = Component.text("✔ You have exited Shadow Mode.", NamedTextColor.GREEN);
+    private static final Component ENABLED_SHADOW_MSG = Component.text("✔ You are now in Shadow Mode!", NamedTextColor.DARK_GRAY);
+    private static final Component DISABLED_SHADOW_MSG = Component.text("✔ You have left Shadow Mode.", NamedTextColor.DARK_GREEN);
 
-    // Actions blocked messages
-    private static final Component MSG_BLOCK_BREAK = Component.text("You cannot break blocks in Shadow Mode!", NamedTextColor.RED);
-    private static final Component MSG_BLOCK_PLACE = Component.text("You cannot place blocks in Shadow Mode!", NamedTextColor.RED);
-    private static final Component MSG_ITEM_INTERACT = Component.text("You cannot interact with items in Shadow Mode!", NamedTextColor.RED);
-    private static final Component MSG_ATTACK = Component.text("You cannot attack players in Shadow Mode!", NamedTextColor.RED);
-    private static final Component MSG_NO_CHAT = Component.text("You cannot chat while in Shadow Mode!", NamedTextColor.RED);
-    private static final Component MSG_NO_MOVE = Component.text("You cannot move while in Shadow Mode!", NamedTextColor.RED);
+    // Action-blocked messages
+    private static final Component BLOCK_BREAK_MSG = Component.text("✖ You cannot break blocks in Shadow Mode!", NamedTextColor.RED);
+    private static final Component BLOCK_PLACE_MSG = Component.text("✖ You cannot place blocks in Shadow Mode!", NamedTextColor.RED);
+    private static final Component ITEM_INTERACT_MSG = Component.text("✖ You cannot interact with items in Shadow Mode!", NamedTextColor.RED);
+    private static final Component ATTACK_MSG = Component.text("✖ You cannot attack players in Shadow Mode!", NamedTextColor.RED);
+    private static final Component CHAT_MSG = Component.text("✖ You cannot chat while in Shadow Mode!", NamedTextColor.RED);
+    private static final Component MOVE_MSG = Component.text("✖ You cannot move while in Shadow Mode!", NamedTextColor.RED);
 
     public ShadowModeCommand(JavaPlugin plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
+    /**
+     * Toggles Shadow Mode for the player.
+     * If the player is currently in Shadow Mode, it will disable it; otherwise, it will enable it.
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(MSG_ONLY_PLAYERS);
+            sender.sendMessage(ONLY_PLAYERS_MSG);
             return true;
         }
-
         Player player = (Player) sender;
 
         if (shadowPlayers.contains(player.getUniqueId())) {
             disableShadowMode(player);
-            player.sendMessage(MSG_EXIT_SHADOW);
+            player.sendMessage(EXIT_SHADOW_MSG);
         } else {
             enableShadowMode(player);
-            player.sendMessage(MSG_ENTER_SHADOW);
+            player.sendMessage(ENTER_SHADOW_MSG);
         }
-
         return true;
     }
 
+    /**
+     * Enables Shadow Mode for the given player.
+     *
+     * @param player The player to enable Shadow Mode for.
+     */
     private void enableShadowMode(Player player) {
         shadowPlayers.add(player.getUniqueId());
-        player.setGameMode(GameMode.SPECTATOR); // Makes them invisible
-        player.setSilent(true); // Silences their sounds
-        player.sendMessage(MSG_ENABLED_SHADOW);
+        player.setGameMode(GameMode.SPECTATOR);  // Switch to spectator mode for invisibility.
+        player.setSilent(true);                  // Silence the player.
+        player.sendMessage(ENABLED_SHADOW_MSG);
     }
 
+    /**
+     * Disables Shadow Mode for the given player.
+     *
+     * @param player The player to disable Shadow Mode for.
+     */
     private void disableShadowMode(Player player) {
         shadowPlayers.remove(player.getUniqueId());
-        player.setGameMode(GameMode.SURVIVAL); // Back to normal
-        player.setSilent(false); // Enable their sounds again
-        player.sendMessage(MSG_DISABLED_SHADOW);
+        player.setGameMode(GameMode.SURVIVAL);  // Revert to survival mode.
+        player.setSilent(false);               // Re-enable sound.
+        player.sendMessage(DISABLED_SHADOW_MSG);
     }
+
+    // Event Listeners
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
@@ -91,7 +114,7 @@ public class ShadowModeCommand implements CommandExecutor, Listener {
         Player player = event.getPlayer();
         if (shadowPlayers.contains(player.getUniqueId())) {
             event.setCancelled(true);
-            player.sendMessage(MSG_BLOCK_BREAK);
+            player.sendMessage(BLOCK_BREAK_MSG);
         }
     }
 
@@ -100,7 +123,7 @@ public class ShadowModeCommand implements CommandExecutor, Listener {
         Player player = event.getPlayer();
         if (shadowPlayers.contains(player.getUniqueId())) {
             event.setCancelled(true);
-            player.sendMessage(MSG_BLOCK_PLACE);
+            player.sendMessage(BLOCK_PLACE_MSG);
         }
     }
 
@@ -109,27 +132,24 @@ public class ShadowModeCommand implements CommandExecutor, Listener {
         Player player = event.getPlayer();
         if (shadowPlayers.contains(player.getUniqueId())) {
             event.setCancelled(true);
-            player.sendMessage(MSG_ITEM_INTERACT);
+            player.sendMessage(ITEM_INTERACT_MSG);
         }
     }
 
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Player player) {
-            if (shadowPlayers.contains(player.getUniqueId())) {
-                event.setCancelled(true);
-                player.sendMessage(MSG_ATTACK);
-            }
+        if (event.getDamager() instanceof Player player && shadowPlayers.contains(player.getUniqueId())) {
+            event.setCancelled(true);
+            player.sendMessage(ATTACK_MSG);
         }
     }
 
-    // Use AsyncPlayerChatEvent instead of PlayerChatEvent (deprecated)
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         if (shadowPlayers.contains(player.getUniqueId())) {
             event.setCancelled(true);
-            player.sendMessage(MSG_NO_CHAT);
+            player.sendMessage(CHAT_MSG);
         }
     }
 
@@ -138,7 +158,7 @@ public class ShadowModeCommand implements CommandExecutor, Listener {
         Player player = event.getPlayer();
         if (shadowPlayers.contains(player.getUniqueId())) {
             event.setCancelled(true);
-            player.sendMessage(MSG_NO_MOVE);
+            player.sendMessage(MOVE_MSG);
         }
     }
 }

@@ -10,6 +10,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
+/**
+ * RepairCommand allows players to repair the item held in their main hand.
+ * It checks that the item is repairable (i.e. its meta is Damageable) and
+ * then resets the damage. Appropriate messages are displayed using Adventure API.
+ */
 public class RepairCommand implements CommandExecutor {
 
     private static final Component ONLY_PLAYERS_ERROR = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
@@ -21,31 +26,36 @@ public class RepairCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        // Ensure the sender is a player
         if (!(sender instanceof Player)) {
             sender.sendMessage(ONLY_PLAYERS_ERROR);
             return true;
         }
-
         Player player = (Player) sender;
 
+        // Check permission
         if (!player.hasPermission("essentialspro.repair")) {
             player.sendMessage(NO_PERMISSION_ERROR);
             return true;
         }
 
+        // Retrieve the item in the player's main hand
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (item.getType().isAir()) {
+        if (item == null || item.getType().isAir()) {
             player.sendMessage(NO_ITEM_ERROR);
             return true;
         }
 
+        // Get the item meta and check if it's repairable
         ItemMeta meta = item.getItemMeta();
-        if (!(meta instanceof Damageable)) {
+        if (meta == null || !(meta instanceof Damageable)) {
             player.sendMessage(NOT_REPAIRABLE_ERROR);
             return true;
         }
 
         Damageable damageable = (Damageable) meta;
+
+        // If the item is damaged, repair it; otherwise, notify the player no repair is needed
         if (damageable.hasDamage()) {
             damageable.setDamage(0);
             item.setItemMeta(meta);
@@ -53,7 +63,6 @@ public class RepairCommand implements CommandExecutor {
         } else {
             player.sendMessage(NO_REPAIR_NEEDED);
         }
-
         return true;
     }
 }

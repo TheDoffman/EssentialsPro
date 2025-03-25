@@ -23,7 +23,7 @@ public class HelpCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure the command is being used by a player
+        // Ensure that only players use this command
         if (!(sender instanceof Player)) {
             sender.sendMessage(Component.text("✖ This command can only be used by players.", NamedTextColor.RED));
             return true;
@@ -32,7 +32,7 @@ public class HelpCommand implements CommandExecutor {
         Player player = (Player) sender;
         List<String> allowedCommands = getAllowedCommands(player);
 
-        // Calculate total number of pages
+        // Calculate total pages
         int totalPages = (allowedCommands.size() + PAGE_SIZE - 1) / PAGE_SIZE;
         int page = parsePageNumber(args, totalPages);
 
@@ -46,7 +46,10 @@ public class HelpCommand implements CommandExecutor {
     }
 
     /**
-     * Fetches a list of commands the player has permission to use, sorted alphabetically.
+     * Retrieves a sorted list of command names the player has permission to use.
+     *
+     * @param player The player whose permissions are checked.
+     * @return A sorted list of allowed command names.
      */
     private List<String> getAllowedCommands(Player player) {
         List<String> allowed = new ArrayList<>();
@@ -60,7 +63,11 @@ public class HelpCommand implements CommandExecutor {
     }
 
     /**
-     * Attempts to parse the page number from args, returns -1 if invalid.
+     * Attempts to parse a page number from the command arguments.
+     *
+     * @param args       The command arguments.
+     * @param totalPages The total number of pages available.
+     * @return The page number, or -1 if invalid.
      */
     private int parsePageNumber(String[] args, int totalPages) {
         if (args.length > 0 && args[0].matches("\\d+")) {
@@ -70,14 +77,21 @@ public class HelpCommand implements CommandExecutor {
             }
             return page;
         }
-        return 1; // Default to page 1 if no valid page is provided
+        return 1; // Default to page 1 if no valid page number is provided
     }
 
     /**
-     * Displays the commands for the given page.
+     * Displays the allowed commands for the specified page.
+     *
+     * @param player     The player to display commands to.
+     * @param commands   The list of allowed command names.
+     * @param page       The current page number.
+     * @param totalPages The total number of pages.
      */
     private void displayCommands(Player player, List<String> commands, int page, int totalPages) {
-        player.sendMessage(Component.text("---- Available Commands (Page " + page + "/" + totalPages + ") ----", NamedTextColor.YELLOW));
+        // Header with a Unicode scroll icon
+        Component header = Component.text("📜 Available Commands (Page " + page + "/" + totalPages + ")", NamedTextColor.YELLOW);
+        player.sendMessage(header);
 
         int startIndex = (page - 1) * PAGE_SIZE;
         int endIndex = Math.min(startIndex + PAGE_SIZE, commands.size());
@@ -85,25 +99,25 @@ public class HelpCommand implements CommandExecutor {
         for (int i = startIndex; i < endIndex; i++) {
             String cmd = commands.get(i);
             String usage = getCommandUsage(cmd);
-            // Build the line: "/cmd usage"
-            Component line = Component.text("/")
-                    .color(NamedTextColor.GREEN)
-                    .append(Component.text(cmd, NamedTextColor.GREEN))
-                    .append(Component.text(" "))
+            // Build each line with a Unicode arrow bullet
+            Component line = Component.text("➤ ", NamedTextColor.AQUA)
+                    .append(Component.text("/" + cmd + " ", NamedTextColor.GREEN))
                     .append(Component.text(usage, NamedTextColor.YELLOW));
-
             player.sendMessage(line);
         }
     }
 
     /**
-     * Retrieves the usage information for a given command name.
+     * Retrieves the usage information for a given command.
+     *
+     * @param commandName The command name.
+     * @return The usage string if available, or an empty string otherwise.
      */
     private String getCommandUsage(String commandName) {
         Command cmd = plugin.getCommand(commandName);
         if (cmd != null && cmd.getUsage() != null) {
             return cmd.getUsage();
         }
-        return ""; // If no usage is provided, return an empty string
+        return "";
     }
 }

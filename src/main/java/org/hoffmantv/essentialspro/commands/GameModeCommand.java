@@ -9,9 +9,20 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.hoffmantv.essentialspro.EssentialsPro;
 
+/**
+ * A command to allow players to change their game mode.
+ *
+ * <p>Usage: /gamemode &lt;1|2|3|4&gt; or /gamemode &lt;c|a|s|sp&gt;
+ * <br>Where:
+ * <br>1 or c = Creative
+ * <br>2 or a = Adventure
+ * <br>3 or s = Survival
+ * <br>4 or sp = Spectator</p>
+ */
 public class GameModeCommand implements CommandExecutor {
 
     private final EssentialsPro plugin;
+    private static final Component USAGE_MESSAGE = Component.text("➡ Usage: /gamemode <1|2|3|4>", NamedTextColor.RED);
 
     public GameModeCommand(EssentialsPro plugin) {
         this.plugin = plugin;
@@ -19,12 +30,11 @@ public class GameModeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure that only players can use this command
+        // Ensure the command sender is a player
         if (!(sender instanceof Player)) {
             sender.sendMessage(Component.text("✖ This command can only be used by players!", NamedTextColor.RED));
             return true;
         }
-
         Player player = (Player) sender;
 
         // Permission check
@@ -33,36 +43,36 @@ public class GameModeCommand implements CommandExecutor {
             return true;
         }
 
-        // Check arguments
+        // Validate arguments
         if (args.length != 1) {
-            player.sendMessage(Component.text("➡ Usage: /gamemode <1|2|3|4>", NamedTextColor.RED));
+            player.sendMessage(USAGE_MESSAGE);
             return true;
         }
 
-        // Attempt to parse the game mode alias
-        GameMode gameMode = parseGameModeAlias(args[0]);
-        if (gameMode == null) {
+        // Parse the game mode alias
+        GameMode newGameMode = parseGameModeAlias(args[0]);
+        if (newGameMode == null) {
             player.sendMessage(Component.text("✖ Invalid game mode alias. Use 1, 2, 3, or 4.", NamedTextColor.RED));
             return true;
         }
 
-        // Check if the player is already in that game mode
-        if (player.getGameMode() == gameMode) {
-            player.sendMessage(Component.text("⚠ You are already in " + gameMode.name() + " mode.", NamedTextColor.YELLOW));
+        // Check if the player is already in the requested game mode
+        if (player.getGameMode() == newGameMode) {
+            player.sendMessage(Component.text("⚠ You are already in " + newGameMode.name() + " mode.", NamedTextColor.YELLOW));
             return true;
         }
 
-        // Set the player's game mode
-        player.setGameMode(gameMode);
-        player.sendMessage(Component.text("✔ Your game mode has been set to " + gameMode.name() + ".", NamedTextColor.GREEN));
+        // Set the player's game mode and notify them
+        player.setGameMode(newGameMode);
+        player.sendMessage(Component.text("✔ Your game mode has been set to " + newGameMode.name() + ".", NamedTextColor.GREEN));
 
         return true;
     }
 
     /**
-     * Converts a mode alias (1,2,3,4 or c,a,s,sp) into a corresponding GameMode.
+     * Parses a game mode alias into the corresponding GameMode.
      *
-     * @param alias The alias entered by the player.
+     * @param alias The alias provided by the player (e.g., "1", "c", "2", "a", "3", "s", "4", "sp").
      * @return The corresponding GameMode, or null if the alias is invalid.
      */
     private GameMode parseGameModeAlias(String alias) {
