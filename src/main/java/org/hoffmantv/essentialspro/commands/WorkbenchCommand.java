@@ -9,42 +9,54 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
+/**
+ * WorkbenchCommand opens a crafting table interface for the player.
+ * Usage: /workbench
+ */
 public class WorkbenchCommand implements CommandExecutor {
 
-    private static final Component ONLY_PLAYERS = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
-    private static final Component NO_PERMISSION = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
-    private static final Component WORKBENCH_OPENED = Component.text("✔ Workbench opened.", NamedTextColor.GREEN);
-    private static final Component USAGE = Component.text("✖ Usage: /workbench", NamedTextColor.RED);
+    // Predefined messages using Adventure API with Unicode symbols
+    private static final Component ONLY_PLAYERS_MSG = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
+    private static final Component NO_PERMISSION_MSG = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component USAGE_MSG = Component.text("✖ Usage: /workbench", NamedTextColor.RED);
+    private static final Component WORKBENCH_OPENED_MSG = Component.text("✔ Workbench opened.", NamedTextColor.GREEN);
 
+    /**
+     * Executes the /workbench command. Opens a crafting table GUI for the player.
+     *
+     * @param sender  The command sender.
+     * @param command The command.
+     * @param label   The command alias.
+     * @param args    Command arguments (none expected).
+     * @return true after processing.
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure the command is executed by a player
+        // Ensure that the sender is a player
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ONLY_PLAYERS);
+            sender.sendMessage(ONLY_PLAYERS_MSG);
             return true;
         }
-
         Player player = (Player) sender;
 
-        // Permission check (use the permission node "essentialspro.workbench")
+        // Check for proper permission
         if (!player.hasPermission("essentialspro.workbench")) {
-            player.sendMessage(NO_PERMISSION);
+            player.sendMessage(NO_PERMISSION_MSG);
             return true;
         }
 
-        // Optionally, you might check for extra arguments if needed
+        // Validate that no extra arguments are provided
         if (args.length != 0) {
-            player.sendMessage(USAGE);
+            player.sendMessage(USAGE_MSG);
             return true;
         }
 
-        // Create a workbench (crafting table) inventory interface
-        // Standard crafting table GUI uses a 3x3 grid (9 slots) but can be expanded for convenience
-        Inventory workbenchInventory = Bukkit.createInventory(null, 9 * 3, Component.text("Crafting", NamedTextColor.GOLD));
+        // Create a 27-slot workbench inventory (crafting table GUI)
+        Inventory workbenchInventory = Bukkit.createInventory(null, 27, Component.text("Crafting", NamedTextColor.GOLD));
 
         // Open the inventory for the player
         player.openInventory(workbenchInventory);
-        player.sendMessage(WORKBENCH_OPENED);
+        player.sendMessage(WORKBENCH_OPENED_MSG);
 
         return true;
     }

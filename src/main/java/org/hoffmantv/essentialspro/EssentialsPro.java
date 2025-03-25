@@ -108,7 +108,7 @@ public class EssentialsPro extends JavaPlugin {
         registerCommand("setspawn", new SetSpawnCommand(this));
         registerCommand("gamemode", new GameModeCommand(this));
         registerCommand("time", new TimeCommand(this));
-        registerCommand("weather", new WeatherCommand(this));
+        registerCommand("weather", new WeatherCommand());
         registerCommand("fly", new FlyCommand(this));
         registerCommand("heal", new HealCommand(this));
         registerCommand("feed", new FeedCommand(this));

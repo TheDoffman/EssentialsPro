@@ -7,43 +7,68 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.hoffmantv.essentialspro.managers.BanManager;
 
+/**
+ * UnbanCommand allows authorized users to unban a player.
+ * It requires exactly one argument (the player's name) and
+ * sends clear feedback to the command sender.
+ */
 public class UnbanCommand implements CommandExecutor {
 
     private final BanManager banManager;
 
-    // Messages
-    private static final Component PERMISSION_ERROR = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
-    private static final Component USAGE_ERROR = Component.text("✖ Usage: /unban <player>", NamedTextColor.RED);
-    private static final String SUCCESS_PREFIX = "✔ Player ";
-    private static final Component PLAYER_NOT_FOUND_BASE = Component.text("✖ ", NamedTextColor.RED);
+    // Predefined messages using Adventure API with Unicode symbols
+    private static final Component NO_PERMISSION = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component USAGE = Component.text("✖ Usage: /unban <player>", NamedTextColor.RED);
+    private static final Component PLAYER_NOT_FOUND = Component.text("✖ Player not found or not banned.", NamedTextColor.RED);
+    private static final Component UNBAN_SUCCESS_PREFIX = Component.text("✔ Player ", NamedTextColor.GREEN);
+    private static final Component UNBAN_SUCCESS_SUFFIX = Component.text(" has been unbanned.", NamedTextColor.GREEN);
 
+    /**
+     * Constructs a new UnbanCommand.
+     *
+     * @param banManager The BanManager instance to handle unban operations.
+     */
     public UnbanCommand(BanManager banManager) {
         this.banManager = banManager;
     }
 
+    /**
+     * Executes the /unban command.
+     * It unbans the specified player and notifies the sender.
+     *
+     * @param sender  The command sender.
+     * @param command The command.
+     * @param label   The alias used.
+     * @param args    The command arguments.
+     * @return true after processing.
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Permission check
+        // Check for permission
         if (!sender.hasPermission("essentialspro.unban")) {
-            sender.sendMessage(PERMISSION_ERROR);
+            sender.sendMessage(NO_PERMISSION);
             return true;
         }
 
-        // Argument check
+        // Ensure exactly one argument is provided
         if (args.length != 1) {
-            sender.sendMessage(USAGE_ERROR);
+            sender.sendMessage(USAGE);
             return true;
         }
 
         String playerName = args[0];
 
         try {
+            // Attempt to unban the player using the BanManager
             banManager.unbanPlayer(playerName);
-            sender.sendMessage(Component.text(SUCCESS_PREFIX + playerName + " has been unbanned.", NamedTextColor.GREEN));
+            // Build and send a success message
+            Component successMessage = UNBAN_SUCCESS_PREFIX
+                    .append(Component.text(playerName, NamedTextColor.GREEN))
+                    .append(UNBAN_SUCCESS_SUFFIX);
+            sender.sendMessage(successMessage);
         } catch (IllegalArgumentException e) {
-            // If BanManager throws an error (e.g., player not banned), show it.
-            // Ensuring the exception message is user-friendly is important.
-            sender.sendMessage(PLAYER_NOT_FOUND_BASE.append(Component.text(e.getMessage(), NamedTextColor.RED)));
+            // Send error message if unban fails (e.g. player is not banned)
+            sender.sendMessage(PLAYER_NOT_FOUND.append(Component.text(" " + e.getMessage(), NamedTextColor.RED)));
         }
 
         return true;

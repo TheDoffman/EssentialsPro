@@ -1,6 +1,5 @@
 package org.hoffmantv.essentialspro.managers;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -10,46 +9,73 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * MuteManager manages the muted state of players. It stores mute end times (in milliseconds)
+ * for each muted player's UUID and persists this data to a YAML file.
+ */
 public class MuteManager {
+
     private final Map<UUID, Long> mutedPlayers = new HashMap<>();
     private final File muteFile;
     private final YamlConfiguration muteConfig;
 
+    /**
+     * Constructs a new MuteManager and loads any existing mutes from file.
+     *
+     * @param dataFolder The plugin's data folder.
+     */
     public MuteManager(File dataFolder) {
-        // Create the mute file
-        muteFile = new File(dataFolder, "mutes.yml");
+        // Create the mute file in the plugin's data folder.
+        this.muteFile = new File(dataFolder, "mutes.yml");
         if (!muteFile.exists()) {
             try {
+                if (muteFile.getParentFile() != null) {
+                    muteFile.getParentFile().mkdirs();
+                }
                 muteFile.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        muteConfig = YamlConfiguration.loadConfiguration(muteFile);
-
-        // Load mutes from file
+        this.muteConfig = YamlConfiguration.loadConfiguration(muteFile);
         loadMutesFromFile();
     }
 
-    // Mute a player with a specified duration (in seconds)
+    /**
+     * Mutes a player for a specified duration (in seconds).
+     *
+     * @param player            The player to mute.
+     * @param durationInSeconds The duration in seconds.
+     */
     public void mutePlayer(Player player, long durationInSeconds) {
         long endTime = System.currentTimeMillis() + (durationInSeconds * 1000);
         mutedPlayers.put(player.getUniqueId(), endTime);
         saveMutesToFile();
     }
 
-    // Unmute a player
+    /**
+     * Unmutes a player.
+     *
+     * @param player The player to unmute.
+     */
     public void unmutePlayer(Player player) {
         mutedPlayers.remove(player.getUniqueId());
         saveMutesToFile();
     }
 
-    // Check if a player is muted
+    /**
+     * Checks if a player is muted.
+     * If the mute has expired, the player is automatically unmuted.
+     *
+     * @param player The player to check.
+     * @return true if the player is muted; false otherwise.
+     */
     public boolean isMuted(Player player) {
         Long endTime = mutedPlayers.get(player.getUniqueId());
-        if (endTime == null) return false;
-
-        // If the mute time has passed, unmute the player
+        if (endTime == null) {
+            return false;
+        }
+        // If the current time is past the mute end time, remove the mute and return false.
         if (System.currentTimeMillis() > endTime) {
             mutedPlayers.remove(player.getUniqueId());
             saveMutesToFile();
@@ -58,15 +84,27 @@ public class MuteManager {
         return true;
     }
 
-    // Get the remaining mute duration (in seconds)
+    /**
+     * Gets the remaining mute duration for a player in seconds.
+     *
+     * @param player The player.
+     * @return The remaining time in seconds, or 0 if the player is not muted.
+     */
     public long getRemainingMuteTime(Player player) {
         Long endTime = mutedPlayers.get(player.getUniqueId());
-        if (endTime == null) return 0;
-        return (endTime - System.currentTimeMillis()) / 1000;
+        if (endTime == null) {
+            return 0;
+        }
+        return Math.max((endTime - System.currentTimeMillis()) / 1000, 0);
     }
 
-    // Save muted players to the YAML file
+    /**
+     * Saves the current mute data to the YAML file.
+     */
     private void saveMutesToFile() {
+        // Clear current entries in the configuration
+        muteConfig.getKeys(false).forEach(key -> muteConfig.set(key, null));
+        // Save current mutedPlayers to the configuration
         for (Map.Entry<UUID, Long> entry : mutedPlayers.entrySet()) {
             muteConfig.set(entry.getKey().toString(), entry.getValue());
         }
@@ -77,12 +115,19 @@ public class MuteManager {
         }
     }
 
-    // Load muted players from the YAML file
+    /**
+     * Loads mute data from the YAML file into the mutedPlayers map.
+     */
     private void loadMutesFromFile() {
         for (String key : muteConfig.getKeys(false)) {
-            UUID playerUuid = UUID.fromString(key);
-            long endTime = muteConfig.getLong(key);
-            mutedPlayers.put(playerUuid, endTime);
+            try {
+                UUID playerUuid = UUID.fromString(key);
+                long endTime = muteConfig.getLong(key);
+                mutedPlayers.put(playerUuid, endTime);
+            } catch (IllegalArgumentException e) {
+                // If the UUID is invalid, skip the entry.
+                e.printStackTrace();
+            }
         }
     }
 }

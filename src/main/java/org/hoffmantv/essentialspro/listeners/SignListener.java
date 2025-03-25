@@ -16,11 +16,21 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * SignListener listens for player interactions with signs.
+ * If a sign's first line is "[Spawn]" (ignoring extra spaces),
+ * the player is teleported to the configured spawn location.
+ */
 public class SignListener implements Listener {
 
     private final EssentialsPro plugin;
     private final Set<Material> signMaterials;
 
+    /**
+     * Constructs a new SignListener.
+     *
+     * @param plugin the main plugin instance
+     */
     public SignListener(EssentialsPro plugin) {
         this.plugin = plugin;
         // Initialize supported sign materials
@@ -36,31 +46,39 @@ public class SignListener implements Listener {
         ));
     }
 
+    /**
+     * Listens for player interactions with blocks.
+     * If the clicked block is a sign with a first line "[Spawn]",
+     * the player is teleported to the configured spawn.
+     *
+     * @param event the player interact event
+     */
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Block block = event.getClickedBlock();
-
-        // Check if the clicked block is a sign
         if (block != null && signMaterials.contains(block.getType())) {
+            // Retrieve the sign state
             Sign sign = (Sign) block.getState();
-            Player player = event.getPlayer();
-
-            // Check if the first line of the sign contains "[Spawn]"
-            if (sign.getLine(0).equalsIgnoreCase("[Spawn]")) {
-                handleSpawnTeleport(player);
+            // Check if the first line (trimmed) equals "[Spawn]"
+            if (sign.getLine(0).trim().equalsIgnoreCase("[Spawn]")) {
+                handleSpawnTeleport(event.getPlayer());
             }
         }
     }
 
+    /**
+     * Teleports the player to the configured spawn location.
+     * If no spawn is set, notifies the player.
+     *
+     * @param player the player to teleport
+     */
     private void handleSpawnTeleport(Player player) {
         Location spawnLocation = plugin.getSpawnLocation();
-
-        // Check if the spawn location is set
         if (spawnLocation != null) {
             player.teleport(spawnLocation);
-            player.sendMessage(Component.text("Teleported to spawn.", NamedTextColor.GREEN));
+            player.sendMessage(Component.text("✔ Teleported to spawn.", NamedTextColor.GREEN));
         } else {
-            player.sendMessage(Component.text("The spawn location is not set.", NamedTextColor.RED));
+            player.sendMessage(Component.text("✖ The spawn location is not set.", NamedTextColor.RED));
         }
     }
 }

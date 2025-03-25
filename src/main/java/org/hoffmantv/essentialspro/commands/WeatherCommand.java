@@ -7,76 +7,82 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.hoffmantv.essentialspro.EssentialsPro;
 
+/**
+ * WeatherCommand allows players to change the weather in their current world.
+ * Usage: /weather <clear|rain|storm>
+ */
 public class WeatherCommand implements CommandExecutor {
 
-    private final EssentialsPro plugin;
+    // Predefined messages using Adventure API with Unicode symbols
+    private static final Component ONLY_PLAYERS_ERROR = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
+    private static final Component NO_PERMISSION_ERROR = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component USAGE_ERROR = Component.text("✖ Usage: /weather <clear|rain|storm>", NamedTextColor.RED);
+    private static final Component INVALID_ARG_ERROR = Component.text("✖ Invalid weather argument. Use: clear, rain, or storm.", NamedTextColor.RED);
 
-    public WeatherCommand(EssentialsPro plugin) {
-        this.plugin = plugin;
-    }
-
-    private static final Component MSG_ONLY_PLAYERS = Component.text("This command can only be used by players.", NamedTextColor.RED);
-    private static final Component MSG_NO_PERMISSION = Component.text("You don't have permission to use this command.", NamedTextColor.RED);
-    private static final Component MSG_USAGE = Component.text("Usage: /weather <clear|rain|storm>", NamedTextColor.RED);
-    private static final Component MSG_INVALID_ARG = Component.text("Invalid weather argument. Use: clear, rain, or storm.", NamedTextColor.RED);
+    // Weather-specific success messages with icons
+    private static final Component CLEAR_SUCCESS = Component.text("✔ Weather set to clear ☀", NamedTextColor.GREEN);
+    private static final Component RAIN_SUCCESS = Component.text("✔ Weather set to rain ☔", NamedTextColor.GREEN);
+    private static final Component STORM_SUCCESS = Component.text("✔ Weather set to storm ⛈", NamedTextColor.GREEN);
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(MSG_ONLY_PLAYERS);
+        // Ensure the sender is a player
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage(ONLY_PLAYERS_ERROR);
             return true;
         }
 
-        Player player = (Player) sender;
-
+        // Check for permission
         if (!player.hasPermission("essentialspro.weather")) {
-            player.sendMessage(MSG_NO_PERMISSION);
+            player.sendMessage(NO_PERMISSION_ERROR);
             return true;
         }
 
+        // Validate arguments
         if (args.length != 1) {
-            player.sendMessage(MSG_USAGE);
+            player.sendMessage(USAGE_ERROR);
             return true;
         }
 
+        // Process the weather argument (in lower case)
         String weatherArg = args[0].toLowerCase();
-        boolean success = applyWeather(player, weatherArg);
+        boolean valid = applyWeather(player, weatherArg);
 
-        if (!success) {
-            player.sendMessage(MSG_INVALID_ARG);
+        if (!valid) {
+            player.sendMessage(INVALID_ARG_ERROR);
         }
 
         return true;
     }
 
     /**
-     * Attempts to apply the desired weather to the player's world.
-     * Returns true if successful, false if the weatherArg is invalid.
+     * Attempts to apply the specified weather to the player's world.
+     *
+     * @param player     The player executing the command.
+     * @param weatherArg The weather argument (clear, rain, storm).
+     * @return true if the weather was applied successfully; false otherwise.
      */
     private boolean applyWeather(Player player, String weatherArg) {
         World world = player.getWorld();
-        boolean isThundering;
-
         switch (weatherArg) {
             case "clear":
                 world.setStorm(false);
                 world.setThundering(false);
-                break;
+                player.sendMessage(CLEAR_SUCCESS);
+                return true;
             case "rain":
                 world.setStorm(true);
                 world.setThundering(false);
-                break;
+                player.sendMessage(RAIN_SUCCESS);
+                return true;
             case "storm":
                 world.setStorm(true);
                 world.setThundering(true);
-                break;
+                player.sendMessage(STORM_SUCCESS);
+                return true;
             default:
                 return false;
         }
-
-        player.sendMessage(Component.text("Weather set to " + weatherArg + ".", NamedTextColor.GREEN));
-        return true;
     }
 }
