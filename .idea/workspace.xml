@@ -6,23 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="78dfb246-38fb-47d6-9fcf-362b7c7c9db7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/EssentialsPro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/EssentialsPro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/TimeCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/TimeCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/TpAcceptCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/TpAcceptCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/TpDenyCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/TpDenyCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/TpaCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/TpaCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/UnbanCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/UnbanCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/UnmuteCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/UnmuteCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/WeatherCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/WeatherCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/WorkbenchCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/WorkbenchCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/listeners/ChatListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/listeners/ChatListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/listeners/FreezeListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/listeners/FreezeListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/listeners/JoinLeaveListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/listeners/JoinLeaveListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/listeners/SignListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/listeners/SignListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/managers/BanManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/managers/BanManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/managers/FreezeManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/managers/FreezeManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/managers/MuteManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/managers/MuteManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/managers/TeleportRequestManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/managers/TeleportRequestManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/events/ColoredSignsEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/events/ColoredSignsEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/events/DeathEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/events/DeathEvent.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
