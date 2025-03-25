@@ -7,7 +7,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import java.util.Collections;
 
 public class ClearChatCommand implements CommandExecutor {
 
@@ -15,9 +14,8 @@ public class ClearChatCommand implements CommandExecutor {
     private static final Component NO_PERMISSION_MSG = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
     private static final Component CHAT_CLEARED_MSG = Component.text("💬 Chat has been cleared for all players.", NamedTextColor.GREEN);
 
-    // We'll create a pre-built list of blank lines to send for clearing the chat
+    // Number of blank lines to send (can be made configurable)
     private static final int LINES_TO_SEND = 100;
-    private static final Component BLANK_LINE = Component.empty();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -28,7 +26,6 @@ public class ClearChatCommand implements CommandExecutor {
 
         clearChatForAllPlayers();
         sender.sendMessage(CHAT_CLEARED_MSG);
-
         return true;
     }
 
@@ -36,11 +33,24 @@ public class ClearChatCommand implements CommandExecutor {
      * Clears the chat for all currently online players by sending multiple blank lines.
      */
     private void clearChatForAllPlayers() {
+        // Option 1: Sending individual blank messages
         for (Player player : Bukkit.getOnlinePlayers()) {
-            // Sending multiple blank lines to push old chat out of view
             for (int i = 0; i < LINES_TO_SEND; i++) {
-                player.sendMessage(BLANK_LINE);
+                player.sendMessage(Component.empty());
             }
         }
+
+        // Option 2 (alternative): Send one consolidated message with newlines.
+        // Uncomment the code below to use this alternative approach.
+        /*
+        StringBuilder blankBuilder = new StringBuilder();
+        for (int i = 0; i < LINES_TO_SEND; i++) {
+            blankBuilder.append("\n");
+        }
+        Component blankMessage = Component.text(blankBuilder.toString());
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.sendMessage(blankMessage);
+        }
+        */
     }
 }

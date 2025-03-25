@@ -5,10 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="78dfb246-38fb-47d6-9fcf-362b7c7c9db7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/WorkbenchCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/EssentialsPro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/EssentialsPro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/BanCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/BanCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/BroadcastCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/BroadcastCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/ClearChatCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/ClearChatCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/ClearInventoryCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/ClearInventoryCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/FeedCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/FeedCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/FireworkCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/FireworkCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/FlyCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hoffmantv/essentialspro/commands/FlyCommand.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

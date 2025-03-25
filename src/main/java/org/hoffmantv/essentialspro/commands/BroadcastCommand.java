@@ -29,9 +29,9 @@ public class BroadcastCommand implements CommandExecutor {
 
     public BroadcastCommand(EssentialsPro plugin) {
         this.plugin = plugin;
-        // Broadcast prefix
+        // Define a broadcast prefix with a Unicode megaphone symbol
         this.prefix = Component.text("📢 [Broadcast] ", NamedTextColor.GREEN);
-        // Example sound, adjust as needed
+        // Define the default sound to play (adjust as needed)
         this.defaultSound = Sound.ENTITY_PLAYER_LEVELUP;
     }
 
@@ -47,6 +47,7 @@ public class BroadcastCommand implements CommandExecutor {
             return true;
         }
 
+        // Process command based on option in the first argument
         switch (args[0].toLowerCase()) {
             case "-g":
                 handleGroupBroadcast(sender, label, args);
@@ -61,12 +62,11 @@ public class BroadcastCommand implements CommandExecutor {
                 handleNotifyBroadcast(sender, label, args);
                 break;
             default:
-                // Default broadcast (no options)
+                // Default broadcast with no special option
                 String message = joinArguments(args, 0);
                 broadcastMessage(prefix.append(Component.text(message, NamedTextColor.WHITE)));
                 break;
         }
-
         return true;
     }
 
@@ -77,9 +77,7 @@ public class BroadcastCommand implements CommandExecutor {
         }
         String group = args[1];
         String message = joinArguments(args, 2);
-
-        // TODO: Implement group-based broadcasting logic once you have a way to determine player groups
-        // For now, just sending a note to the sender.
+        // TODO: Implement actual group-based broadcasting
         sender.sendMessage(Component.text("Group broadcast to '" + group + "' is not yet implemented.", NamedTextColor.YELLOW));
     }
 
@@ -88,20 +86,16 @@ public class BroadcastCommand implements CommandExecutor {
             sender.sendMessage(USAGE_TIMED);
             return;
         }
-
         try {
             int delay = Integer.parseInt(args[1]);
             String message = joinArguments(args, 2);
-
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     broadcastMessage(prefix.append(Component.text(message, NamedTextColor.WHITE)));
                 }
-            }.runTaskLater(plugin, delay * 20L); // Convert delay (seconds) to ticks
-
+            }.runTaskLater(plugin, delay * 20L); // Convert seconds to ticks (20 ticks = 1 sec)
             sender.sendMessage(Component.text("✔ Timed broadcast scheduled in " + delay + " seconds.", NamedTextColor.GREEN));
-
         } catch (NumberFormatException e) {
             sender.sendMessage(Component.text("✖ Invalid delay format. Use a number for delay in seconds.", NamedTextColor.RED));
         }
@@ -112,7 +106,6 @@ public class BroadcastCommand implements CommandExecutor {
             sender.sendMessage(USAGE_SILENT);
             return;
         }
-
         String message = joinArguments(args, 1);
         broadcastMessage(Component.text(message, NamedTextColor.WHITE));
     }
@@ -122,7 +115,6 @@ public class BroadcastCommand implements CommandExecutor {
             sender.sendMessage(USAGE_NOTIFY);
             return;
         }
-
         String message = joinArguments(args, 1);
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.playSound(player.getLocation(), defaultSound, 1, 1);
@@ -136,7 +128,7 @@ public class BroadcastCommand implements CommandExecutor {
     }
 
     /**
-     * Joins the arguments starting from a specific index into a single string.
+     * Joins the arguments starting from a specified index into a single string.
      */
     private String joinArguments(String[] args, int startIndex) {
         List<String> argList = Arrays.asList(args).subList(startIndex, args.length);
