@@ -190,6 +190,11 @@ commands:
     usage: /spawnmob <mob_type> [amount]
     permission: essentialspro.spawnmob
     permission-message: "✖ You do not have permission to use this command."
+  afk:
+    description: Put a player into afk.
+    usage: /afk
+    permission: essentialspro.afk
+    permission-message: "✖ You do not have permission to use this command."
 permissions:
   essentialspro.*:
     description: Gives access to all EssentialsPro commands.
@@ -230,3 +235,4 @@ permissions:
       essentialspro.jail: true
       essentialspro.shadowmode: true
       essentialspro.freezetime: true
+      essentialspro.afk: true
