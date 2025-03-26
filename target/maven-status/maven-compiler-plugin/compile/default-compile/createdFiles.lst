@@ -14,6 +14,7 @@ org/hoffmantv/essentialspro/commands/ShadowModeCommand.class
 org/hoffmantv/essentialspro/commands/HelpCommand.class
 org/hoffmantv/essentialspro/commands/ClearChatCommand.class
 org/hoffmantv/essentialspro/commands/UnmuteCommand.class
+org/hoffmantv/essentialspro/commands/WorkbenchCommand.class
 org/hoffmantv/essentialspro/commands/TeleportCommand.class
 org/hoffmantv/essentialspro/Metrics$SimplePie.class
 org/hoffmantv/essentialspro/commands/FlyCommand.class

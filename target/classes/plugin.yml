@@ -1,5 +1,5 @@
 name: EssentialsPro
-version: 1.3.1
+version: 1.3.2
 main: org.hoffmantv.essentialspro.EssentialsPro
 author: HoffmanTV
 description: A Minecraft Essentials plugin.
@@ -11,6 +11,11 @@ commands:
     usage: /<command>
     permission: essentialspro.firework
     permission-message: "✖ You do not have permission to use this command."
+  workbench:
+    description: "Opens a crafting table interface anywhere."
+    usage: /workbench
+    permission: essentialspro.workbench
+    permission-message: "✖ You don't have permission to use this command."
   mute:
     description: Mute or unmute a player.
     usage: /mute <player> [duration]
