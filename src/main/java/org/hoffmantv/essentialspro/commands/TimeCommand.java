@@ -7,6 +7,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.hoffmantv.essentialspro.EssentialsPro;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,8 +20,8 @@ import java.util.Map;
 public class TimeCommand implements CommandExecutor {
 
     // Predefined messages with Unicode symbols using Adventure API
-    private static final Component ONLY_PLAYERS_ERROR = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
-    private static final Component PERMISSION_ERROR = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component ONLY_PLAYERS_ERROR = MessageUtils.onlyPlayers();
+    private static final Component PERMISSION_ERROR = MessageUtils.noPermission();
     private static final Component USAGE_ERROR = Component.text("✖ Usage: /time <day|night|morning|evening>", NamedTextColor.RED);
     private static final Component TIME_SUCCESS_PREFIX = Component.text("✔ Time set to ", NamedTextColor.GREEN);
 
@@ -62,7 +64,7 @@ public class TimeCommand implements CommandExecutor {
         }
 
         // Check if the player has permission
-        if (!player.hasPermission("essentialspro.time")) {
+        if (!player.hasPermission(Permissions.TIME)) {
             player.sendMessage(PERMISSION_ERROR);
             return true;
         }

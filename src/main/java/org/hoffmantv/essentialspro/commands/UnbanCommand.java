@@ -6,6 +6,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.hoffmantv.essentialspro.managers.BanManager;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 /**
  * UnbanCommand allows authorized users to unban a player.
@@ -17,7 +19,7 @@ public class UnbanCommand implements CommandExecutor {
     private final BanManager banManager;
 
     // Predefined messages using Adventure API with Unicode symbols
-    private static final Component NO_PERMISSION = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component NO_PERMISSION = MessageUtils.noPermission();
     private static final Component USAGE = Component.text("✖ Usage: /unban <player>", NamedTextColor.RED);
     private static final Component PLAYER_NOT_FOUND = Component.text("✖ Player not found or not banned.", NamedTextColor.RED);
     private static final Component UNBAN_SUCCESS_PREFIX = Component.text("✔ Player ", NamedTextColor.GREEN);
@@ -45,7 +47,7 @@ public class UnbanCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Check for permission
-        if (!sender.hasPermission("essentialspro.unban")) {
+        if (!sender.hasPermission(Permissions.UNBAN)) {
             sender.sendMessage(NO_PERMISSION);
             return true;
         }

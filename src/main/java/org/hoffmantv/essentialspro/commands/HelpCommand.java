@@ -7,6 +7,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.hoffmantv.essentialspro.EssentialsPro;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +27,7 @@ public class HelpCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Ensure that only players use this command
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Component.text("✖ This command can only be used by players.", NamedTextColor.RED));
+            sender.sendMessage(MessageUtils.onlyPlayers());
             return true;
         }
 
@@ -54,7 +56,7 @@ public class HelpCommand implements CommandExecutor {
     private List<String> getAllowedCommands(Player player) {
         List<String> allowed = new ArrayList<>();
         for (String cmd : plugin.getDescription().getCommands().keySet()) {
-            if (player.hasPermission("essentialspro." + cmd)) {
+            if (player.hasPermission(Permissions.PREFIX + cmd)) {
                 allowed.add(cmd);
             }
         }

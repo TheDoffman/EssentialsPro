@@ -2,18 +2,20 @@ package org.hoffmantv.essentialspro.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.PlayerLookup;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 public class MessageCommand implements CommandExecutor {
 
-    private static final Component ONLY_PLAYERS_ERROR = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
-    private static final Component NO_PERMISSION = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component ONLY_PLAYERS_ERROR = MessageUtils.onlyPlayers();
+    private static final Component NO_PERMISSION = MessageUtils.noPermission();
     private static final Component USAGE_ERROR = Component.text("✖ Usage: /message <player> <message>", NamedTextColor.RED);
-    private static final Component PLAYER_NOT_FOUND = Component.text("✖ Player not found or not online.", NamedTextColor.RED);
+    private static final Component PLAYER_NOT_FOUND = MessageUtils.playerNotFound();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -26,7 +28,7 @@ public class MessageCommand implements CommandExecutor {
         Player senderPlayer = (Player) sender;
 
         // Check permission
-        if (!senderPlayer.hasPermission("essentialspro.message")) {
+        if (!senderPlayer.hasPermission(Permissions.MESSAGE)) {
             senderPlayer.sendMessage(NO_PERMISSION);
             return true;
         }
@@ -38,8 +40,8 @@ public class MessageCommand implements CommandExecutor {
         }
 
         // Retrieve the target player by name
-        Player target = Bukkit.getPlayer(args[0]);
-        if (target == null || !target.isOnline()) {
+        Player target = PlayerLookup.findOnlinePlayer(args[0]);
+        if (target == null) {
             senderPlayer.sendMessage(PLAYER_NOT_FOUND);
             return true;
         }

@@ -7,11 +7,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 public class ClearChatCommand implements CommandExecutor {
 
-    private static final String CLEARCHAT_PERMISSION = "essentialspro.clearchat";
-    private static final Component NO_PERMISSION_MSG = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final String CLEARCHAT_PERMISSION = Permissions.CLEARCHAT;
+    private static final Component NO_PERMISSION_MSG = MessageUtils.noPermission();
     private static final Component CHAT_CLEARED_MSG = Component.text("💬 Chat has been cleared for all players.", NamedTextColor.GREEN);
 
     // Number of blank lines to send (can be made configurable)

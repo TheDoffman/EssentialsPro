@@ -20,6 +20,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -37,7 +39,8 @@ public class ShadowModeCommand implements CommandExecutor, Listener {
     private final Set<UUID> shadowPlayers = new HashSet<>();
 
     // Message constants using Adventure API with Unicode symbols
-    private static final Component ONLY_PLAYERS_MSG = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
+    private static final Component ONLY_PLAYERS_MSG = MessageUtils.onlyPlayers();
+    private static final Component NO_PERMISSION_MSG = MessageUtils.noPermission();
     private static final Component ENTER_SHADOW_MSG = Component.text("✔ You are now in Shadow Mode. You are invisible and cannot interact with the world.", NamedTextColor.GRAY);
     private static final Component EXIT_SHADOW_MSG = Component.text("✔ You have exited Shadow Mode.", NamedTextColor.GREEN);
     private static final Component ENABLED_SHADOW_MSG = Component.text("✔ You are now in Shadow Mode!", NamedTextColor.DARK_GRAY);
@@ -67,6 +70,11 @@ public class ShadowModeCommand implements CommandExecutor, Listener {
             return true;
         }
         Player player = (Player) sender;
+
+        if (!player.hasPermission(Permissions.SHADOWMODE)) {
+            player.sendMessage(NO_PERMISSION_MSG);
+            return true;
+        }
 
         if (shadowPlayers.contains(player.getUniqueId())) {
             disableShadowMode(player);

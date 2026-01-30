@@ -2,6 +2,7 @@ package org.hoffmantv.essentialspro.listeners;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -25,6 +26,7 @@ public class SignListener implements Listener {
 
     private final EssentialsPro plugin;
     private final Set<Material> signMaterials;
+    private final PlainTextComponentSerializer plainTextSerializer = PlainTextComponentSerializer.plainText();
 
     /**
      * Constructs a new SignListener.
@@ -59,8 +61,9 @@ public class SignListener implements Listener {
         if (block != null && signMaterials.contains(block.getType())) {
             // Retrieve the sign state
             Sign sign = (Sign) block.getState();
+            String firstLine = plainTextSerializer.serialize(sign.line(0));
             // Check if the first line (trimmed) equals "[Spawn]"
-            if (sign.getLine(0).trim().equalsIgnoreCase("[Spawn]")) {
+            if (firstLine.trim().equalsIgnoreCase("[Spawn]")) {
                 handleSpawnTeleport(event.getPlayer());
             }
         }

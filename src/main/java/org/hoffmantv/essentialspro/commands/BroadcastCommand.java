@@ -10,13 +10,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.hoffmantv.essentialspro.EssentialsPro;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class BroadcastCommand implements CommandExecutor {
 
-    private static final Component NO_PERMISSION = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component NO_PERMISSION = MessageUtils.noPermission();
     private static final Component USAGE_BASE = Component.text("⚠ Usage: /broadcast [options] <message>", NamedTextColor.RED);
     private static final Component USAGE_GROUP = Component.text("⚠ Usage: /broadcast -g <group> <message>", NamedTextColor.RED);
     private static final Component USAGE_TIMED = Component.text("⚠ Usage: /broadcast -t <delay> <message>", NamedTextColor.RED);
@@ -37,7 +39,7 @@ public class BroadcastCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("essentialspro.broadcast")) {
+        if (!sender.hasPermission(Permissions.BROADCAST)) {
             sender.sendMessage(NO_PERMISSION);
             return true;
         }

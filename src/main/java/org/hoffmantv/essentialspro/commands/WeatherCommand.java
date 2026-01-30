@@ -7,6 +7,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 /**
  * WeatherCommand allows players to change the weather in their current world.
@@ -15,8 +17,8 @@ import org.bukkit.entity.Player;
 public class WeatherCommand implements CommandExecutor {
 
     // Predefined messages using Adventure API with Unicode symbols
-    private static final Component ONLY_PLAYERS_ERROR = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
-    private static final Component NO_PERMISSION_ERROR = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component ONLY_PLAYERS_ERROR = MessageUtils.onlyPlayers();
+    private static final Component NO_PERMISSION_ERROR = MessageUtils.noPermission();
     private static final Component USAGE_ERROR = Component.text("✖ Usage: /weather <clear|rain|storm>", NamedTextColor.RED);
     private static final Component INVALID_ARG_ERROR = Component.text("✖ Invalid weather argument. Use: clear, rain, or storm.", NamedTextColor.RED);
 
@@ -34,7 +36,7 @@ public class WeatherCommand implements CommandExecutor {
         }
 
         // Check for permission
-        if (!player.hasPermission("essentialspro.weather")) {
+        if (!player.hasPermission(Permissions.WEATHER)) {
             player.sendMessage(NO_PERMISSION_ERROR);
             return true;
         }

@@ -7,6 +7,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.PlayerLookup;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -14,14 +17,14 @@ import java.util.stream.Collectors;
 public class KickCommand implements CommandExecutor {
 
     // Predefined messages using the Adventure API with Unicode symbols
-    private static final Component NO_PERMISSION = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component NO_PERMISSION = MessageUtils.noPermission();
     private static final Component USAGE = Component.text("✖ Usage: /kick <player> [reason]", NamedTextColor.RED);
-    private static final Component PLAYER_NOT_FOUND = Component.text("✖ Player not found or not online.", NamedTextColor.RED);
+    private static final Component PLAYER_NOT_FOUND = MessageUtils.playerNotFound();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Check if sender has the required permission
-        if (!sender.hasPermission("essentialspro.kick")) {
+        if (!sender.hasPermission(Permissions.KICK)) {
             sender.sendMessage(NO_PERMISSION);
             return true;
         }
@@ -33,8 +36,8 @@ public class KickCommand implements CommandExecutor {
         }
 
         // Get the target player
-        Player target = Bukkit.getPlayer(args[0]);
-        if (target == null || !target.isOnline()) {
+        Player target = PlayerLookup.findOnlinePlayer(args[0]);
+        if (target == null) {
             sender.sendMessage(PLAYER_NOT_FOUND);
             return true;
         }

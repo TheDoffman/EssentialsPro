@@ -8,6 +8,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.hoffmantv.essentialspro.managers.TeleportRequestManager;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 /**
  * TpDenyCommand allows a player to deny a pending teleport request.
@@ -19,8 +21,8 @@ public class TpDenyCommand implements CommandExecutor {
     private final TeleportRequestManager teleportRequestManager;
 
     // Pre-defined messages using Adventure API with Unicode symbols
-    private static final Component ONLY_PLAYERS_ERROR = Component.text("✖ Only players can use this command.", NamedTextColor.RED);
-    private static final Component NO_PERMISSION = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component ONLY_PLAYERS_ERROR = MessageUtils.onlyPlayers();
+    private static final Component NO_PERMISSION = MessageUtils.noPermission();
     private static final Component NO_REQUESTS = Component.text("✖ You have no pending teleport requests.", NamedTextColor.RED);
 
     /**
@@ -50,7 +52,7 @@ public class TpDenyCommand implements CommandExecutor {
         }
 
         // Check permission for tpdeny
-        if (!player.hasPermission("essentialspro.tpdeny")) {
+        if (!player.hasPermission(Permissions.TPDENY)) {
             player.sendMessage(NO_PERMISSION);
             return true;
         }

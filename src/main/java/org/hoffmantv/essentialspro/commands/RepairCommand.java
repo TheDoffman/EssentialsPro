@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 /**
  * RepairCommand allows players to repair the item held in their main hand.
@@ -17,8 +19,8 @@ import org.bukkit.inventory.meta.ItemMeta;
  */
 public class RepairCommand implements CommandExecutor {
 
-    private static final Component ONLY_PLAYERS_ERROR = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
-    private static final Component NO_PERMISSION_ERROR = Component.text("✖ You do not have permission to use this command.", NamedTextColor.RED);
+    private static final Component ONLY_PLAYERS_ERROR = MessageUtils.onlyPlayers();
+    private static final Component NO_PERMISSION_ERROR = MessageUtils.noPermission();
     private static final Component NO_ITEM_ERROR = Component.text("✖ You are not holding any item.", NamedTextColor.RED);
     private static final Component NOT_REPAIRABLE_ERROR = Component.text("✖ This item cannot be repaired.", NamedTextColor.RED);
     private static final Component ITEM_REPAIRED = Component.text("✔ Item repaired.", NamedTextColor.GREEN);
@@ -34,7 +36,7 @@ public class RepairCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         // Check permission
-        if (!player.hasPermission("essentialspro.repair")) {
+        if (!player.hasPermission(Permissions.REPAIR)) {
             player.sendMessage(NO_PERMISSION_ERROR);
             return true;
         }

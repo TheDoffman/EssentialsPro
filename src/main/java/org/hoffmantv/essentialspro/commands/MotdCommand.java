@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.logging.Level;
 
 /**
  * The MotdCommand class handles the /motd command.
@@ -74,7 +75,7 @@ public class MotdCommand implements CommandExecutor, Listener {
             serverPropertiesContent = serverPropertiesContent.replaceAll("motd=.*", "motd=" + legacyMotd);
             Files.write(serverPropertiesPath, serverPropertiesContent.getBytes());
         } catch (IOException e) {
-            e.printStackTrace();
+            plugin.getLogger().log(Level.SEVERE, "Failed to update server.properties MOTD.", e);
         }
     }
 

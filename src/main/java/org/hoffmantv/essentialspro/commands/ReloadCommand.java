@@ -6,6 +6,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.hoffmantv.essentialspro.util.MessageManager;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.Permissions;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+
+import java.util.logging.Level;
 
 /**
  * ReloadCommand allows players with the proper permission to reload the plugin's configuration.
@@ -13,8 +19,8 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class ReloadCommand implements CommandExecutor {
 
-    private static final String RELOAD_PERMISSION = "essentialspro.reload";
-    private static final Component NO_PERMISSION_MSG = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final String RELOAD_PERMISSION = Permissions.RELOAD;
+    private static final Component NO_PERMISSION_MSG = MessageUtils.noPermission();
     private static final Component RELOAD_SUCCESS_MSG = Component.text("✔ EssentialsPro configuration reloaded!", NamedTextColor.GREEN);
 
     private final JavaPlugin plugin;
@@ -49,12 +55,13 @@ public class ReloadCommand implements CommandExecutor {
         try {
             // Reload the plugin configuration file
             plugin.reloadConfig();
+            MessageUtils.configure(plugin.getConfig(), new MessageManager(plugin, plugin.getConfig().getString("messages.locale", "en")));
             sender.sendMessage(RELOAD_SUCCESS_MSG);
             plugin.getLogger().info(sender.getName() + " reloaded the configuration.");
         } catch (Exception e) {
             // Inform the sender if reloading fails and log the error
             sender.sendMessage(Component.text("✖ Failed to reload the configuration: " + e.getMessage(), NamedTextColor.RED));
-            e.printStackTrace();
+            plugin.getLogger().log(Level.SEVERE, "Failed to reload EssentialsPro configuration.", e);
         }
 
         return true;

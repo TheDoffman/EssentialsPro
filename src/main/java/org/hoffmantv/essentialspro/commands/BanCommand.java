@@ -2,17 +2,16 @@ package org.hoffmantv.essentialspro.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.hoffmantv.essentialspro.managers.BanManager;
+import org.hoffmantv.essentialspro.util.DurationUtils;
+import org.hoffmantv.essentialspro.util.PlayerLookup;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class BanCommand implements CommandExecutor {
@@ -26,7 +25,7 @@ public class BanCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Permission check
-        if (!sender.hasPermission("essentialspro.ban")) {
+        if (!sender.hasPermission(Permissions.BAN)) {
             sender.sendMessage(Component.text("✖ I'm sorry, but you do not have permission to execute this command.", NamedTextColor.RED));
             return true;
         }
@@ -38,7 +37,7 @@ public class BanCommand implements CommandExecutor {
         }
 
         // Get target player
-        Player target = Bukkit.getPlayer(args[0]);
+        Player target = PlayerLookup.findOnlinePlayer(args[0]);
         if (target == null) {
             sender.sendMessage(Component.text("✖ Unable to find player. Please ensure the player name is correct.", NamedTextColor.RED));
             return true;
@@ -50,10 +49,10 @@ public class BanCommand implements CommandExecutor {
                 .collect(Collectors.joining(" "));
 
         if (hasDuration) {
-            long durationInSeconds = parseDuration(args[args.length - 1]);
+            long durationInSeconds = DurationUtils.parseDurationSeconds(args[args.length - 1], -1);
             if (durationInSeconds > 0) {
                 banManager.banPlayerTemporarily(target, reason, durationInSeconds);
-                String durationString = formatDuration(durationInSeconds);
+                String durationString = DurationUtils.formatDuration(durationInSeconds);
                 Component kickMessage = Component.text("✖ You have been temporarily banned for: '" + reason + "'. This ban will lift in: " + durationString, NamedTextColor.RED);
                 target.kick(kickMessage);
                 Bukkit.broadcast(Component.text("✖ Player '" + target.getName() + "' has been temporarily banned for: '" + reason + "'. This ban will lift in: " + durationString, NamedTextColor.RED));
@@ -67,29 +66,5 @@ public class BanCommand implements CommandExecutor {
         }
 
         return true;
-    }
-
-    private long parseDuration(String durationString) {
-        Pattern pattern = Pattern.compile("(\\d+)([smhd])");
-        Matcher matcher = pattern.matcher(durationString);
-        if (matcher.matches()) {
-            long duration = Long.parseLong(matcher.group(1));
-            switch (matcher.group(2)) {
-                case "s": return duration;
-                case "m": return TimeUnit.MINUTES.toSeconds(duration);
-                case "h": return TimeUnit.HOURS.toSeconds(duration);
-                case "d": return TimeUnit.DAYS.toSeconds(duration);
-                default: return -1;
-            }
-        }
-        return -1;
-    }
-
-    private String formatDuration(long durationInSeconds) {
-        long days = durationInSeconds / 86400;
-        long hours = (durationInSeconds % 86400) / 3600;
-        long minutes = (durationInSeconds % 3600) / 60;
-        long seconds = durationInSeconds % 60;
-        return String.format("%d days, %d hours, %d minutes, %d seconds", days, hours, minutes, seconds);
     }
 }

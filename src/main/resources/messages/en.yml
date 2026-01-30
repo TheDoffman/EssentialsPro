@@ -1,0 +1,4 @@
+prefix: "<gray>[EssentialsPro]</gray>"
+no-permission: "✖ You don't have permission to use this command."
+only-players: "✖ This command can only be used by players."
+player-not-found: "✖ Player not found or not online."

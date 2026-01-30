@@ -13,14 +13,16 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 import java.util.Random;
 
 public class FireworkCommand implements CommandExecutor {
 
-    private static final String PERMISSION = "essentialspro.firework";
-    private static final Component NO_PERMISSION = Component.text("✖ You do not have permission to use this command!", NamedTextColor.RED);
-    private static final Component PLAYER_ONLY = Component.text("✖ This command can only be used by players!", NamedTextColor.RED);
+    private static final String PERMISSION = Permissions.FIREWORK;
+    private static final Component NO_PERMISSION = MessageUtils.noPermission();
+    private static final Component PLAYER_ONLY = MessageUtils.onlyPlayers();
     private static final Component USAGE = Component.text("Usage: /firework [help]", NamedTextColor.YELLOW);
     private static final Component LAUNCH_SUCCESS = Component.text("✔ Firework launched!", NamedTextColor.GOLD);
 

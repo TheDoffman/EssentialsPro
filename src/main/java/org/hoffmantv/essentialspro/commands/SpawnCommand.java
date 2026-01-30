@@ -2,7 +2,7 @@ package org.hoffmantv.essentialspro.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,6 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.hoffmantv.essentialspro.EssentialsPro;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 /**
  * SpawnCommand sets the server spawn location to the player's current location and teleports players to the spawn.
@@ -20,16 +22,16 @@ import org.hoffmantv.essentialspro.EssentialsPro;
  */
 public class SpawnCommand implements CommandExecutor, Listener {
 
-    private static final String PERMISSION_SPAWN = "essentialspro.spawn";
+    private static final String PERMISSION_SPAWN = Permissions.SPAWN;
 
     // Predefined messages using Adventure API with Unicode symbols
-    private static final Component MSG_ONLY_PLAYERS = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
-    private static final Component MSG_NO_PERMISSION = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component MSG_ONLY_PLAYERS = MessageUtils.onlyPlayers();
+    private static final Component MSG_NO_PERMISSION = MessageUtils.noPermission();
     private static final Component MSG_NO_SPAWN_SET = Component.text("✖ The spawn location is not set.", NamedTextColor.RED);
     private static final Component MSG_WELCOME_SPAWN = Component.text("✔ Welcome back to the spawn!", NamedTextColor.GREEN);
 
     private final EssentialsPro plugin;
-    private final LegacyComponentSerializer legacySerializer = LegacyComponentSerializer.legacySection();
+    private final PlainTextComponentSerializer plainTextSerializer = PlainTextComponentSerializer.plainText();
 
     /**
      * Constructs a new SpawnCommand and registers the event listeners.
@@ -98,14 +100,10 @@ public class SpawnCommand implements CommandExecutor, Listener {
      */
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
-        String firstLine = event.getLine(0);
-        if (firstLine != null && firstLine.equalsIgnoreCase("[Spawn]")) {
-            // Build a green "[Spawn]" component and convert it to legacy format for the sign
-            Component spawnText = Component.text("[Spawn]", NamedTextColor.GREEN);
-            String legacySpawnText = legacySerializer.serialize(spawnText);
-
-            event.setLine(0, ""); // Clear first line
-            event.setLine(1, legacySpawnText);
+        String firstLine = plainTextSerializer.serialize(event.line(0));
+        if (firstLine.trim().equalsIgnoreCase("[Spawn]")) {
+            event.line(0, Component.empty()); // Clear first line
+            event.line(1, Component.text("[Spawn]", NamedTextColor.GREEN));
         }
     }
 }

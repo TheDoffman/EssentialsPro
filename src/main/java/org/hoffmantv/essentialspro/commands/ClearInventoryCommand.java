@@ -2,16 +2,18 @@ package org.hoffmantv.essentialspro.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.PlayerLookup;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 public class ClearInventoryCommand implements CommandExecutor {
 
     // Adventure API components for messages
-    private static final Component NO_PERMISSION = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component NO_PERMISSION = MessageUtils.noPermission();
     private static final Component NO_PLAYER_SPECIFIED = Component.text("✖ Console must specify a player!", NamedTextColor.RED);
     private static final Component PLAYER_NOT_FOUND = Component.text("✖ That player is not online!", NamedTextColor.RED);
     private static final Component USAGE_MESSAGE = Component.text("Usage: /clearinventory [player]", NamedTextColor.YELLOW);
@@ -20,7 +22,7 @@ public class ClearInventoryCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Check if sender has the necessary permission
-        if (!sender.hasPermission("essentialspro.clearinventory")) {
+        if (!sender.hasPermission(Permissions.CLEARINVENTORY)) {
             sender.sendMessage(NO_PERMISSION);
             return true;
         }
@@ -55,7 +57,7 @@ public class ClearInventoryCommand implements CommandExecutor {
         }
 
         if (args.length == 1) {
-            Player target = Bukkit.getPlayer(args[0]);
+            Player target = PlayerLookup.findOnlinePlayer(args[0]);
             if (target == null) {
                 sender.sendMessage(PLAYER_NOT_FOUND);
                 return null;

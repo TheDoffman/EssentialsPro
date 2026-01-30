@@ -8,6 +8,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 /**
  * WorkbenchCommand opens a crafting table interface for the player.
@@ -16,8 +18,8 @@ import org.bukkit.inventory.Inventory;
 public class WorkbenchCommand implements CommandExecutor {
 
     // Predefined messages using Adventure API with Unicode symbols
-    private static final Component ONLY_PLAYERS_MSG = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
-    private static final Component NO_PERMISSION_MSG = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component ONLY_PLAYERS_MSG = MessageUtils.onlyPlayers();
+    private static final Component NO_PERMISSION_MSG = MessageUtils.noPermission();
     private static final Component USAGE_MSG = Component.text("✖ Usage: /workbench", NamedTextColor.RED);
     private static final Component WORKBENCH_OPENED_MSG = Component.text("✔ Workbench opened.", NamedTextColor.GREEN);
 
@@ -40,7 +42,7 @@ public class WorkbenchCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         // Check for proper permission
-        if (!player.hasPermission("essentialspro.workbench")) {
+        if (!player.hasPermission(Permissions.WORKBENCH)) {
             player.sendMessage(NO_PERMISSION_MSG);
             return true;
         }

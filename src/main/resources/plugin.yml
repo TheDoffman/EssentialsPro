@@ -31,6 +31,16 @@ commands:
     usage: /kick <player> [reason]
     permission: essentialspro.kick  # Permission node for the kick command
     permission-message: "✖ You do not have permission to use this command."
+  back:
+    description: Teleport to your previous location.
+    usage: /back [steps]
+    permission: essentialspro.back
+    permission-message: "✖ You do not have permission to use this command."
+  spawnall:
+    description: Teleport all players to spawn.
+    usage: /spawnall
+    permission: essentialspro.spawnall
+    permission-message: "✖ You do not have permission to use this command."
   broadcast:
     description: Broadcast a message to the entire server.
     usage: /broadcast <message>
@@ -49,6 +59,31 @@ commands:
     description: Set the server spawn point.
     usage: /setspawn
     permission: essentialspro.setspawn
+    permission-message: "✖ You do not have permission to use this command."
+  sethome:
+    description: Set a home location.
+    usage: /sethome [name]
+    permission: essentialspro.sethome
+    permission-message: "✖ You do not have permission to use this command."
+  home:
+    description: Teleport to a home location.
+    usage: /home [name]
+    permission: essentialspro.home
+    permission-message: "✖ You do not have permission to use this command."
+  homes:
+    description: List your homes.
+    usage: /homes
+    permission: essentialspro.homes
+    permission-message: "✖ You do not have permission to use this command."
+  delhome:
+    description: Delete a home location.
+    usage: /delhome <name>
+    permission: essentialspro.delhome
+    permission-message: "✖ You do not have permission to use this command."
+  renamehome:
+    description: Rename a home location.
+    usage: /renamehome <old> <new>
+    permission: essentialspro.renamehome
     permission-message: "✖ You do not have permission to use this command."
   gamemode:
     description: Change your game mode.
@@ -71,6 +106,16 @@ commands:
     usage: /<command> [player]
     permission: essentialspro.fly
     permission-message: "✖ You do not have permission to use this command."
+  hat:
+    description: Wear the item in your hand as a hat.
+    usage: /hat
+    permission: essentialspro.hat
+    permission-message: "✖ You do not have permission to use this command."
+  enderchest:
+    description: Open your ender chest.
+    usage: /enderchest
+    permission: essentialspro.enderchest
+    permission-message: "✖ You do not have permission to use this command."
   heal:
     description: Heal yourself or another player.
     usage: /<command> [player]
@@ -86,6 +131,36 @@ commands:
     usage: /<command> <player>
     permission: essentialspro.teleport
     permission-message: "✖ You do not have permission to use this command."
+  tpall:
+    description: Teleport all players to you.
+    usage: /tpall
+    permission: essentialspro.tpall
+    permission-message: "✖ You do not have permission to use this command."
+  tpaall:
+    description: Send a teleport request to all players.
+    usage: /tpaall
+    permission: essentialspro.tpaall
+    permission-message: "✖ You do not have permission to use this command."
+  tphere:
+    description: Teleport a player to your location.
+    usage: /tphere <player>
+    permission: essentialspro.tphere
+    permission-message: "✖ You do not have permission to use this command."
+  warp:
+    description: Teleport to a warp.
+    usage: /warp <name>
+    permission: essentialspro.warp
+    permission-message: "✖ You do not have permission to use this command."
+  setwarp:
+    description: Set a warp.
+    usage: /setwarp <name>
+    permission: essentialspro.setwarp
+    permission-message: "✖ You do not have permission to use this command."
+  warps:
+    description: List available warps.
+    usage: /warps
+    permission: essentialspro.warps
+    permission-message: "✖ You do not have permission to use this command."
   listplayers:
     description: Show a list of online players.
     usage: /<command>
@@ -96,6 +171,31 @@ commands:
     description: Change the MOTD of the server
     usage: /motd <message>
     permission: essentialspro.motd
+    permission-message: "✖ You do not have permission to use this command."
+  seen:
+    description: View a player's last seen time.
+    usage: /seen <player>
+    permission: essentialspro.seen
+    permission-message: "✖ You do not have permission to use this command."
+  warn:
+    description: Warn a player.
+    usage: /warn <player> <reason>
+    permission: essentialspro.warn
+    permission-message: "✖ You do not have permission to use this command."
+  warnings:
+    description: View player warnings.
+    usage: /warnings [player]
+    permission: essentialspro.warnings
+    permission-message: "✖ You do not have permission to use this command."
+  clearwarnings:
+    description: Clear player warnings.
+    usage: /clearwarnings <player>
+    permission: essentialspro.clearwarnings
+    permission-message: "✖ You do not have permission to use this command."
+  vanish:
+    description: Toggle vanish mode.
+    usage: /vanish
+    permission: essentialspro.vanish
     permission-message: "✖ You do not have permission to use this command."
   reloadessentials:
     description: Reload the EssentialsPro configuration
@@ -145,7 +245,7 @@ commands:
     permission: essentialspro.repair
     permission-message: "✖ You do not have permission to use this command."
   tpa:
-    description: Send a teleport request to a spicific player.
+    description: Send a teleport request to a specific player.
     usage: /tpa [name]
     permission: essentialspro.tpa
     permission-message: "✖ You do not have permission to use this command."
@@ -190,6 +290,11 @@ commands:
     usage: /spawnmob <mob_type> [amount]
     permission: essentialspro.spawnmob
     permission-message: "✖ You do not have permission to use this command."
+  rtp:
+    description: Teleport to a random location.
+    usage: /rtp
+    permission: essentialspro.rtp
+    permission-message: "✖ You do not have permission to use this command."
   afk:
     description: Put a player into afk.
     usage: /afk
@@ -200,20 +305,43 @@ permissions:
     description: Gives access to all EssentialsPro commands.
     children:
       essentialspro.kick: true
+      essentialspro.back: true
+      essentialspro.spawnall: true
       essentialspro.broadcast: true
       essentialspro.spawn: true
       essentialspro.setspawn: true
+      essentialspro.sethome: true
+      essentialspro.home: true
+      essentialspro.homes: true
+      essentialspro.delhome: true
+      essentialspro.renamehome: true
       essentialspro.gamemode: true
       essentialspro.time: true
       essentialspro.weather: true
       essentialspro.fly: true
+      essentialspro.hat: true
+      essentialspro.enderchest: true
       essentialspro.fly.others: true
       essentialspro.heal: true
+      essentialspro.heal.others: true
       essentialspro.feed: true
+      essentialspro.feed.others: true
       essentialspro.teleport: true
+      essentialspro.tpall: true
+      essentialspro.tpaall: true
+      essentialspro.tphere: true
+      essentialspro.warp: true
+      essentialspro.setwarp: true
+      essentialspro.warps: true
       essentialspro.listplayers: true
       essentialspro.nickname: true
       essentialspro.motd: true
+      essentialspro.seen: true
+      essentialspro.warn: true
+      essentialspro.warnings: true
+      essentialspro.warnings.others: true
+      essentialspro.clearwarnings: true
+      essentialspro.vanish: true
       essentialspro.reload: true
       essentialspro.smite: true
       essentialspro.clearchat: true
@@ -236,3 +364,5 @@ permissions:
       essentialspro.shadowmode: true
       essentialspro.freezetime: true
       essentialspro.afk: true
+      essentialspro.signcolor: true
+      essentialspro.rtp: true

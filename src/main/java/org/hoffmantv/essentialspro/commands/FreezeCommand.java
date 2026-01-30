@@ -2,12 +2,14 @@ package org.hoffmantv.essentialspro.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.hoffmantv.essentialspro.managers.FreezeManager;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.PlayerLookup;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 /**
  * Command that toggles the freeze state of a specified player.
@@ -15,9 +17,10 @@ import org.hoffmantv.essentialspro.managers.FreezeManager;
  */
 public class FreezeCommand implements CommandExecutor {
 
-    private static final Component MSG_ONLY_PLAYERS = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
+    private static final Component MSG_ONLY_PLAYERS = MessageUtils.onlyPlayers();
+    private static final Component MSG_NO_PERMISSION = MessageUtils.noPermission();
     private static final Component MSG_USAGE = Component.text("✖ Usage: /freeze <player>", NamedTextColor.RED);
-    private static final Component MSG_PLAYER_NOT_FOUND = Component.text("✖ Player not found.", NamedTextColor.RED);
+    private static final Component MSG_PLAYER_NOT_FOUND = MessageUtils.playerNotFound();
 
     private final FreezeManager freezeManager;
 
@@ -34,6 +37,12 @@ public class FreezeCommand implements CommandExecutor {
         }
         Player senderPlayer = (Player) sender;
 
+        // Check permission
+        if (!senderPlayer.hasPermission(Permissions.FREEZE)) {
+            senderPlayer.sendMessage(MSG_NO_PERMISSION);
+            return true;
+        }
+
         // Verify proper argument count
         if (args.length != 1) {
             senderPlayer.sendMessage(MSG_USAGE);
@@ -41,7 +50,7 @@ public class FreezeCommand implements CommandExecutor {
         }
 
         // Retrieve the target player
-        Player target = Bukkit.getPlayer(args[0]);
+        Player target = PlayerLookup.findOnlinePlayer(args[0]);
         if (target == null) {
             senderPlayer.sendMessage(MSG_PLAYER_NOT_FOUND);
             return true;

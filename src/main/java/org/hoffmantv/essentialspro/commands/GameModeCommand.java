@@ -8,6 +8,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.hoffmantv.essentialspro.EssentialsPro;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 /**
  * A command to allow players to change their game mode.
@@ -32,14 +34,14 @@ public class GameModeCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Ensure the command sender is a player
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Component.text("✖ This command can only be used by players!", NamedTextColor.RED));
+            sender.sendMessage(MessageUtils.onlyPlayers());
             return true;
         }
         Player player = (Player) sender;
 
         // Permission check
-        if (!player.hasPermission("essentialspro.gamemode")) {
-            player.sendMessage(Component.text("✖ You do not have permission to use this command.", NamedTextColor.RED));
+        if (!player.hasPermission(Permissions.GAMEMODE)) {
+            player.sendMessage(MessageUtils.noPermission());
             return true;
         }
 

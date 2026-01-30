@@ -9,6 +9,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.hoffmantv.essentialspro.EssentialsPro;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +35,12 @@ public class AFKCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Ensure the sender is a player
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("✖ This command can only be used by players.", NamedTextColor.RED));
+            sender.sendMessage(MessageUtils.onlyPlayers());
+            return true;
+        }
+
+        if (!player.hasPermission(Permissions.AFK)) {
+            player.sendMessage(MessageUtils.noPermission());
             return true;
         }
 

@@ -7,6 +7,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 import java.util.stream.Collectors;
 
@@ -16,20 +18,20 @@ import java.util.stream.Collectors;
  */
 public class ListPlayersCommand implements CommandExecutor {
 
-    private static final String PERMISSION = "essentialspro.listplayers";
+    private static final String PERMISSION = Permissions.LISTPLAYERS;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Ensure the command sender is a player
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Component.text("✖ This command can only be used by players.", NamedTextColor.RED));
+            sender.sendMessage(MessageUtils.onlyPlayers());
             return true;
         }
         Player player = (Player) sender;
 
         // Check if the player has permission to use the command
         if (!player.hasPermission(PERMISSION)) {
-            player.sendMessage(Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED));
+            player.sendMessage(MessageUtils.noPermission());
             return true;
         }
 

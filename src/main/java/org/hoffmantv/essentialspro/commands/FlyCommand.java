@@ -8,6 +8,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.hoffmantv.essentialspro.EssentialsPro;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.PlayerLookup;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 public class FlyCommand implements CommandExecutor {
 
@@ -21,14 +24,14 @@ public class FlyCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Ensure the command is used by a player.
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Component.text("✖ This command can only be used by players.", NamedTextColor.RED));
+            sender.sendMessage(MessageUtils.onlyPlayers());
             return true;
         }
         Player player = (Player) sender;
 
         // Check if the player has permission to toggle flight for themselves.
-        if (!player.hasPermission("essentialspro.fly")) {
-            player.sendMessage(Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED));
+        if (!player.hasPermission(Permissions.FLY)) {
+            player.sendMessage(MessageUtils.noPermission());
             return true;
         }
 
@@ -38,11 +41,11 @@ public class FlyCommand implements CommandExecutor {
         // If an argument is provided, try to get a target player for toggling flight.
         if (args.length > 0) {
             // Verify permission for toggling others' flight mode.
-            if (!player.hasPermission("essentialspro.fly.others")) {
+            if (!player.hasPermission(Permissions.FLY_OTHERS)) {
                 player.sendMessage(Component.text("✖ You don't have permission to change others' flight mode.", NamedTextColor.RED));
                 return true;
             }
-            target = Bukkit.getPlayerExact(args[0]);
+            target = PlayerLookup.findOnlinePlayer(args[0]);
             if (target == null) {
                 player.sendMessage(Component.text("✖ Could not find player: " + args[0], NamedTextColor.RED));
                 return true;

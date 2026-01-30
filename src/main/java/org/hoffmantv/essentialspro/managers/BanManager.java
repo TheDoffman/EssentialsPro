@@ -3,6 +3,7 @@ package org.hoffmantv.essentialspro.managers;
 import org.bukkit.BanEntry;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.Date;
@@ -19,12 +20,14 @@ public class BanManager {
      * @param reason     the reason for the ban.
      */
     public void banPlayer(String playerName, String reason) {
-        BanList banList = Bukkit.getBanList(BanList.Type.NAME);
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+        BanList banList = Bukkit.getBanList(BanList.Type.PROFILE);
+        String targetId = offlinePlayer.getUniqueId().toString();
         if (!isBanned(playerName)) {
             // Use explicitly typed null values for expiration and source to avoid ambiguity.
             Date expiration = null;
             String source = null;
-            banList.addBan(playerName, reason, expiration, source);
+            banList.addBan(targetId, reason, expiration, source);
         }
     }
 
@@ -35,8 +38,9 @@ public class BanManager {
      * @return true if the player is banned; false otherwise.
      */
     public boolean isBanned(String playerName) {
-        BanList banList = Bukkit.getBanList(BanList.Type.NAME);
-        return banList.isBanned(playerName);
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+        BanList banList = Bukkit.getBanList(BanList.Type.PROFILE);
+        return banList.isBanned(offlinePlayer.getUniqueId().toString());
     }
 
     /**
@@ -46,8 +50,9 @@ public class BanManager {
      */
     public void unbanPlayer(String playerName) {
         if (isBanned(playerName)) {
-            BanList banList = Bukkit.getBanList(BanList.Type.NAME);
-            banList.pardon(playerName);
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+            BanList banList = Bukkit.getBanList(BanList.Type.PROFILE);
+            banList.pardon(offlinePlayer.getUniqueId().toString());
         }
     }
 
@@ -60,11 +65,11 @@ public class BanManager {
      */
     public void banPlayerTemporarily(Player player, String reason, long durationInSeconds) {
         if (!isBanned(player.getName())) {
-            BanList banList = Bukkit.getBanList(BanList.Type.NAME);
+            BanList banList = Bukkit.getBanList(BanList.Type.PROFILE);
             // Calculate the expiration date for the temporary ban.
             Date expirationDate = new Date(System.currentTimeMillis() + (durationInSeconds * 1000));
             String source = null; // Source can be set if needed
-            banList.addBan(player.getName(), reason, expirationDate, source);
+            banList.addBan(player.getUniqueId().toString(), reason, expirationDate, source);
         }
     }
 
@@ -75,8 +80,9 @@ public class BanManager {
      * @return true if the player is temporarily banned; false otherwise.
      */
     public boolean isTemporarilyBanned(String playerName) {
-        BanList banList = Bukkit.getBanList(BanList.Type.NAME);
-        BanEntry entry = banList.getBanEntry(playerName);
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+        BanList banList = Bukkit.getBanList(BanList.Type.PROFILE);
+        BanEntry entry = banList.getBanEntry(offlinePlayer.getUniqueId().toString());
         return entry != null && entry.getExpiration() != null && entry.getExpiration().after(new Date());
     }
 }

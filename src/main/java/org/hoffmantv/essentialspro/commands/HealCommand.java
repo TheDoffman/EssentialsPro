@@ -2,7 +2,7 @@ package org.hoffmantv.essentialspro.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
@@ -14,6 +14,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.hoffmantv.essentialspro.EssentialsPro;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.PlayerLookup;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 /**
  * HealCommand allows players to heal themselves or others.
@@ -22,12 +25,13 @@ import org.hoffmantv.essentialspro.EssentialsPro;
 public class HealCommand implements CommandExecutor, Listener {
 
     // Pre-built Adventure components for common messages
-    private static final Component ONLY_PLAYERS_ERROR = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
-    private static final Component NO_PERMISSION = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
-    private static final Component PLAYER_NOT_FOUND = Component.text("✖ Player not found or not online.", NamedTextColor.RED);
+    private static final Component ONLY_PLAYERS_ERROR = MessageUtils.onlyPlayers();
+    private static final Component NO_PERMISSION = MessageUtils.noPermission();
+    private static final Component PLAYER_NOT_FOUND = MessageUtils.playerNotFound();
     private static final Component HEALED_SELF = Component.text("✔ You have healed yourself.", NamedTextColor.GREEN);
 
     private final EssentialsPro plugin;
+    private final PlainTextComponentSerializer plainTextSerializer = PlainTextComponentSerializer.plainText();
 
     /**
      * Constructs a new HealCommand and registers necessary event listeners.
@@ -54,7 +58,7 @@ public class HealCommand implements CommandExecutor, Listener {
         Player player = (Player) sender;
 
         // Check permission to heal oneself
-        if (!player.hasPermission("ep.heal")) {
+        if (!player.hasPermission(Permissions.HEAL)) {
             player.sendMessage(NO_PERMISSION);
             return true;
         }
@@ -62,9 +66,9 @@ public class HealCommand implements CommandExecutor, Listener {
         Player target = player; // Default: heal self
 
         // If an argument is provided and the sender has permission to heal others, attempt to heal the specified player
-        if (args.length > 0 && player.hasPermission("essentialspro.heal.others")) {
-            target = Bukkit.getPlayer(args[0]);
-            if (target == null || !target.isOnline()) {
+        if (args.length > 0 && player.hasPermission(Permissions.HEAL_OTHERS)) {
+            target = PlayerLookup.findOnlinePlayer(args[0]);
+            if (target == null) {
                 player.sendMessage(PLAYER_NOT_FOUND);
                 return true;
             }
@@ -107,7 +111,8 @@ public class HealCommand implements CommandExecutor, Listener {
         // Check if the block is a sign
         if (block.getState() instanceof Sign sign) {
             // If the first line of the sign equals "[Heal]" (ignoring case)
-            if (sign.getLine(0).equalsIgnoreCase("[Heal]")) {
+            String firstLine = plainTextSerializer.serialize(sign.line(0));
+            if (firstLine.trim().equalsIgnoreCase("[Heal]")) {
                 Player player = event.getPlayer();
                 healPlayer(player);
                 player.sendMessage(Component.text("✔ You have healed yourself via the healing sign.", NamedTextColor.GREEN));
@@ -122,10 +127,11 @@ public class HealCommand implements CommandExecutor, Listener {
      */
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
-        if (event.getLine(0).equalsIgnoreCase("[Heal]")) {
+        String firstLine = plainTextSerializer.serialize(event.line(0));
+        if (firstLine.trim().equalsIgnoreCase("[Heal]")) {
             // Clear the first line and set the second line with a formatted label
-            event.setLine(0, "");
-            event.setLine(1, Component.text("[Heal]", NamedTextColor.GREEN).toString());
+            event.line(0, Component.empty());
+            event.line(1, Component.text("[Heal]", NamedTextColor.GREEN));
         }
     }
 }

@@ -2,22 +2,24 @@ package org.hoffmantv.essentialspro.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.PlayerLookup;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 public class SmiteCommand implements CommandExecutor {
 
-    private static final String PERMISSION_SMITE = "essentialspro.smite";
+    private static final String PERMISSION_SMITE = Permissions.SMITE;
 
     // Predefined messages using Adventure API with Unicode symbols
-    private static final Component ONLY_PLAYERS_MSG = Component.text("✖ This command can only be used by players.", NamedTextColor.RED);
-    private static final Component NO_PERMISSION_MSG = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component ONLY_PLAYERS_MSG = MessageUtils.onlyPlayers();
+    private static final Component NO_PERMISSION_MSG = MessageUtils.noPermission();
     private static final Component USAGE_MSG = Component.text("✖ Usage: /smite <player>", NamedTextColor.RED);
-    private static final Component PLAYER_NOT_FOUND_MSG = Component.text("✖ Player not found or not online.", NamedTextColor.RED);
+    private static final Component PLAYER_NOT_FOUND_MSG = MessageUtils.playerNotFound();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -40,7 +42,7 @@ public class SmiteCommand implements CommandExecutor {
         }
 
         // Attempt to find the target player
-        Player target = Bukkit.getPlayer(args[0]);
+        Player target = PlayerLookup.findOnlinePlayer(args[0]);
         if (target == null) {
             player.sendMessage(PLAYER_NOT_FOUND_MSG);
             return true;

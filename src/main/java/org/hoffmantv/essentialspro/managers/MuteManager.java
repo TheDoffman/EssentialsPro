@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * MuteManager manages the muted state of players. It stores mute end times (in milliseconds)
@@ -18,13 +20,15 @@ public class MuteManager {
     private final Map<UUID, Long> mutedPlayers = new HashMap<>();
     private final File muteFile;
     private final YamlConfiguration muteConfig;
+    private final Logger logger;
 
     /**
      * Constructs a new MuteManager and loads any existing mutes from file.
      *
      * @param dataFolder The plugin's data folder.
      */
-    public MuteManager(File dataFolder) {
+    public MuteManager(File dataFolder, Logger logger) {
+        this.logger = logger;
         // Create the mute file in the plugin's data folder.
         this.muteFile = new File(dataFolder, "mutes.yml");
         if (!muteFile.exists()) {
@@ -34,7 +38,7 @@ public class MuteManager {
                 }
                 muteFile.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, "Failed to create mutes.yml file.", e);
             }
         }
         this.muteConfig = YamlConfiguration.loadConfiguration(muteFile);
@@ -111,7 +115,7 @@ public class MuteManager {
         try {
             muteConfig.save(muteFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Failed to save mutes.yml file.", e);
         }
     }
 
@@ -126,7 +130,7 @@ public class MuteManager {
                 mutedPlayers.put(playerUuid, endTime);
             } catch (IllegalArgumentException e) {
                 // If the UUID is invalid, skip the entry.
-                e.printStackTrace();
+                logger.log(Level.WARNING, "Invalid UUID in mutes.yml: " + key, e);
             }
         }
     }

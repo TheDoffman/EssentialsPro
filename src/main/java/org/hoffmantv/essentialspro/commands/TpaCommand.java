@@ -2,12 +2,14 @@ package org.hoffmantv.essentialspro.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.hoffmantv.essentialspro.managers.TeleportRequestManager;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.PlayerLookup;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 /**
  * TpaCommand allows a player to send a teleport request to another player.
@@ -17,10 +19,10 @@ import org.hoffmantv.essentialspro.managers.TeleportRequestManager;
  */
 public class TpaCommand implements CommandExecutor {
 
-    private static final Component NO_PERMISSION = Component.text("✖ You do not have permission to use this command.", NamedTextColor.RED);
-    private static final Component ONLY_PLAYERS = Component.text("✖ Only players can use this command.", NamedTextColor.RED);
+    private static final Component NO_PERMISSION = MessageUtils.noPermission();
+    private static final Component ONLY_PLAYERS = MessageUtils.onlyPlayers();
     private static final Component USAGE = Component.text("✖ Usage: /tpa <player>", NamedTextColor.RED);
-    private static final Component PLAYER_NOT_FOUND = Component.text("✖ Player not found.", NamedTextColor.RED);
+    private static final Component PLAYER_NOT_FOUND = MessageUtils.playerNotFound();
 
     private final TeleportRequestManager teleportRequestManager;
 
@@ -52,7 +54,7 @@ public class TpaCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         // Check if the player has the required permission.
-        if (!player.hasPermission("essentialspro.tpa")) {
+        if (!player.hasPermission(Permissions.TPA)) {
             player.sendMessage(NO_PERMISSION);
             return true;
         }
@@ -64,7 +66,7 @@ public class TpaCommand implements CommandExecutor {
         }
 
         // Attempt to retrieve the target player.
-        Player target = Bukkit.getPlayer(args[0]);
+        Player target = PlayerLookup.findOnlinePlayer(args[0]);
         if (target == null) {
             player.sendMessage(PLAYER_NOT_FOUND);
             return true;

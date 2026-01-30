@@ -10,12 +10,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.hoffmantv.essentialspro.util.DurationUtils;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.PlayerLookup;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * FreezeTimeCommand allows players with the proper permission to freeze time globally or for individual players.
@@ -30,13 +31,13 @@ public class FreezeTimeCommand implements CommandExecutor {
     private final Map<Player, Long> playerFrozenTimes = new HashMap<>();
 
     // Pre-built messages using the Adventure API and Unicode symbols.
-    private static final Component NO_PERMISSION = Component.text("✖ You don't have permission to use this command.", NamedTextColor.RED);
+    private static final Component NO_PERMISSION = MessageUtils.noPermission();
     private static final Component USAGE_MESSAGE = Component.text("✖ Usage: /freezetime [global|player <player>] [duration]", NamedTextColor.RED);
     private static final Component TIME_FROZEN_WORLD = Component.text("✔ Time has been frozen for the world.", NamedTextColor.GREEN);
     private static final Component TIME_UNFROZEN_WORLD = Component.text("✔ Time has been unfrozen for the world.", NamedTextColor.GREEN);
     private static final Component TIME_FROZEN_PLAYER = Component.text("✔ Time has been frozen for the player: ", NamedTextColor.GREEN);
     private static final Component TIME_UNFROZEN_PLAYER = Component.text("✔ Time has been unfrozen for the player: ", NamedTextColor.GREEN);
-    private static final Component PLAYER_NOT_FOUND = Component.text("✖ Player not found.", NamedTextColor.RED);
+    private static final Component PLAYER_NOT_FOUND = MessageUtils.playerNotFound();
 
     /**
      * Constructs a new FreezeTimeCommand.
@@ -50,7 +51,7 @@ public class FreezeTimeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Check permission (assuming you require "essentialspro.freezetime" permission externally)
-        if (!sender.hasPermission("essentialspro.freezetime")) {
+        if (!sender.hasPermission(Permissions.FREEZETIME)) {
             sender.sendMessage(NO_PERMISSION);
             return true;
         }
@@ -98,7 +99,7 @@ public class FreezeTimeCommand implements CommandExecutor {
 
         // If a duration is provided, schedule unfreeze after that duration.
         if (args.length > 1) {
-            long duration = parseDuration(args[1]);
+            long duration = DurationUtils.parseDurationSeconds(args[1], 0);
             if (duration > 0) {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> unfreezeGlobalTime(sender), duration * 20L);
             }
@@ -129,7 +130,7 @@ public class FreezeTimeCommand implements CommandExecutor {
             sender.sendMessage(USAGE_MESSAGE);
             return;
         }
-        Player target = Bukkit.getPlayer(args[1]);
+        Player target = PlayerLookup.findOnlinePlayer(args[1]);
         if (target == null) {
             sender.sendMessage(PLAYER_NOT_FOUND);
             return;
@@ -169,24 +170,6 @@ public class FreezeTimeCommand implements CommandExecutor {
      * @return The duration in seconds, or 0 if parsing fails.
      */
     private long parseDuration(String durationStr) {
-        Pattern pattern = Pattern.compile("(\\d+)([smhd])");
-        Matcher matcher = pattern.matcher(durationStr);
-        if (matcher.matches()) {
-            long number = Long.parseLong(matcher.group(1));
-            String unit = matcher.group(2);
-            switch (unit) {
-                case "s":
-                    return number;
-                case "m":
-                    return TimeUnit.MINUTES.toSeconds(number);
-                case "h":
-                    return TimeUnit.HOURS.toSeconds(number);
-                case "d":
-                    return TimeUnit.DAYS.toSeconds(number);
-                default:
-                    return 0;
-            }
-        }
-        return 0;
+        return DurationUtils.parseDurationSeconds(durationStr, 0);
     }
 }

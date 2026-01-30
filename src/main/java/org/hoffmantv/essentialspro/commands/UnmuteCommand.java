@@ -2,12 +2,14 @@ package org.hoffmantv.essentialspro.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.hoffmantv.essentialspro.managers.MuteManager;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.PlayerLookup;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 /**
  * UnmuteCommand allows authorized users to unmute a specified player.
@@ -18,9 +20,9 @@ public class UnmuteCommand implements CommandExecutor {
     private final MuteManager muteManager;
 
     // Predefined messages using Adventure API with Unicode symbols for consistent styling
-    private static final Component NO_PERMISSION = Component.text("✖ You don't have permission to unmute players.", NamedTextColor.RED);
+    private static final Component NO_PERMISSION = MessageUtils.noPermission();
     private static final Component USAGE = Component.text("✖ Usage: /unmute <player>", NamedTextColor.RED);
-    private static final Component PLAYER_NOT_FOUND = Component.text("✖ Player not found or not online.", NamedTextColor.RED);
+    private static final Component PLAYER_NOT_FOUND = MessageUtils.playerNotFound();
 
     /**
      * Constructs an UnmuteCommand with the specified MuteManager.
@@ -43,7 +45,7 @@ public class UnmuteCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Check for proper permission
-        if (!sender.hasPermission("essentialspro.unmute")) {
+        if (!sender.hasPermission(Permissions.UNMUTE)) {
             sender.sendMessage(NO_PERMISSION);
             return true;
         }
@@ -55,7 +57,7 @@ public class UnmuteCommand implements CommandExecutor {
         }
 
         // Attempt to get the target player by name
-        Player target = Bukkit.getPlayer(args[0]);
+        Player target = PlayerLookup.findOnlinePlayer(args[0]);
         if (target == null) {
             sender.sendMessage(PLAYER_NOT_FOUND);
             return true;

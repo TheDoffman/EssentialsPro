@@ -8,6 +8,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.hoffmantv.essentialspro.managers.TeleportRequestManager;
+import org.hoffmantv.essentialspro.util.MessageUtils;
+import org.hoffmantv.essentialspro.util.Permissions;
 
 /**
  * TpAcceptCommand allows players to accept a pending teleport request.
@@ -41,13 +43,13 @@ public class TpAcceptCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Ensure only players can execute the command using pattern matching.
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("✖ Only players can use this command.", NamedTextColor.RED));
+            sender.sendMessage(MessageUtils.onlyPlayers());
             return true;
         }
 
         // Check for required permission.
-        if (!player.hasPermission("essentialspro.tpaccept")) {
-            player.sendMessage(Component.text("✖ You do not have permission to use this command.", NamedTextColor.RED));
+        if (!player.hasPermission(Permissions.TPACCEPT)) {
+            player.sendMessage(MessageUtils.noPermission());
             return true;
         }
 
