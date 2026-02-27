@@ -77,7 +77,7 @@ public class RtpCommand implements CommandExecutor {
 
     private boolean isSafeSpawn(Block highest) {
         Material type = highest.getType();
-        if (type.isAir() || type.isLiquid() || !type.isSolid()) {
+        if (type.isAir() || type.isEmpty() || !type.isSolid()) {
             return false;
         }
         return highest.getRelative(0, 1, 0).getType().isAir();

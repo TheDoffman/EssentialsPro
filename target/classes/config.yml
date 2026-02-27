@@ -3,6 +3,25 @@ motd:
   default: '&a[Welcome to &eOur &fMinecraft &bServer!&a]'
   custom: "Test"
 
+# Shared message settings
+messages:
+  locale: "en"
+  prefix: "<gray>[EssentialsPro]</gray>"
+
+# Random teleport settings
+rtp:
+  minRadius: 1000
+  maxRadius: 5000
+  attempts: 10
+  worlds: []
+
+back:
+  maxHistory: 5
+
+homes:
+  defaultLimit: 1
+  maxLimit: 10
+
 # This is where the spawn is saved
 spawn:
 
